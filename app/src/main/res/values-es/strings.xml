@@ -3,4 +3,6 @@
     <string name="app_name">Trip Planner</string>
     <string name="select_city">Elegir ciudad</string>
     <string name="search_city">Buscar ciudad</string>
+    <string name="no_location_service">Ningun servicio de ubicacion habilitado.</string>
+    <string name="location_service_required">Permisos de localizacion son necesarios para funcionar.</string>
 </resources>

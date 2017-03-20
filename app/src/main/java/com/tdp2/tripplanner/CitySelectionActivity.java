@@ -1,6 +1,12 @@
 package com.tdp2.tripplanner;
 
+
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,21 +14,29 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
 import com.tdp2.tripplanner.citySelectionActivityExtras.RecyclerItemClickListener;
+import com.tdp2.tripplanner.helpers.LocationRequester;
+import com.tdp2.tripplanner.helpers.LocationService;
 import com.tdp2.tripplanner.modelo.City;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CitySelectionActivity extends AppCompatActivity {
+import static com.tdp2.tripplanner.helpers.LocationService.MY_PERMISSIONS_REQUEST_FINE_LOCATION;
+
+public class CitySelectionActivity extends AppCompatActivity implements LocationRequester{
 
     private RecyclerView recycler;
     private Toolbar toolbar;
     private CityAdapter adapter;
     private RecyclerView.LayoutManager lManager;
     private SearchView searchView;
+    LocationService locationService;
+    private Boolean locationPermission;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +46,12 @@ public class CitySelectionActivity extends AppCompatActivity {
         // Inicializar Ciudades esto se cambia por pegarle al API
         List items = new ArrayList();
 
-        items.add(new City("Buenos Aires", "Argentina",123.56, 123.56));
-        items.add(new City("Nueva York", "U.S.A",0.0, 0.0));
-        items.add(new City("Moscu", "Rusia",0.0, 0.0));
+        items.add(new City("Buenos Aires", "Argentina",-34.609438, -58.434704));
+        items.add(new City("Nueva York", "U.S.A",40.76164, -73.982131));
+        items.add(new City("Moscu", "Rusia",55.755247, 37.620386));
         items.add(new City("San Pablo", "Brazil",123.56, 123.56));
-        items.add(new City("Rio de Janeiro", "Brazil",0.0, 0.0));
-        items.add(new City("Roma", "Italia",0.0, 0.0));
+        items.add(new City("Rio de Janeiro", "Brazil",-23.547914, 46.633069));
+        items.add(new City("Roma", "Italia",41.901736, 12.497607));
 
         //Obtener el toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -80,5 +94,55 @@ public class CitySelectionActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        this.locationPermission = false;
+        this.checkForLocationPermission();
+        if (this.locationPermission) this.initLocationServices();
+    }
+
+    public void checkForLocationPermission() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+        }
+        else this.locationPermission = true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.initLocationServices();
+
+                } else {
+                    Toast.makeText(this, R.string.location_service_required,
+                            Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    @Override
+    public void updateLocation(Location location) {
+        this.adapter.selectByLocation(location);
+    }
+
+    private void initLocationServices() {
+        this.locationService = new LocationService(this, 0L, 60000L, this);
+
+        if (!locationService.isAvailable())
+            Toast.makeText(this, R.string.no_location_service,
+                    Toast.LENGTH_SHORT).show();
     }
 }
