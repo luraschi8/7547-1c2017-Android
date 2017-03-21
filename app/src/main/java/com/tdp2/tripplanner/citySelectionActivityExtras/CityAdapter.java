@@ -1,10 +1,12 @@
 package com.tdp2.tripplanner.citySelectionActivityExtras;
 
 import android.location.Location;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tdp2.tripplanner.R;
@@ -27,12 +29,13 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
         public TextView name;
         public TextView country;
+        public ImageView image;
 
         public CityViewHolder (View view){
             super(view);
             name = (TextView) view.findViewById(R.id.name);
             country = (TextView) view.findViewById(R.id.country);
-
+            image = (ImageView) view.findViewById(R.id.cityImage);
         }
     }
 
@@ -57,6 +60,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
     public void onBindViewHolder(CityAdapter.CityViewHolder holder, int position) {
         holder.name.setText(items.get(position).getName());
         holder.country.setText(items.get(position).getCountry());
+        holder.image.setImageResource(items.get(position).getImage());
         holder.itemView.setSelected(selectedItem == position);
     }
 

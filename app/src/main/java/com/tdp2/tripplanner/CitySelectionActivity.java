@@ -50,12 +50,12 @@ public class CitySelectionActivity extends AppCompatActivity implements Location
         // Inicializar Ciudades esto se cambia por pegarle al API
         List items = new ArrayList();
 
-        items.add(new City("Buenos Aires", "Argentina",-34.609438, -58.434704));
-        items.add(new City("Nueva York", "U.S.A",40.76164, -73.982131));
-        items.add(new City("Moscu", "Rusia",55.755247, 37.620386));
-        items.add(new City("San Pablo", "Brazil",123.56, 123.56));
-        items.add(new City("Rio de Janeiro", "Brazil",-23.547914, 46.633069));
-        items.add(new City("Roma", "Italia",41.901736, 12.497607));
+        items.add(new City("Buenos Aires", "Argentina", R.drawable.buenos_aires_sample,-34.609438, -58.434704));
+        items.add(new City("Nueva York", "U.S.A", R.drawable.buenos_aires_sample,40.76164, -73.982131));
+        items.add(new City("Moscu", "Rusia", R.drawable.buenos_aires_sample,55.755247, 37.620386));
+        items.add(new City("San Pablo", "Brazil", R.drawable.buenos_aires_sample,123.56, 123.56));
+        items.add(new City("Rio de Janeiro", "Brazil", R.drawable.buenos_aires_sample,-23.547914, 46.633069));
+        items.add(new City("Roma", "Italia", R.drawable.buenos_aires_sample,41.901736, 12.497607));
 
         //Obtener el toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);

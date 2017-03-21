@@ -10,12 +10,14 @@ public class City {
     private String country;
     private Double latitude;
     private Double longitude;
+    private Integer image;
 
-    public City (String name, String country, Double latitude, Double longitude) {
+    public City (String name, String country, Integer image, Double latitude, Double longitude) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.country = country;
+        this.image = image;
     }
 
     public String getName() {
@@ -32,5 +34,9 @@ public class City {
 
     public String getCountry() {
         return this.country;
+    }
+
+    public Integer getImage() {
+        return this.image;
     }
 }
