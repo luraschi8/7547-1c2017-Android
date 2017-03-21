@@ -22,7 +22,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
     private List<City> items;
     private Integer selectedItem = 0; //Initial selected item.
     private CityFilter filter;
-    private Integer updatesByLocation;
 
     public class CityViewHolder extends RecyclerView.ViewHolder {
 
@@ -44,7 +43,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
                 return city.getName().compareTo(t1.getName());
             }
         });
-        this.updatesByLocation = 0;
         this.items = items;
         this.filter = new CityFilter(this.items, this);
     }
@@ -83,8 +81,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
     }
 
     public void selectByLocation(Location location) {
-        this.updatesByLocation++;
-        if (this.updatesByLocation > 2) return; //Do this only twice. One for last know location and one for first update
         double currentMin = -1;
         Integer currentIdx = -1;
         double latDif;

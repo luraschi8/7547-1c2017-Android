@@ -36,12 +36,16 @@ public class CitySelectionActivity extends AppCompatActivity implements Location
     private SearchView searchView;
     LocationService locationService;
     private Boolean locationPermission;
+    private Integer locationsReceived;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_selection);
+
+        //Inicio el contador de updates de ubicacion
+        this.locationsReceived = 0;
 
         // Inicializar Ciudades esto se cambia por pegarle al API
         List items = new ArrayList();
@@ -135,6 +139,11 @@ public class CitySelectionActivity extends AppCompatActivity implements Location
 
     @Override
     public void updateLocation(Location location) {
+        this.locationsReceived++;
+        if (this.locationsReceived > 2) {
+            this.locationService.stopLocationServices();
+            return;
+        }
         this.adapter.selectByLocation(location);
     }
 
