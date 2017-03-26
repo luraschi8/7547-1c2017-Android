@@ -21,7 +21,9 @@
                 android:id="@+id/atractionImage"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
 
             <TextView
                 android:id="@+id/attractionName"

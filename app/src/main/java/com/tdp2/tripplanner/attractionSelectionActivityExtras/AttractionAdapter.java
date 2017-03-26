@@ -34,8 +34,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
             super(view);
             title = (TextView) view.findViewById(R.id.attractionName);
             thumbnail = (ImageView) view.findViewById(R.id.atractionImage);
-            more = (ImageView) view.findViewById(R.id.moreAttraction);
-            more.setOnClickListener(new View.OnClickListener() {
+            thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, AttractionDetailActivity.class);
@@ -43,6 +42,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
                     mContext.startActivity(intent);
                 }
             });
+            more = (ImageView) view.findViewById(R.id.moreAttraction);
             fav = (ImageView) view.findViewById(R.id.favAttraction);
             fav.setOnClickListener(new View.OnClickListener() {
                 @Override
