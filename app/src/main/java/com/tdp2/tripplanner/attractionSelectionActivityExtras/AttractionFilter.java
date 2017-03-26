@@ -20,6 +20,7 @@ public class AttractionFilter extends Filter {
         this.attractions = new ArrayList<>(attractions);
         this.adapter = adapter;
         this.filteredAttractions = new ArrayList<>(attractions);
+        this.adapter.setList(this.filteredAttractions);
     }
 
     @Override

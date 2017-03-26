@@ -16,4 +16,5 @@
     <string name="comment">Comentar:</string>
     <string name="comment_hint">Escribe tu comentario aqui.</string>
     <string name="share_button">Compartir</string>
+    <string name="grid_view">Ver tabla</string>
 </resources>

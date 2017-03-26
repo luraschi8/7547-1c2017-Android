@@ -13,30 +13,42 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionAdapter;
 import com.tdp2.tripplanner.modelo.Attraction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AtractionGridViewActivity extends AppCompatActivity {
+public class AtractionGridViewActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     private RecyclerView recyclerView;
     private AttractionAdapter adapter;
     private List<Attraction> attractionList;
+    private View gridView, mapView;
+    private Boolean viewingMap;
+    private Boolean lazyMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_atraction_grid_view);
+        viewingMap = false;
+        lazyMap = false;
+        gridView = getLayoutInflater().inflate(R.layout.activity_atraction_grid_view, null);
+        mapView = getLayoutInflater().inflate(R.layout.attractions_map_view, null);
+        setContentView(gridView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle(R.string.atraction_grid);
         setSupportActionBar(toolbar);
-
-        //initCollapsingToolbar();
 
         recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
 
@@ -57,6 +69,20 @@ public class AtractionGridViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if (this.viewingMap) {
+           inflateMapToolBar(menu);
+        } else {
+            inflateGridToolBar(menu);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public void inflateMapToolBar(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.attraction_map_menu, menu);
+    }
+
+    public void inflateGridToolBar(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.attraction_activity_menu, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -79,7 +105,6 @@ public class AtractionGridViewActivity extends AppCompatActivity {
                 }
             });
         }
-        return super.onCreateOptionsMenu(menu);
     }
 
 
@@ -89,78 +114,59 @@ public class AtractionGridViewActivity extends AppCompatActivity {
             case R.id.action_change_map:
                 action(R.string.map_view);
                 return true;
+            case R.id.action_change_grid:
+                action(R.string.grid_view);
             default:
                 return true;
         }
     }
 
     private void action(int resid) {
-        Toast.makeText(this, getText(resid), Toast.LENGTH_SHORT).show();
+        switch (resid) {
+            case R.string.map_view:
+                this.viewingMap = true;
+                this.setContentView(mapView);
+                if (!this.lazyMap) initMapView();
+                return;
+            case R.string.grid_view:
+                this.viewingMap = false;
+                setContentView(gridView);
+                return;
+        }
     }
 
-    /*
-
-    private void initCollapsingToolbar() {
-        final CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(" ");
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        appBarLayout.setExpanded(true);
-
-        // hiding & showing the title when toolbar expanded & collapsed
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = false;
-            int scrollRange = -1;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbar.setTitle(getString(R.string.app_name));
-                    isShow = true;
-                } else if (isShow) {
-                    collapsingToolbar.setTitle(" ");
-                    isShow = false;
-                }
-            }
-        });
+    private void initMapView(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.map_toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle(R.string.atraction_grid);
+        setSupportActionBar(toolbar);
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.attraction_map);
+        mapFragment.getMapAsync(this);
     }
-*/
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        Double sumLat = 0D, sumLong =0D;
+        for (Attraction attraction : attractionList){
+            sumLat = sumLat + attraction.getLatitude();
+            sumLong = sumLong + attraction.getLongitude();
+            LatLng currentLat = new LatLng(attraction.getLatitude(), attraction.getLongitude());
+            googleMap.addMarker(new MarkerOptions().position(currentLat).title(attraction.getName()));
+        }
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(sumLat / attractionList.size(), sumLong / attractionList.size()), 12.0f));
+    }
+
     /**
      * Adding few attractions for testing
      */
     private void prepareAttractions() {
-        Attraction attraction1 = new Attraction("Planetario", null, "Texto de prueba", 0D, 0D, R.drawable.planetario_sample);
+        Attraction attraction1 = new Attraction("Planetario", null, "Texto de prueba", -34.569879, -58.411647, R.drawable.planetario_sample);
         attractionList.add(attraction1);
 
-        Attraction attraction2 = new Attraction("Teatro Colon", null, "Texto de prueba", 0D, 0D, R.drawable.colon_sample);
+        Attraction attraction2 = new Attraction("Teatro Colon", null, "Texto de prueba", -34.601182, -58.382381, R.drawable.colon_sample);
         attractionList.add(attraction2);
-
-        Attraction attraction3 = new Attraction("Planetario", null, "Texto de prueba", 0D, 0D, R.drawable.planetario_sample);
-        attractionList.add(attraction3);
-
-        Attraction attraction4 = new Attraction("Teatro Colon", null, "Texto de prueba", 0D, 0D, R.drawable.colon_sample);
-        attractionList.add(attraction4);
-
-        Attraction attraction5 = new Attraction("Planetario", null, "Texto de prueba", 0D, 0D, R.drawable.planetario_sample);
-        attractionList.add(attraction5);
-
-        Attraction attraction6 = new Attraction("Planetario", null, "Texto de prueba", 0D, 0D, R.drawable.planetario_sample);
-        attractionList.add(attraction6);
-
-        Attraction attraction7 = new Attraction("Teatro Colon", null, "Texto de prueba", 0D, 0D, R.drawable.colon_sample);
-        attractionList.add(attraction7);
-
-        Attraction attraction8 = new Attraction("Planetario", null, "Texto de prueba", 0D, 0D, R.drawable.planetario_sample);
-        attractionList.add(attraction8);
-
-        Attraction attraction9 = new Attraction("Teatro Colon", null, "Texto de prueba", 0D, 0D, R.drawable.colon_sample);
-        attractionList.add(attraction9);
-
-        Attraction attraction10 = new Attraction("Planetario", null, "Texto de prueba", 0D, 0D, R.drawable.planetario_sample);
-        attractionList.add(attraction10);
     }
 
 }
