@@ -7,8 +7,8 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="2dp"
+        card_view:cardCornerRadius="2dp"
+        card_view:cardElevation="4dp"
         card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
@@ -18,14 +18,21 @@
             android:background="@drawable/selector_row">
 
 
+            <ImageView
+                android:id="@+id/cityImage"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
+                android:layout_alignParentTop="true"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
                 android:id="@+id/name"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/cityImage"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -34,7 +41,8 @@
                 android:text="Small Text"
                 android:id="@+id/country"
                 android:layout_below="@+id/name"
-                android:layout_alignLeft="@+id/name" />
+                android:layout_alignLeft="@+id/name"
+                android:layout_marginLeft="10dp"/>
 
 
         </RelativeLayout>

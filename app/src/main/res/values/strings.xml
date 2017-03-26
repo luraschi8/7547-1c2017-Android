@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Trip Planner</string>
     <string name="select_city">Select city</string>
+    <string name="title_activity_atraction_grid_view">AtrractionGridView</string>
+    <string name="atraction_grid">Attractions in</string>
+    <string name="attraction_backdrop_subtitle">Best attraction in</string>
+    <string name="search_city">Search city</string>
+    <string name="no_location_service">No location service is available</string>
+    <string name="location_service_required">Location permissions are required to work.</string>
+    <string name="attraction_faved">Attraction added to favorites</string>
+    <string name="attraction_saved">Attraction saved</string>
+    <string name="map_view">Map View</string>
+    <string name="search_attraction">Search Attraction</string>
+    <string name="title_activity_attraction_detail">AttractionDetailActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="more">More</string>
+    <string name="fav_attraction">Add attraction to favorites</string>
+    <string name="comment">Comment:</string>
+    <string name="comment_hint">Write comment here</string>
+    <string name="share_button">Share</string>
+    <string name="grid_view">Grid view</string>
+    <string name="google_maps_key">AIzaSyBtOJhD2_ZfQoXU4QvLNBj7NAMlOpYhNKY</string>
 </resources>

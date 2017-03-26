@@ -5,4 +5,17 @@
     <string name="search_city">Search city</string>
     <string name="no_location_service">No location service is available.</string>
     <string name="location_service_required">Location permissions are required to work.</string>
+    <string name="atraction_grid">Attractions in </string>
+    <string name="attraction_backdrop_subtitle">Best attractions in </string>
+    <string name="attraction_faved">Attraction added to favorites</string>
+    <string name="attraction_saved">Attraction saved</string>
+    <string name="map_view">Map view</string>
+    <string name="search_attraction">Search attraction</string>
+    <string name="more">More</string>
+    <string name="fav_attraction">Add attraction to favorites</string>
+    <string name="comment">Comment:</string>
+    <string name="comment_hint">Write comment here</string>
+    <string name="title_activity_atraction_grid_view"></string>
+    <string name="share_button">Share</string>
+    <string name="grid_view">Grid view</string>
 </resources>

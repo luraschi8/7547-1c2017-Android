@@ -1,29 +1,42 @@
 package com.tdp2.tripplanner.modelo;
 
+import java.util.Set;
+
 /**
- * Created by matias on 3/16/17.
+ * Created by matias on 3/25/17.
  */
 
-public class City {
-
+public class Attraction {
     private String name;
-    private String country;
+    private Set<String> tags;
+    private String moreInfo;
     private Double latitude;
     private Double longitude;
     private Integer image;
     private Integer id;
 
-    public City (String name, String country, Integer image, Double latitude, Double longitude) {
+
+    public Attraction(String name, Set<String> tags, String moreInfo, Double latitude, Double longitude, Integer image) {
         this.id = 1;
+
         this.name = name;
+        this.tags = tags;
+        this.moreInfo = moreInfo;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.country = country;
         this.image = image;
     }
 
     public String getName() {
         return name;
+    }
+
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public String getMoreInfo() {
+        return moreInfo;
     }
 
     public Double getLatitude() {
@@ -34,12 +47,8 @@ public class City {
         return longitude;
     }
 
-    public String getCountry() {
-        return this.country;
-    }
-
     public Integer getImage() {
-        return this.image;
+        return image;
     }
 
     public Integer getId() {

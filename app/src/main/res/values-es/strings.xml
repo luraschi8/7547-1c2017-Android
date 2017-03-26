@@ -5,4 +5,16 @@
     <string name="search_city">Buscar ciudad</string>
     <string name="no_location_service">Ningun servicio de ubicacion habilitado.</string>
     <string name="location_service_required">Permisos de localizacion son necesarios para funcionar.</string>
+    <string name="atraction_grid">Atracciones en </string>
+    <string name="attraction_backdrop_subtitle">Lo mejor en </string>
+    <string name="attraction_faved">Atraccion agregada a favoritos</string>
+    <string name="attraction_saved">Atraccion guardada</string>
+    <string name="map_view">Ver mapa</string>
+    <string name="search_attraction">Buscar atraccion</string>
+    <string name="more">Mas</string>
+    <string name="fav_attraction">Agregar a favoritos</string>
+    <string name="comment">Comentar:</string>
+    <string name="comment_hint">Escribe tu comentario aqui.</string>
+    <string name="share_button">Compartir</string>
+    <string name="grid_view">Ver tabla</string>
 </resources>

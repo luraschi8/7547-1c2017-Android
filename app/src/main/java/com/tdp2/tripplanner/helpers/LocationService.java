@@ -113,4 +113,8 @@ public class LocationService implements LocationListener {
     public Boolean isAvailable() {
         return this.locationServiceAvailable;
     }
+
+    public void stopLocationServices() {
+        this.locationManager.removeUpdates(this);
+    }
 }

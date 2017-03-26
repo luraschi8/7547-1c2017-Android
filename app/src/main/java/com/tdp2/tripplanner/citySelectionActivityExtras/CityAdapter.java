@@ -1,10 +1,12 @@
 package com.tdp2.tripplanner.citySelectionActivityExtras;
 
 import android.location.Location;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tdp2.tripplanner.R;
@@ -22,18 +24,18 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
     private List<City> items;
     private Integer selectedItem = 0; //Initial selected item.
     private CityFilter filter;
-    private Integer updatesByLocation;
 
     public class CityViewHolder extends RecyclerView.ViewHolder {
 
         public TextView name;
         public TextView country;
+        public ImageView image;
 
         public CityViewHolder (View view){
             super(view);
             name = (TextView) view.findViewById(R.id.name);
             country = (TextView) view.findViewById(R.id.country);
-
+            image = (ImageView) view.findViewById(R.id.cityImage);
         }
     }
 
@@ -44,7 +46,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
                 return city.getName().compareTo(t1.getName());
             }
         });
-        this.updatesByLocation = 0;
         this.items = items;
         this.filter = new CityFilter(this.items, this);
     }
@@ -59,6 +60,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
     public void onBindViewHolder(CityAdapter.CityViewHolder holder, int position) {
         holder.name.setText(items.get(position).getName());
         holder.country.setText(items.get(position).getCountry());
+        holder.image.setImageResource(items.get(position).getImage());
         holder.itemView.setSelected(selectedItem == position);
     }
 
@@ -83,8 +85,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
     }
 
     public void selectByLocation(Location location) {
-        this.updatesByLocation++;
-        if (this.updatesByLocation > 2) return; //Do this only twice. One for last know location and one for first update
         double currentMin = -1;
         Integer currentIdx = -1;
         double latDif;
@@ -106,5 +106,9 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
             }
         }
         this.changeSelectedItem(currentIdx);
+    }
+
+    public City getSelectedCity() {
+        return this.items.get(this.selectedItem);
     }
 }

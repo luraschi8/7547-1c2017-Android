@@ -34,7 +34,7 @@ public class CityFilter extends Filter {
         for (final City item : cities) {
             currentName = item.getName().toLowerCase();
             currentCountry = item.getCountry().toLowerCase();
-            if (currentName.contains(constraint) || currentCountry.contains(constraint)) {
+            if (currentName.contains(constraint)) { //Solo se puede buscar por el nombre de la ciudad.
                 filteredCities.add(item);
             }
         }
