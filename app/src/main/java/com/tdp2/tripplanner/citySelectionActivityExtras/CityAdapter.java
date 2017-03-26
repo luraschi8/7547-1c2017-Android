@@ -107,4 +107,8 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         }
         this.changeSelectedItem(currentIdx);
     }
+
+    public City getSelectedCity() {
+        return this.items.get(this.selectedItem);
+    }
 }

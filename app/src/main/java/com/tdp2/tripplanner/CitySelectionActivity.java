@@ -2,9 +2,11 @@ package com.tdp2.tripplanner;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -75,6 +77,18 @@ public class CitySelectionActivity extends AppCompatActivity implements Location
                     }
                 })
         );
+
+        //Obtengo el floating button
+        FloatingActionButton button = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String selectedCity = adapter.getSelectedCity().getName();
+                Intent intent = new Intent(getBaseContext(), AtractionGridViewActivity.class);
+                intent.putExtra("EXTRA_CITY_SELECTED", selectedCity);
+                startActivity(intent);
+            }
+        });
 
         // Usar un administrador para LinearLayout
         lManager = new LinearLayoutManager(this);

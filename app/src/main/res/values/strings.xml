@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Trip Planner</string>
     <string name="select_city">Select city</string>
+    <string name="title_activity_atraction_grid_view">AtrractionGridView</string>
+    <string name="atraction_grid">Attractions in</string>
+    <string name="attraction_backdrop_subtitle">Best attraction in</string>
+    <string name="search_city">Search city</string>
+    <string name="no_location_service">No location service is available</string>
+    <string name="location_service_required">Location permissions are required to work.</string>
+    <string name="attraction_faved">Attraction added to favorites</string>
+    <string name="attraction_saved">Attraction saved</string>
 </resources>
