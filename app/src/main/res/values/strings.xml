@@ -9,4 +9,6 @@
     <string name="location_service_required">Location permissions are required to work.</string>
     <string name="attraction_faved">Attraction added to favorites</string>
     <string name="attraction_saved">Attraction saved</string>
+    <string name="map_view">Map View</string>
+    <string name="search_attraction">Search Attraction</string>
 </resources>

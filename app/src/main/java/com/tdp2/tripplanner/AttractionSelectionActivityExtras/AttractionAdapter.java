@@ -22,6 +22,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
 
     private Context mContext;
     private List<Attraction> attractionList;
+    private AttractionFilter filter;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
@@ -47,6 +48,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
     public AttractionAdapter(Context mContext, List<Attraction> attractionList) {
         this.mContext = mContext;
         this.attractionList = attractionList;
+        this.filter = new AttractionFilter(this.attractionList, this);
     }
 
     @Override
@@ -65,9 +67,18 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
         //TODO if already bookmarked draw the other icon, the same for favorites
     }
 
+    // set adapter filtered list
+    public void setList(List<Attraction> list) {
+        this.attractionList = list;
+    }
+    //call when you want to filter
+    public void filterList(String text) {
+        filter.filter(text);
+    }
 
     @Override
     public int getItemCount() {
         return attractionList.size();
     }
+
 }

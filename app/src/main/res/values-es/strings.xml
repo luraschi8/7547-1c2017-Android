@@ -9,4 +9,6 @@
     <string name="attraction_backdrop_subtitle">Lo mejor en </string>
     <string name="attraction_faved">Atraccion agregada a favoritos</string>
     <string name="attraction_saved">Atraccion guardada</string>
+    <string name="map_view">Ver mapa</string>
+    <string name="search_attraction">Buscar atraccion</string>
 </resources>

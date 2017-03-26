@@ -1,14 +1,20 @@
 package com.tdp2.tripplanner;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.tdp2.tripplanner.AttractionSelectionActivityExtras.AttractionAdapter;
 import com.tdp2.tripplanner.modelo.Attraction;
@@ -27,13 +33,16 @@ public class AtractionGridViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atraction_grid_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
-        initCollapsingToolbar();
+        //initCollapsingToolbar();
 
         recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
 
         attractionList = new ArrayList<>();
+        //TODO Change to json from API
+        prepareAttractions();
         adapter = new AttractionAdapter(this, attractionList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
@@ -46,10 +55,51 @@ public class AtractionGridViewActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Initializing collapsing toolbar
-     * Will show and hide the toolbar title on scroll
-     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.attraction_activity_menu, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        if (searchItem != null) {
+            SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+            EditText searchPlate = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            searchPlate.setHint("Search");
+            searchPlate.setTextColor(Color.WHITE);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    adapter.filterList(newText);
+                    return true;
+                }
+            });
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_change_map:
+                action(R.string.map_view);
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    private void action(int resid) {
+        Toast.makeText(this, getText(resid), Toast.LENGTH_SHORT).show();
+    }
+
+    /*
+
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
@@ -77,7 +127,7 @@ public class AtractionGridViewActivity extends AppCompatActivity {
             }
         });
     }
-
+*/
     /**
      * Adding few attractions for testing
      */
@@ -111,8 +161,6 @@ public class AtractionGridViewActivity extends AppCompatActivity {
 
         Attraction attraction10 = new Attraction("Planetario", null, "Texto de prueba", 0D, 0D, R.drawable.planetario_sample);
         attractionList.add(attraction10);
-
-        adapter.notifyDataSetChanged();
     }
 
 }
