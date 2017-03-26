@@ -31,6 +31,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tdp2.tripplanner.CitySelectionActivity" />
         </activity>
+        <activity
+            android:name=".AttractionDetailActivity"
+            android:label="@string/title_activity_attraction_detail"
+            android:parentActivityName=".AtractionGridViewActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.AtractionGridViewActivity" />
+        </activity>
     </application>
 
 </manifest>

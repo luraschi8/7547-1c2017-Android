@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.tdp2.tripplanner.AttractionSelectionActivityExtras.AttractionAdapter;
+import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionAdapter;
 import com.tdp2.tripplanner.modelo.Attraction;
 
 import java.util.ArrayList;

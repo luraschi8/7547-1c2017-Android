@@ -13,8 +13,12 @@ public class Attraction {
     private Double latitude;
     private Double longitude;
     private Integer image;
+    private Integer id;
+
 
     public Attraction(String name, Set<String> tags, String moreInfo, Double latitude, Double longitude, Integer image) {
+        this.id = 1;
+
         this.name = name;
         this.tags = tags;
         this.moreInfo = moreInfo;
@@ -45,5 +49,9 @@ public class Attraction {
 
     public Integer getImage() {
         return image;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

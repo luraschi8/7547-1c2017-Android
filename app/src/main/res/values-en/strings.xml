@@ -11,4 +11,10 @@
     <string name="attraction_saved">Attraction saved</string>
     <string name="map_view">Map view</string>
     <string name="search_attraction">Search attraction</string>
+    <string name="more">More</string>
+    <string name="fav_attraction">Add attraction to favorites</string>
+    <string name="comment">Comment:</string>
+    <string name="comment_hint">Write comment here</string>
+    <string name="title_activity_atraction_grid_view"></string>
+    <string name="share_button">Share</string>
 </resources>

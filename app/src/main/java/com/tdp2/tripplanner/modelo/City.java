@@ -11,8 +11,10 @@ public class City {
     private Double latitude;
     private Double longitude;
     private Integer image;
+    private Integer id;
 
     public City (String name, String country, Integer image, Double latitude, Double longitude) {
+        this.id = 1;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -38,5 +40,9 @@ public class City {
 
     public Integer getImage() {
         return this.image;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

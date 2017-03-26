@@ -1,6 +1,7 @@
-package com.tdp2.tripplanner.AttractionSelectionActivityExtras;
+package com.tdp2.tripplanner.attractionSelectionActivityExtras;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tdp2.tripplanner.AttractionDetailActivity;
 import com.tdp2.tripplanner.R;
 import com.tdp2.tripplanner.modelo.Attraction;
 
@@ -33,6 +35,14 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
             title = (TextView) view.findViewById(R.id.attractionName);
             thumbnail = (ImageView) view.findViewById(R.id.atractionImage);
             more = (ImageView) view.findViewById(R.id.moreAttraction);
+            more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, AttractionDetailActivity.class);
+                    intent.putExtra("EXTRA_ATTRACTION_SELECTED", attractionList.get(getAdapterPosition()).getId());
+                    mContext.startActivity(intent);
+                }
+            });
             fav = (ImageView) view.findViewById(R.id.favAttraction);
             fav.setOnClickListener(new View.OnClickListener() {
                 @Override

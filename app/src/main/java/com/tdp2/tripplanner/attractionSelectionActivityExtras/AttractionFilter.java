@@ -1,4 +1,4 @@
-package com.tdp2.tripplanner.AttractionSelectionActivityExtras;
+package com.tdp2.tripplanner.attractionSelectionActivityExtras;
 
 import android.widget.Filter;
 import com.tdp2.tripplanner.modelo.Attraction;

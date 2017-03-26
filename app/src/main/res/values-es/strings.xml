@@ -11,4 +11,9 @@
     <string name="attraction_saved">Atraccion guardada</string>
     <string name="map_view">Ver mapa</string>
     <string name="search_attraction">Buscar atraccion</string>
+    <string name="more">Mas</string>
+    <string name="fav_attraction">Agregar a favoritos</string>
+    <string name="comment">Comentar:</string>
+    <string name="comment_hint">Escribe tu comentario aqui.</string>
+    <string name="share_button">Compartir</string>
 </resources>
