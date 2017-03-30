@@ -29,16 +29,16 @@ import java.util.List;
 
 import static com.tdp2.tripplanner.helpers.LocationService.MY_PERMISSIONS_REQUEST_FINE_LOCATION;
 
-public class CitySelectionActivity extends AppCompatActivity implements LocationRequester{
+public class CitySelectionActivity extends AppCompatActivity {
 
     private RecyclerView recycler;
     private Toolbar toolbar;
     private CityAdapter adapter;
     private RecyclerView.LayoutManager lManager;
     private SearchView searchView;
-    LocationService locationService;
-    private Boolean locationPermission;
-    private Integer locationsReceived;
+    //LocationService locationService;
+    //private Boolean locationPermission;
+    //private Integer locationsReceived;
 
 
     @Override
@@ -47,7 +47,7 @@ public class CitySelectionActivity extends AppCompatActivity implements Location
         setContentView(R.layout.activity_city_selection);
 
         //Inicio el contador de updates de ubicacion
-        this.locationsReceived = 0;
+        //this.locationsReceived = 0;
 
         // Inicializar Ciudades esto se cambia por pegarle al API
         List items = new ArrayList();
@@ -73,22 +73,12 @@ public class CitySelectionActivity extends AppCompatActivity implements Location
         recycler.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        adapter.changeSelectedItem(position);
+                        Intent intent = new Intent(getBaseContext(), AtractionGridViewActivity.class);
+                        intent.putExtra("EXTRA_CITY_SELECTED", adapter.getCityAtPosition(position).getId());
+                        startActivity(intent);
                     }
                 })
         );
-
-        //Obtengo el floating button
-        FloatingActionButton button = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String selectedCity = adapter.getSelectedCity().getName();
-                Intent intent = new Intent(getBaseContext(), AtractionGridViewActivity.class);
-                intent.putExtra("EXTRA_CITY_SELECTED", selectedCity);
-                startActivity(intent);
-            }
-        });
 
         // Usar un administrador para LinearLayout
         lManager = new LinearLayoutManager(this);
@@ -113,11 +103,12 @@ public class CitySelectionActivity extends AppCompatActivity implements Location
             }
         });
 
-        this.locationPermission = false;
-        this.checkForLocationPermission();
-        if (this.locationPermission) this.initLocationServices();
+        //this.locationPermission = false;
+        //this.checkForLocationPermission();
+        //if (this.locationPermission) this.initLocationServices();
     }
 
+/*
     public void checkForLocationPermission() {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
@@ -168,4 +159,7 @@ public class CitySelectionActivity extends AppCompatActivity implements Location
             Toast.makeText(this, R.string.no_location_service,
                     Toast.LENGTH_SHORT).show();
     }
+
+*/
+
 }
