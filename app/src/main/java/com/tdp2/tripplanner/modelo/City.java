@@ -1,5 +1,7 @@
 package com.tdp2.tripplanner.modelo;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by matias on 3/16/17.
  */
@@ -10,17 +12,18 @@ public class City {
     private String country;
     private Double latitude;
     private Double longitude;
-    private Integer image;
+    private Bitmap image;
     private Integer id;
 
-    public City (String name, String country, Integer image, Double latitude, Double longitude) {
-        this.id = 1;
+    public City (Integer id, String name, String country, Bitmap image, Double latitude, Double longitude) {
+        this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.country = country;
         this.image = image;
     }
+
 
     public String getName() {
         return name;
@@ -38,7 +41,7 @@ public class City {
         return this.country;
     }
 
-    public Integer getImage() {
+    public Bitmap getImage() {
         return this.image;
     }
 
