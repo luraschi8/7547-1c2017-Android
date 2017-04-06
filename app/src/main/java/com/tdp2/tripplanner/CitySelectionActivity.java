@@ -10,8 +10,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -34,6 +36,8 @@ public class CitySelectionActivity extends AppCompatActivity
 
     private CityAdapter adapter;
     private ProgressBar progress;
+    private ImageButton refreshButton;
+    private CityDAO dao;
 
 
     @Override
@@ -44,8 +48,8 @@ public class CitySelectionActivity extends AppCompatActivity
         //Inicio el contador de updates de ubicacion
         //this.locationsReceived = 0;
 
-        CityDAO dao = new CityDAO();
-        dao.getCities(this.getApplicationContext(), this, this);
+        dao = new CityDAO();
+        this.refreshCities();
 
         // Inicializar Ciudades esto se cambia por pegarle al API
         List items = new ArrayList();
@@ -98,12 +102,30 @@ public class CitySelectionActivity extends AppCompatActivity
         //Obtener el progress bar
         progress = (ProgressBar) findViewById(R.id.progressBar);
         progress.setVisibility(View.VISIBLE);
+
+        //Obtengo el refreshButton
+        refreshButton = (ImageButton) findViewById(R.id.refreshButton);
+        refreshButton.setVisibility(View.GONE);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refreshCities();
+                refreshButton.setVisibility(View.GONE);
+                progress.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    public void refreshCities() {
+        this.dao.getCities(this.getApplicationContext(), this, this);
     }
 
     @Override
     public void onErrorResponse(VolleyError error) {
         Log.e("ERROR RESPONSE", error.getMessage());
-        Toast.makeText(this,"Error getting cities.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
+        refreshButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -113,14 +135,14 @@ public class CitySelectionActivity extends AppCompatActivity
             JSONArray data = response.getJSONArray("data");
             for (int i = 0; i < data.length(); i++) {
                 JSONObject current = data.getJSONObject(i);
-                if( current.get("imagen").toString().equals("null") )
+                if( current.get("image").toString().equals("null") )
                     lista.add(new City(current.getInt("id"), current.getString("nombre"), current.getString("pais"),
                             BitmapFactory.decodeResource(this.getResources(), R.drawable.buenos_aires_sample) ,
                             current.getDouble("latitud"), current.getDouble("longitud")));
                 else {
-                    String img = current.getString("imagen");
+                    byte[] img = Base64.decode(current.getString("image"), Base64.DEFAULT);
                     lista.add(new City(current.getInt("id"), current.getString("nombre"), current.getString("pais"),
-                            BitmapFactory.decodeByteArray(img.getBytes(), 0, img.getBytes().length),
+                            BitmapFactory.decodeByteArray(img, 0, img.length),
                             current.getDouble("latitud"), current.getDouble("longitud")));
                 }
             }
