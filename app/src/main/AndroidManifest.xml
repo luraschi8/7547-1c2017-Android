@@ -53,6 +53,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tdp2.tripplanner.AtractionGridViewActivity" />
         </activity>
+        <activity android:name=".AudioPlayerActivity"></activity>
     </application>
 
 </manifest>
