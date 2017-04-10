@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 import com.tdp2.tripplanner.AttractionDetailActivity;
 import com.tdp2.tripplanner.R;
 import com.tdp2.tripplanner.modelo.Attraction;
@@ -25,6 +27,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
     private Context mContext;
     private List<Attraction> attractionList;
     private AttractionFilter filter;
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
@@ -52,6 +55,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
             });
             bookmark = (ImageView) view.findViewById(R.id.saveAttraction);
         }
+
     }
 
 

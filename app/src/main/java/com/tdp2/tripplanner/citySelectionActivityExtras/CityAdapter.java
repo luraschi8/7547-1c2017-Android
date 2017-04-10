@@ -22,7 +22,6 @@ import java.util.List;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder> {
     private List<City> items;
-    private Integer selectedItem = 0; //Initial selected item.
     private CityFilter filter;
 
     public class CityViewHolder extends RecyclerView.ViewHolder {
@@ -61,18 +60,11 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         holder.name.setText(items.get(position).getName());
         holder.country.setText(items.get(position).getCountry());
         holder.image.setImageResource(items.get(position).getImage());
-        holder.itemView.setSelected(selectedItem == position);
     }
 
     @Override
     public int getItemCount() {
         return this.items.size();
-    }
-
-    public void changeSelectedItem (Integer newSelected) {
-        notifyItemChanged(selectedItem);
-        selectedItem = newSelected;
-        notifyItemChanged(selectedItem);
     }
 
     // set adapter filtered list
@@ -84,7 +76,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         filter.filter(text);
     }
 
-    public void selectByLocation(Location location) {
+    public Integer selectByLocation(Location location) {
         double currentMin = -1;
         Integer currentIdx = -1;
         double latDif;
@@ -105,10 +97,10 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
                 currentIdx = i;
             }
         }
-        this.changeSelectedItem(currentIdx);
+        return currentIdx;
     }
 
-    public City getSelectedCity() {
-        return this.items.get(this.selectedItem);
+    public City getCityAtPosition(Integer position) {
+        return this.items.get(position);
     }
 }

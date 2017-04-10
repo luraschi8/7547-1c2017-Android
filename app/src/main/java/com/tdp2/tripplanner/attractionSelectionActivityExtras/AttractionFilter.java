@@ -32,7 +32,7 @@ public class AttractionFilter extends Filter {
         //Do filtering here
         for (final Attraction item : attractions) {
             currentName = item.getName().toLowerCase();
-            if (currentName.contains(constraint) ) {
+            if (currentName.startsWith(constraint.toString().toLowerCase())) {
                 filteredAttractions.add(item);
             }
         }

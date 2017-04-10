@@ -1,6 +1,7 @@
 package com.tdp2.tripplanner;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -15,20 +16,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionAdapter;
 import com.tdp2.tripplanner.modelo.Attraction;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
-public class AtractionGridViewActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class AtractionGridViewActivity extends AppCompatActivity
+        implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
 
     private RecyclerView recyclerView;
     private AttractionAdapter adapter;
@@ -36,6 +42,8 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
     private View gridView, mapView;
     private Boolean viewingMap;
     private Boolean lazyMap;
+    private Marker marker;
+    private Hashtable<String, Attraction> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,7 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
         recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
 
         attractionList = new ArrayList<>();
+        markers = new Hashtable<>();
         //TODO Change to json from API
         prepareAttractions();
         adapter = new AttractionAdapter(this, attractionList);
@@ -147,12 +156,17 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+        googleMap.setOnInfoWindowClickListener(this);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setMapToolbarEnabled(false);
         Double sumLat = 0D, sumLong =0D;
         for (Attraction attraction : attractionList){
             sumLat = sumLat + attraction.getLatitude();
             sumLong = sumLong + attraction.getLongitude();
             LatLng currentLat = new LatLng(attraction.getLatitude(), attraction.getLongitude());
-            googleMap.addMarker(new MarkerOptions().position(currentLat).title(attraction.getName()));
+            final Marker currentMarker =  googleMap.addMarker(new MarkerOptions().position(currentLat).title(attraction.getName()));
+            markers.put(currentMarker.getId(), attraction);
         }
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(sumLat / attractionList.size(), sumLong / attractionList.size()), 12.0f));
@@ -162,11 +176,54 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
      * Adding few attractions for testing
      */
     private void prepareAttractions() {
-        Attraction attraction1 = new Attraction("Planetario", null, "Texto de prueba", -34.569879, -58.411647, R.drawable.planetario_sample);
+        Attraction attraction1 = new Attraction("Planetario", "Texto de prueba", -34.569879, -58.411647, R.drawable.planetario_sample);
         attractionList.add(attraction1);
 
-        Attraction attraction2 = new Attraction("Teatro Colon", null, "Texto de prueba", -34.601182, -58.382381, R.drawable.colon_sample);
+        Attraction attraction2 = new Attraction("Teatro Colon", "Texto de prueba", -34.601182, -58.382381, R.drawable.colon_sample);
         attractionList.add(attraction2);
+    }
+
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        final Attraction markedAttraction = markers.get(marker.getId());
+        Intent intent = new Intent(AtractionGridViewActivity.this, AttractionDetailActivity.class);
+        intent.putExtra("EXTRA_ATTRACTION_SELECTED", markedAttraction.getId());
+        AtractionGridViewActivity.this.startActivity(intent);
+    }
+
+    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        private View view;
+
+        public CustomInfoWindowAdapter() {
+            view = getLayoutInflater().inflate(R.layout.map_info_window, null);
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+
+            AtractionGridViewActivity.this.marker = marker;
+
+            final Attraction markedAttraction = markers.get(marker.getId());
+
+            view = getLayoutInflater().inflate(R.layout.map_info_window, null);
+
+            //Get map badge
+            ImageView img = (ImageView) view.findViewById(R.id.map_badge);
+            img.setImageResource(markedAttraction.getImage());
+
+            //Get view title
+            TextView title = (TextView) view.findViewById(R.id.map_title);
+            title.setText(markedAttraction.getName());
+
+            return view;
+        }
+
+        @Override
+        public View getInfoWindow(final Marker marker) {
+            return null;
+        }
     }
 
 }

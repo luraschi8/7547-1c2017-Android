@@ -1,6 +1,5 @@
 package com.tdp2.tripplanner.modelo;
 
-import java.util.Set;
 
 /**
  * Created by matias on 3/25/17.
@@ -8,7 +7,6 @@ import java.util.Set;
 
 public class Attraction {
     private String name;
-    private Set<String> tags;
     private String moreInfo;
     private Double latitude;
     private Double longitude;
@@ -16,11 +14,10 @@ public class Attraction {
     private Integer id;
 
 
-    public Attraction(String name, Set<String> tags, String moreInfo, Double latitude, Double longitude, Integer image) {
+    public Attraction(String name,  String moreInfo, Double latitude, Double longitude, Integer image) {
         this.id = 1;
 
         this.name = name;
-        this.tags = tags;
         this.moreInfo = moreInfo;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -29,10 +26,6 @@ public class Attraction {
 
     public String getName() {
         return name;
-    }
-
-    public Set<String> getTags() {
-        return tags;
     }
 
     public String getMoreInfo() {

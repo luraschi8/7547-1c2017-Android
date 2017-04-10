@@ -28,13 +28,11 @@ public class CityFilter extends Filter {
         filteredCities.clear();
         final FilterResults results = new FilterResults();
         String currentName;
-        String currentCountry;
 
         //Do filtering here
         for (final City item : cities) {
             currentName = item.getName().toLowerCase();
-            currentCountry = item.getCountry().toLowerCase();
-            if (currentName.contains(constraint)) { //Solo se puede buscar por el nombre de la ciudad.
+            if (currentName.startsWith(constraint.toString().toLowerCase())) { //Solo se puede buscar por el nombre de la ciudad.
                 filteredCities.add(item);
             }
         }
