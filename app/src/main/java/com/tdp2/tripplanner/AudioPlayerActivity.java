@@ -18,8 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class AudioPlayerActivity extends AppCompatActivity {
 
     private Button b1,b2,b3,b4;
-    private ImageView iv;
-    private MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
 
     private double startTime = 0;
     private double finalTime = 0;
@@ -48,15 +47,6 @@ public class AudioPlayerActivity extends AppCompatActivity {
         tx3 = (TextView)findViewById(R.id.textView4);
         tx3.setText("Song.mp3");
 
-        String url = "https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3"; // your URL here
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.prepare(); // might take long! (for buffering, etc)
-        } catch (IOException e) {
-
-        }
         mediaPlayer.start();
         //mediaPlayer.release();
         //mediaPlayer = null;
