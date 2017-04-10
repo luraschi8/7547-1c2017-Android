@@ -73,7 +73,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Attraction attraction = attractionList.get(position);
         holder.title.setText(attraction.getName());
-        holder.thumbnail.setImageResource(attraction.getImage());
+        holder.thumbnail.setImageBitmap(attraction.getImage());
         //TODO if already bookmarked draw the other icon, the same for favorites
     }
 

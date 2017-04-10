@@ -1,5 +1,7 @@
 package com.tdp2.tripplanner.modelo;
 
+import android.graphics.Bitmap;
+
 import java.util.Set;
 
 /**
@@ -8,19 +10,17 @@ import java.util.Set;
 
 public class Attraction {
     private String name;
-    private Set<String> tags;
     private String moreInfo;
     private Double latitude;
     private Double longitude;
-    private Integer image;
+    private Bitmap image;
     private Integer id;
 
 
-    public Attraction(String name, Set<String> tags, String moreInfo, Double latitude, Double longitude, Integer image) {
-        this.id = 1;
+    public Attraction(Integer id, String name, String moreInfo, Double latitude, Double longitude, Bitmap image) {
+        this.id = id;
 
         this.name = name;
-        this.tags = tags;
         this.moreInfo = moreInfo;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -29,10 +29,6 @@ public class Attraction {
 
     public String getName() {
         return name;
-    }
-
-    public Set<String> getTags() {
-        return tags;
     }
 
     public String getMoreInfo() {
@@ -47,7 +43,7 @@ public class Attraction {
         return longitude;
     }
 
-    public Integer getImage() {
+    public Bitmap getImage() {
         return image;
     }
 

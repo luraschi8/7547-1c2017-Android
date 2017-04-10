@@ -21,7 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
 import com.tdp2.tripplanner.citySelectionActivityExtras.RecyclerItemClickListener;
-import com.tdp2.tripplanner.dao.CityDAO;
+import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.City;
 
 import org.json.JSONArray;
@@ -37,7 +37,7 @@ public class CitySelectionActivity extends AppCompatActivity
     private CityAdapter adapter;
     private ProgressBar progress;
     private ImageButton refreshButton;
-    private CityDAO dao;
+    private APIDAO dao;
 
 
     @Override
@@ -48,7 +48,7 @@ public class CitySelectionActivity extends AppCompatActivity
         //Inicio el contador de updates de ubicacion
         //this.locationsReceived = 0;
 
-        dao = new CityDAO();
+        dao = new APIDAO();
         this.refreshCities();
 
         // Inicializar Ciudades esto se cambia por pegarle al API
@@ -71,6 +71,7 @@ public class CitySelectionActivity extends AppCompatActivity
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(getBaseContext(), AtractionGridViewActivity.class);
                         intent.putExtra("EXTRA_CITY_SELECTED", adapter.getCityAtPosition(position).getId());
+                        intent.putExtra("EXTRA_CITY_NAME_SELECTED", adapter.getCityAtPosition(position).getName());
                         startActivity(intent);
                     }
                 })
@@ -122,7 +123,7 @@ public class CitySelectionActivity extends AppCompatActivity
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.e("ERROR RESPONSE", error.getMessage());
+        Log.e("ERROR RESPONSE", error.toString());
         Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
         progress.setVisibility(View.GONE);
         refreshButton.setVisibility(View.VISIBLE);
