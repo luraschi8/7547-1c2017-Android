@@ -1,6 +1,8 @@
 package com.tdp2.tripplanner;
 
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import java.io.IOException;
 
 public class AttractionDetailActivity extends AppCompatActivity {
 
@@ -47,6 +51,25 @@ public class AttractionDetailActivity extends AppCompatActivity {
         TextView tags = (TextView) findViewById(R.id.tags);
         tags.setTextColor(Color.WHITE);
         tags.setText("Tag1, Tag2, Tag3, ..., Tag n");
+
+        FloatingActionButton myFab = (FloatingActionButton) this.findViewById(R.id.play_audio_fab);
+        myFab.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                String url = "https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3"; // your URL here
+                MediaPlayer mediaPlayer = new MediaPlayer();
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                try {
+                    mediaPlayer.setDataSource(url);
+                    mediaPlayer.prepare(); // might take long! (for buffering, etc)
+                } catch (IOException e) {
+
+                }
+                mediaPlayer.start();
+                //mediaPlayer.release();
+                //mediaPlayer = null;
+            }
+        });
     }
 
 

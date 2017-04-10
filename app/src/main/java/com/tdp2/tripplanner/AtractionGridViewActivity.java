@@ -3,7 +3,10 @@ package com.tdp2.tripplanner;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -29,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionAdapter;
 import com.tdp2.tripplanner.modelo.Attraction;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -74,12 +78,14 @@ public class AtractionGridViewActivity extends AppCompatActivity
         //TODO Change to json from API
         prepareAttractions();
 
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (this.viewingMap) {
-           inflateMapToolBar(menu);
+            inflateMapToolBar(menu);
         } else {
             inflateGridToolBar(menu);
         }
