@@ -42,8 +42,7 @@ public class APIDAO {
 
     private void setDefaultParamsToRequest(JsonObjectRequest request) {
         int socketTimeout = 30000; // 30 seconds. You can change it
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, 2,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
 
         request.setRetryPolicy(policy);
