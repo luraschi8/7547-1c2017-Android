@@ -39,6 +39,8 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, AttractionDetailActivity.class);
                     intent.putExtra("EXTRA_ATTRACTION_SELECTED", attractionList.get(getAdapterPosition()).getId());
+                    intent.putExtra("EXTRA_ATTRACTION_NAME", attractionList.get(getAdapterPosition()).getName());
+                    intent.putExtra("EXTRA_ATTRACTION_IMAGE", attractionList.get(getAdapterPosition()).getImage());
                     mContext.startActivity(intent);
                 }
             });
