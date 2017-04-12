@@ -37,8 +37,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionAdapter;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
+import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.Attraction;
+import com.tdp2.tripplanner.modelo.City;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,9 +74,8 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
         mapView = getLayoutInflater().inflate(R.layout.attractions_map_view, null);
         setContentView(gridView);
 
-        Bundle extras = this.getIntent().getExtras();
-        cityId = extras.getInt("EXTRA_CITY_SELECTED");
-        String cityName = extras.getString("EXTRA_CITY_NAME_SELECTED");
+        cityId = CityDataHolder.getData().getId();
+        String cityName = CityDataHolder.getData().getName();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);

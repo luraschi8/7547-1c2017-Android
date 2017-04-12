@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
+import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
 import com.tdp2.tripplanner.citySelectionActivityExtras.RecyclerItemClickListener;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.City;
@@ -70,8 +71,7 @@ public class CitySelectionActivity extends AppCompatActivity
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(getBaseContext(), AtractionGridViewActivity.class);
-                        intent.putExtra("EXTRA_CITY_SELECTED", adapter.getCityAtPosition(position).getId());
-                        intent.putExtra("EXTRA_CITY_NAME_SELECTED", adapter.getCityAtPosition(position).getName());
+                        CityDataHolder.setData(adapter.getCityAtPosition(position));
                         startActivity(intent);
                     }
                 })
