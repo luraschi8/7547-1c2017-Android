@@ -1,7 +1,13 @@
 package com.tdp2.tripplanner.modelo;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
+import com.tdp2.tripplanner.R;
+
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -13,8 +19,11 @@ public class Attraction {
     private String moreInfo;
     private Double latitude;
     private Double longitude;
-    private Bitmap image;
+    private ArrayList<Bitmap> images;
     private Integer id;
+    private String horario;
+    private String precio;
+    private byte[] audio;
 
 
     public Attraction(Integer id, String name, String moreInfo, Double latitude, Double longitude, Bitmap image) {
@@ -24,15 +33,45 @@ public class Attraction {
         this.moreInfo = moreInfo;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.image = image;
+        this.images = new ArrayList<>();
+        this.images.add(image);
+        this.audio = null;
+    }
+
+    public byte[] getAudio() {
+        return audio;
+    }
+
+    public void setAudio(byte[] audio) {
+        this.audio = audio;
+    }
+
+    public Boolean hasAudio() {
+        return this.audio != null;
+    }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
+    }
+
+    public String getHorario() {
+        return horario;
+    }
+
+    public String getPrecio() {
+        return precio;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getMoreInfo() {
-        return moreInfo;
+    public String getFullInfo() {
+        return moreInfo + "<br><br><b>Horario: </b>" + horario + "\n<br><b>Precio: </b>" + precio;
     }
 
     public Double getLatitude() {
@@ -43,11 +82,15 @@ public class Attraction {
         return longitude;
     }
 
-    public Bitmap getImage() {
-        return image;
+    public Bitmap getMainImage() {
+        return this.images.get(0);
     }
 
     public Integer getId() {
         return id;
+    }
+
+    public void addImage(Bitmap image) {
+        this.images.add(this.images.size(), image);
     }
 }

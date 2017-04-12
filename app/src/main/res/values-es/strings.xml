@@ -18,4 +18,5 @@
     <string name="share_button">Compartir</string>
     <string name="grid_view">Ver tabla</string>
     <string name="no_internet_error">No es posible conectarse con el servidor.</string>
+    <string name="audioXML">audioES</string>
 </resources>
