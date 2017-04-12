@@ -41,7 +41,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, AttractionDetailActivity.class);
-                    intent.putExtra("EXTRA_ATTRACTION_SELECTED", attractionList.get(getAdapterPosition()).getId());
+                    AttractionDataHolder.setData(attractionList.get(getAdapterPosition()));
                     mContext.startActivity(intent);
                 }
             });
@@ -77,7 +77,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Attraction attraction = attractionList.get(position);
         holder.title.setText(attraction.getName());
-        holder.thumbnail.setImageResource(attraction.getImage());
+        holder.thumbnail.setImageBitmap(attraction.getMainImage());
         //TODO if already bookmarked draw the other icon, the same for favorites
     }
 

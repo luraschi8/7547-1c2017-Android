@@ -1,44 +1,43 @@
 package com.tdp2.tripplanner;
 
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.location.Location;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
 import com.tdp2.tripplanner.citySelectionActivityExtras.RecyclerItemClickListener;
-import com.tdp2.tripplanner.helpers.LocationRequester;
-import com.tdp2.tripplanner.helpers.LocationService;
+import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.City;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.tdp2.tripplanner.helpers.LocationService.MY_PERMISSIONS_REQUEST_FINE_LOCATION;
+public class CitySelectionActivity extends AppCompatActivity
+        implements Response.Listener<JSONObject>, Response.ErrorListener{
 
-public class CitySelectionActivity extends AppCompatActivity {
-
-    private RecyclerView recycler;
-    private Toolbar toolbar;
     private CityAdapter adapter;
-    private RecyclerView.LayoutManager lManager;
-    private SearchView searchView;
-    //LocationService locationService;
-    //private Boolean locationPermission;
-    //private Integer locationsReceived;
+    private ProgressBar progress;
+    private ImageButton refreshButton;
+    private APIDAO dao;
 
 
     @Override
@@ -49,18 +48,14 @@ public class CitySelectionActivity extends AppCompatActivity {
         //Inicio el contador de updates de ubicacion
         //this.locationsReceived = 0;
 
+        dao = new APIDAO();
+        this.refreshCities();
+
         // Inicializar Ciudades esto se cambia por pegarle al API
         List items = new ArrayList();
 
-        items.add(new City("Buenos Aires", "Argentina", R.drawable.buenos_aires_sample,-34.609438, -58.434704));
-        items.add(new City("Nueva York", "U.S.A", R.drawable.buenos_aires_sample,40.76164, -73.982131));
-        items.add(new City("Moscu", "Rusia", R.drawable.buenos_aires_sample,55.755247, 37.620386));
-        items.add(new City("San Pablo", "Brazil", R.drawable.buenos_aires_sample,123.56, 123.56));
-        items.add(new City("Rio de Janeiro", "Brazil", R.drawable.buenos_aires_sample,-23.547914, 46.633069));
-        items.add(new City("Roma", "Italia", R.drawable.buenos_aires_sample,41.901736, 12.497607));
-
         //Obtener el toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Trips");
         toolbar.setSubtitle(R.string.select_city);
         toolbar.setSubtitleTextColor(Color.WHITE);
@@ -68,20 +63,22 @@ public class CitySelectionActivity extends AppCompatActivity {
 
 
         // Obtener el Recycler
-        recycler = (RecyclerView) findViewById(R.id.recycler);
+        RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
         recycler.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+                    @Override
+                    public void onItemClick(View view, int position) {
                         Intent intent = new Intent(getBaseContext(), AtractionGridViewActivity.class);
                         intent.putExtra("EXTRA_CITY_SELECTED", adapter.getCityAtPosition(position).getId());
+                        intent.putExtra("EXTRA_CITY_NAME_SELECTED", adapter.getCityAtPosition(position).getName());
                         startActivity(intent);
                     }
                 })
         );
 
         // Usar un administrador para LinearLayout
-        lManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
 
         // Crear un nuevo adaptador
@@ -89,7 +86,7 @@ public class CitySelectionActivity extends AppCompatActivity {
         recycler.setAdapter(adapter);
 
         //Obtener el searchview
-        searchView = (SearchView) findViewById(R.id.search_view);
+        SearchView searchView = (SearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -103,63 +100,59 @@ public class CitySelectionActivity extends AppCompatActivity {
             }
         });
 
-        //this.locationPermission = false;
-        //this.checkForLocationPermission();
-        //if (this.locationPermission) this.initLocationServices();
-    }
+        //Obtener el progress bar
+        progress = (ProgressBar) findViewById(R.id.progressBar);
+        progress.setVisibility(View.VISIBLE);
 
-/*
-    public void checkForLocationPermission() {
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_FINE_LOCATION);
-        }
-        else this.locationPermission = true;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    this.initLocationServices();
-
-                } else {
-                    Toast.makeText(this, R.string.location_service_required,
-                            Toast.LENGTH_SHORT).show();
-                }
-                return;
+        //Obtengo el refreshButton
+        refreshButton = (ImageButton) findViewById(R.id.refreshButton);
+        refreshButton.setVisibility(View.GONE);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refreshCities();
+                refreshButton.setVisibility(View.GONE);
+                progress.setVisibility(View.VISIBLE);
             }
+        });
+    }
 
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
+    public void refreshCities() {
+        this.dao.getCities(this.getApplicationContext(), this, this);
     }
 
     @Override
-    public void updateLocation(Location location) {
-        this.locationsReceived++;
-        if (this.locationsReceived > 2) {
-            this.locationService.stopLocationServices();
+    public void onErrorResponse(VolleyError error) {
+        Log.e("ERROR RESPONSE", error.toString());
+        Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
+        refreshButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        ArrayList<City> lista = new ArrayList<>();
+        try {
+            JSONArray data = response.getJSONArray("data");
+            for (int i = 0; i < data.length(); i++) {
+                JSONObject current = data.getJSONObject(i);
+                if( current.get("image").toString().equals("null") )
+                    lista.add(new City(current.getInt("id"), current.getString("nombre"), current.getString("pais"),
+                            BitmapFactory.decodeResource(this.getResources(), R.drawable.buenos_aires_sample) ,
+                            current.getDouble("latitud"), current.getDouble("longitud")));
+                else {
+                    byte[] img = Base64.decode(current.getString("image"), Base64.DEFAULT);
+                    lista.add(new City(current.getInt("id"), current.getString("nombre"), current.getString("pais"),
+                            BitmapFactory.decodeByteArray(img, 0, img.length),
+                            current.getDouble("latitud"), current.getDouble("longitud")));
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("ERROR JSON", e.getMessage());
             return;
         }
-        this.adapter.selectByLocation(location);
+        progress.setVisibility(View.GONE);
+        this.adapter.setList(lista);
+        this.adapter.notifyDataSetChanged();
     }
-
-    private void initLocationServices() {
-        this.locationService = new LocationService(this, 0L, 60000L, this);
-
-        if (!locationService.isAvailable())
-            Toast.makeText(this, R.string.no_location_service,
-                    Toast.LENGTH_SHORT).show();
-    }
-
-*/
-
 }

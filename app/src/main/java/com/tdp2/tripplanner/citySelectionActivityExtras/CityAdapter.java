@@ -59,7 +59,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
     public void onBindViewHolder(CityAdapter.CityViewHolder holder, int position) {
         holder.name.setText(items.get(position).getName());
         holder.country.setText(items.get(position).getCountry());
-        holder.image.setImageResource(items.get(position).getImage());
+        holder.image.setImageBitmap(items.get(position).getImage());
     }
 
     @Override

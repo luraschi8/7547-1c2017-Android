@@ -11,90 +11,89 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/attraction_more_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <android.support.v4.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@android:color/darker_gray"
-            android:visibility="visible" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:orientation="horizontal"
-            android:weightSum="5">
+            android:orientation="vertical"
+            android:id="@+id/loading_layout">
 
-            <TextView
-                android:id="@+id/eta"
+            <ProgressBar
+                android:id="@+id/progressBarAttraction"
+                style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="4" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
 
             <ImageButton
-                android:id="@+id/directions_button"
-                android:layout_width="0dp"
+                android:id="@+id/refreshButtonAttraction"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:src="@drawable/refresh"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/directions" />
+                android:clickable="true"/>
+
         </LinearLayout>
 
-        <android.support.v4.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@android:color/darker_gray"
-            android:visibility="visible" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/comment" />
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            android:id="@+id/content_layout">
 
-        <LinearLayout android:focusable="true"
-            android:focusableInTouchMode="true" android:layout_width="0px"
-            android:layout_height="0px" />
+            <TextView
+                android:id="@+id/attraction_more_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/comment_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:hint="@string/comment_hint"
-            android:selectAllOnFocus="false" />
+            <View
+                android:layout_width="300dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center"
+                android:layout_margin="10sp"
+                android:background="@android:color/darker_gray" />
 
-        <android.support.v7.widget.AppCompatRatingBar
-            android:id="@+id/rating_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:rating="2.5"
-            android:stepSize="0.5" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/comment"
+                android:textSize="16sp"/>
 
-        <Button
-            android:id="@+id/share_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/share_button" />
+            <LinearLayout android:focusable="true"
+                android:focusableInTouchMode="true" android:layout_width="0px"
+                android:layout_height="0px" />
 
-        <android.support.v4.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@android:color/darker_gray"
-            android:visibility="visible" />
+            <EditText
+                android:id="@+id/comment_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:hint="@string/comment_hint"
+                android:selectAllOnFocus="false" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/comments"/>
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:rating="2.5"
+                android:stepSize="0.5" />
 
+            <Button
+                android:id="@+id/share_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/share_button" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/comments"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

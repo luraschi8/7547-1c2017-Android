@@ -20,4 +20,6 @@
     <string name="share_button">Share</string>
     <string name="grid_view">Grid view</string>
     <string name="google_maps_key">AIzaSyBtOJhD2_ZfQoXU4QvLNBj7NAMlOpYhNKY</string>
+    <string name="no_internet_error">Unable to connect to server right now.</string>
+    <string name="audioXML">audioEN</string>
 </resources>
