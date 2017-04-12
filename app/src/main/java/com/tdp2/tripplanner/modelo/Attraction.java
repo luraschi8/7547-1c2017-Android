@@ -1,6 +1,9 @@
 package com.tdp2.tripplanner.modelo;
 
-import java.util.Set;
+import android.graphics.Bitmap;
+
+import java.util.ArrayList;
+
 
 /**
  * Created by matias on 3/25/17.

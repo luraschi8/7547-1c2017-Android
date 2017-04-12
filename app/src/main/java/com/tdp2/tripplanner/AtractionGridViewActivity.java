@@ -1,6 +1,7 @@
 package com.tdp2.tripplanner;
 
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,11 +20,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.android.gms.common.data.DataHolder;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,6 +36,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionAdapter;
+import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.Attraction;
 
@@ -44,22 +49,19 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class AtractionGridViewActivity extends AppCompatActivity implements OnMapReadyCallback,
-        Response.Listener<JSONObject>, Response.ErrorListener{
-public class AtractionGridViewActivity extends AppCompatActivity
-        implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
+        Response.Listener<JSONObject>, Response.ErrorListener, GoogleMap.OnInfoWindowClickListener{
 
-    private RecyclerView recyclerView;
     private AttractionAdapter adapter;
     private List<Attraction> attractionList;
     private View gridView, mapView;
     private Boolean viewingMap;
     private Boolean lazyMap;
-    private Marker marker;
     private Hashtable<String, Attraction> markers;
     private APIDAO dao;
     private ProgressBar progress;
     private ImageButton refreshButton;
     private Integer cityId;
+    private Marker marker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,7 +221,7 @@ public class AtractionGridViewActivity extends AppCompatActivity
     public void onInfoWindowClick(Marker marker) {
         final Attraction markedAttraction = markers.get(marker.getId());
         Intent intent = new Intent(AtractionGridViewActivity.this, AttractionDetailActivity.class);
-        intent.putExtra("EXTRA_ATTRACTION_SELECTED", markedAttraction.getId());
+        AttractionDataHolder.setData(markedAttraction);
         AtractionGridViewActivity.this.startActivity(intent);
     }
 
@@ -242,7 +244,7 @@ public class AtractionGridViewActivity extends AppCompatActivity
 
             //Get map badge
             ImageView img = (ImageView) view.findViewById(R.id.map_badge);
-            img.setImageResource(markedAttraction.getImage());
+            img.setImageBitmap(markedAttraction.getMainImage());
 
             //Get view title
             TextView title = (TextView) view.findViewById(R.id.map_title);
@@ -289,6 +291,7 @@ public class AtractionGridViewActivity extends AppCompatActivity
         }
         progress.setVisibility(View.GONE);
         this.adapter.setList(lista);
+        this.attractionList = lista;
         this.adapter.notifyDataSetChanged();
     }
 }
