@@ -53,14 +53,6 @@ public class Attraction {
         this.precio = precio;
     }
 
-    public String getHorario() {
-        return horario;
-    }
-
-    public String getPrecio() {
-        return precio;
-    }
-
     public String getName() {
         return name;
     }
@@ -87,5 +79,9 @@ public class Attraction {
 
     public void addImage(Bitmap image) {
         this.images.add(this.images.size(), image);
+    }
+
+    public ArrayList<Bitmap> getImages() {
+        return this.images;
     }
 }

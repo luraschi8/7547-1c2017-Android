@@ -50,6 +50,18 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/gallery_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/gallery_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" />
+
             <View
                 android:layout_width="300dp"
                 android:layout_height="5dp"
