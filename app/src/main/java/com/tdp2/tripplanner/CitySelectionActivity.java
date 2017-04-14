@@ -1,7 +1,6 @@
 package com.tdp2.tripplanner;
 
 
-import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -20,8 +19,6 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
-import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
-import com.tdp2.tripplanner.citySelectionActivityExtras.RecyclerItemClickListener;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.City;
 
@@ -66,23 +63,13 @@ public class CitySelectionActivity extends AppCompatActivity
         // Obtener el Recycler
         RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
-        recycler.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getBaseContext(), AtractionGridViewActivity.class);
-                        CityDataHolder.setData(adapter.getCityAtPosition(position));
-                        startActivity(intent);
-                    }
-                })
-        );
 
         // Usar un administrador para LinearLayout
         RecyclerView.LayoutManager lManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(lManager);
 
         // Crear un nuevo adaptador
-        adapter = new CityAdapter(items);
+        adapter = new CityAdapter(items, this);
         recycler.setAdapter(adapter);
 
         //Obtener el searchview
