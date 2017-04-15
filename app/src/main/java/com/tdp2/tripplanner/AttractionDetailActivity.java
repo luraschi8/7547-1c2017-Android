@@ -125,7 +125,7 @@ public class AttractionDetailActivity extends AppCompatActivity
             }
             String audio = data.getString(getResources().getString(R.string.audioXML));
             if (!audio.equals("null")){
-                 this.attraction.setAudio(Base64.decode(audio, Base64.DEFAULT));
+                 this.attraction.setAudio(audio);
             }
         } catch (JSONException e) {
             Log.e("ERROR JSON", e.getMessage());

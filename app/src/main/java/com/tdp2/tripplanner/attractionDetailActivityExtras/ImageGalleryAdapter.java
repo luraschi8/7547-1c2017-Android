@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.tdp2.tripplanner.AttractionDetailActivity;
 import com.tdp2.tripplanner.R;
 
 import java.util.ArrayList;
