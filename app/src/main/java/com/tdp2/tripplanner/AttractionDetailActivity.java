@@ -90,7 +90,7 @@ public class AttractionDetailActivity extends AppCompatActivity
 
 
         FloatingActionButton myFab = (FloatingActionButton) this.findViewById(R.id.play_audio_fab);
-        if (attraction.hasAudio()) {
+        if (!attraction.hasAudio()) {
 
             myFab.setEnabled(false);
             myFab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.unnabledButton));
