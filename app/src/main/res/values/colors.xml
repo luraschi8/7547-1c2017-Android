@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorSelectedRow">#3E9EFF</color>
+    <color name="unnabledButton">#999999</color>
 </resources>

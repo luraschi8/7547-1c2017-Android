@@ -1,8 +1,12 @@
 package com.tdp2.tripplanner;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -40,6 +44,7 @@ public class AttractionDetailActivity extends AppCompatActivity
     private ImageButton refreshButton;
     private LinearLayout contentView;
     private LinearLayout loadingView;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,21 @@ public class AttractionDetailActivity extends AppCompatActivity
             }
         });
 
+        FloatingActionButton myFab = (FloatingActionButton) this.findViewById(R.id.play_audio_fab);
+        if (attraction.hasAudio()) {
+
+            myFab.setEnabled(false);
+            myFab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.unnabledButton));
+    }
+        myFab.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getBaseContext(), AudioPlayerActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -110,7 +130,7 @@ public class AttractionDetailActivity extends AppCompatActivity
             }
             String audio = data.getString(getResources().getString(R.string.audioXML));
             if (!audio.equals("null")){
-                 this.attraction.setAudio(Base64.decode(audio, Base64.DEFAULT));
+                // this.attraction.setAudio(Base64.decode(audio, Base64.DEFAULT));
             }
         } catch (JSONException e) {
             Log.e("ERROR JSON", e.getMessage());
@@ -141,20 +161,8 @@ public class AttractionDetailActivity extends AppCompatActivity
         TextView commentsView = (TextView) findViewById(R.id.comments);
         commentsView.setText("Aca van todos los comentarios previos.");
 
-        this.contentView.setVisibility(View.VISIBLE); FloatingActionButton myFab = (FloatingActionButton) this.findViewById(R.id.play_audio_fab);
 
+        this.contentView.setVisibility(View.VISIBLE);
 
-        myFab.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getBaseContext(), AudioPlayerActivity.class);
-                //EditText editText = (EditText) findViewById(R.id.edit_message);
-                //String message = editText.getText().toString();
-                //intent.putExtra(EXTRA_MESSAGE, message);
-
-                startActivity(intent);
-            }
-        });
     }
 }

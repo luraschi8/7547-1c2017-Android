@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.tdp2.tripplanner.R;
-import com.tdp2.tripplanner.modelo.City;
+import com.tdp2.tripplanner.modelo.InterestingPoint;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.InterestingPointViewHolder> {
-    private List<City> items;
+    private List<InterestingPoint> items;
 
     public  class InterestingPointViewHolder extends RecyclerView.ViewHolder{
         public TextView order;
@@ -34,11 +35,11 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.InterestingP
         }
     }
 
-    public AudioAdapter(List<City> items) {
-        Collections.sort(items, new Comparator<City>() {
+    public AudioAdapter(List<InterestingPoint> items) {
+        Collections.sort(items, new Comparator<InterestingPoint>() {
             @Override
-            public int compare(City city, City t1) {
-                return city.getName().compareTo(t1.getName());
+            public int compare(InterestingPoint ipoint, InterestingPoint t1) {
+                return ipoint.name.compareTo(t1.name);
             }
         });
         this.items = items;
@@ -53,9 +54,9 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.InterestingP
 
     @Override
     public void onBindViewHolder(AudioAdapter.InterestingPointViewHolder holder, int position) {
-        holder.order.setText(items.get(position).getName());
-        holder.name.setText(items.get(position).getCountry());
-        holder.image.setImageResource(items.get(position).getImage());
+        holder.order.setText(String.valueOf(items.get(position).order));
+        holder.name.setText(items.get(position).name);
+        holder.image.setImageResource(items.get(position).image);
     }
 
     @Override
@@ -96,7 +97,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.InterestingP
         return currentIdx;
     }*/
 
-    public City getCityAtPosition(Integer position) {
+    public InterestingPoint getCityAtPosition(Integer position) {
         return this.items.get(position);
     }
 }

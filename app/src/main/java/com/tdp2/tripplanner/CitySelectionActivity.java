@@ -1,14 +1,8 @@
 package com.tdp2.tripplanner;
 
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.location.Location;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,9 +19,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
-import com.tdp2.tripplanner.citySelectionActivityExtras.RecyclerItemClickListener;
-import com.tdp2.tripplanner.helpers.LocationRequester;
-import com.tdp2.tripplanner.helpers.LocationService;
+import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.City;
 
 import org.json.JSONArray;
@@ -117,10 +109,33 @@ public class CitySelectionActivity extends AppCompatActivity
     }
 
     @Override
-    public void updateLocation(Location location) {
-        this.locationsReceived++;
-        if (this.locationsReceived > 2) {
-            this.locationService.stopLocationServices();
+    public void onErrorResponse(VolleyError error) {
+        Log.e("ERROR RESPONSE", error.toString());
+        Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
+        refreshButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        ArrayList<City> lista = new ArrayList<>();
+        try {
+            JSONArray data = response.getJSONArray("data");
+            for (int i = 0; i < data.length(); i++) {
+                JSONObject current = data.getJSONObject(i);
+                if( current.get("image").toString().equals("null") )
+                    lista.add(new City(current.getInt("id"), current.getString("nombre"), current.getString("pais"),
+                            BitmapFactory.decodeResource(this.getResources(), R.drawable.buenos_aires_sample) ,
+                            current.getDouble("latitud"), current.getDouble("longitud")));
+                else {
+                    byte[] img = Base64.decode(current.getString("image"), Base64.DEFAULT);
+                    lista.add(new City(current.getInt("id"), current.getString("nombre"), current.getString("pais"),
+                            BitmapFactory.decodeByteArray(img, 0, img.length),
+                            current.getDouble("latitud"), current.getDouble("longitud")));
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("ERROR JSON", e.getMessage());
             return;
         }
         progress.setVisibility(View.GONE);

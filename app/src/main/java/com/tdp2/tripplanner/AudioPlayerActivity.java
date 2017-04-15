@@ -8,8 +8,10 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.LinearLayoutManager;
+
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -18,8 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tdp2.tripplanner.AudioActivityExtras.AudioAdapter;
-import com.tdp2.tripplanner.citySelectionActivityExtras.RecyclerItemClickListener;
 import com.tdp2.tripplanner.modelo.City;
+import com.tdp2.tripplanner.modelo.InterestingPoint;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,22 +84,14 @@ public class AudioPlayerActivity extends AppCompatActivity {
         //Data
         List items = new ArrayList();
 
-        items.add(new City("1.", "Atraccion Nro 1", R.drawable.buenos_aires_sample,-34.609438, -58.434704));
-        items.add(new City("2.", "Atraccion Nro 2", R.drawable.buenos_aires_sample,40.76164, -73.982131));
-        items.add(new City("3.", "Atraccion Nro 3", R.drawable.buenos_aires_sample,55.755247, 37.620386));
+        items.add(new InterestingPoint("Atraccion Nro 1", 1, R.drawable.buenos_aires_sample));
+        items.add(new InterestingPoint("Atraccion Nro 2",2, R.drawable.buenos_aires_sample));
+        items.add(new InterestingPoint("Atraccion Nro 3",3, R.drawable.buenos_aires_sample));
 
         //Recycler
         recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
-        recycler.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getBaseContext(), AtractionGridViewActivity.class);
-                        intent.putExtra("EXTRA_CITY_SELECTED", adapter.getCityAtPosition(position).getId());
-                        startActivity(intent);
-                    }
-                })
-        );
+
 
 
         // Usar un administrador para LinearLayout
