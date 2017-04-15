@@ -25,6 +25,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="forward"><![CDATA[>>]]></string>
     <string name="rewind"><![CDATA[<<]]></string>
-    <string name="back"><![CDATA[<]]></string>
+    <string name="back"><![CDATA[>]]></string>
     <string name="pause">||</string>
+    <string name="recordName">Song.mp3</string>
 </resources>

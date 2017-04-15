@@ -1,23 +1,20 @@
 package com.tdp2.tripplanner;
 
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class AudioPlayerActivity extends AppCompatActivity {
 
-    private Button b1,b2,b3,b4;
+    private Button forwardButton, pauseButton, playButton, backwardButton;
     public static MediaPlayer mediaPlayer;
 
     private double startTime = 0;
@@ -36,30 +33,30 @@ public class AudioPlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_player);
 
-        b1 = (Button) findViewById(R.id.button);
-        b2 = (Button) findViewById(R.id.button2);
-        b3 = (Button)findViewById(R.id.button3);
-        b4 = (Button)findViewById(R.id.button4);
+        forwardButton = (Button) findViewById(R.id.forward_button);
+        pauseButton = (Button) findViewById(R.id.pause_button);
+        playButton = (Button)findViewById(R.id.play_button);
+        backwardButton = (Button)findViewById(R.id.backward_button);
 
 
         tx1 = (TextView)findViewById(R.id.textView2);
         tx2 = (TextView)findViewById(R.id.textView3);
         tx3 = (TextView)findViewById(R.id.textView4);
-        tx3.setText("Song.mp3");
+        tx3.setText(R.string.recordName);
 
         mediaPlayer.start();
         //mediaPlayer.release();
         //mediaPlayer = null;
         seekbar = (SeekBar)findViewById(R.id.seekBar);
         seekbar.setClickable(false);
-        b2.setEnabled(false);
+        pauseButton.setEnabled(false);
 
-        b3.setOnClickListener(new View.OnClickListener() {
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Playing sound",Toast.LENGTH_SHORT).show();
-                        mediaPlayer.start();
 
+                mediaPlayer.start();
                 finalTime = mediaPlayer.getDuration();
                 startTime = mediaPlayer.getCurrentPosition();
 
@@ -84,22 +81,22 @@ public class AudioPlayerActivity extends AppCompatActivity {
 
                 seekbar.setProgress((int)startTime);
                 myHandler.postDelayed(UpdateSongTime,100);
-                b2.setEnabled(true);
-                b3.setEnabled(false);
+                pauseButton.setEnabled(true);
+                playButton.setEnabled(false);
             }
         });
 
-        b2.setOnClickListener(new View.OnClickListener() {
+        pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Pausing sound",Toast.LENGTH_SHORT).show();
                         mediaPlayer.pause();
-                b2.setEnabled(false);
-                b3.setEnabled(true);
+                pauseButton.setEnabled(false);
+                playButton.setEnabled(true);
             }
         });
 
-        b1.setOnClickListener(new View.OnClickListener() {
+        forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int temp = (int)startTime;
@@ -114,7 +111,7 @@ public class AudioPlayerActivity extends AppCompatActivity {
             }
         });
 
-        b4.setOnClickListener(new View.OnClickListener() {
+        backwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int temp = (int)startTime;
