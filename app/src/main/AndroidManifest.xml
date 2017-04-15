@@ -54,6 +54,17 @@
                 android:value="com.tdp2.tripplanner.AtractionGridViewActivity" />
         </activity>
         <activity android:name=".AudioPlayerActivity"></activity>
+
+        <activity
+            android:name=".FullscreenImageViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen_image_view"
+            android:parentActivityName=".AttractionDetailActivity"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.AttractionDetailActivity" />
+        </activity>
     </application>
 
 </manifest>
