@@ -58,7 +58,7 @@ public class AttractionDetailActivity extends AppCompatActivity {
         tags.setTextColor(Color.WHITE);
         tags.setText("Tag1, Tag2, Tag3, ..., Tag n");
 
-        String url = "https://wwwsssss.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3"; // your URL here
+        String url = "https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3"; // your URL here
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
