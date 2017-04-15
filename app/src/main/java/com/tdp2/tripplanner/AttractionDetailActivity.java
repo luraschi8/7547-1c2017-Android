@@ -63,7 +63,14 @@ public class AttractionDetailActivity extends AppCompatActivity {
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             mediaPlayer.setDataSource(url);
-            mediaPlayer.prepare(); // might take long! (for buffering, etc)
+           /* mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener(){
+
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });*/
+            mediaPlayer.prepareAsync();; // might take long! (for buffering, etc)
         } catch (IOException e) {
             FloatingActionButton play_audio_fab = (FloatingActionButton)findViewById(R.id.play_audio_fab);
             play_audio_fab.setEnabled(false);       }
@@ -72,6 +79,7 @@ public class AttractionDetailActivity extends AppCompatActivity {
         myFab.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+
                 Intent intent = new Intent(getBaseContext(), AudioPlayerActivity.class);
                 //EditText editText = (EditText) findViewById(R.id.edit_message);
                 //String message = editText.getText().toString();
