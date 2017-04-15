@@ -18,7 +18,7 @@ public class Attraction {
     private Integer id;
     private String horario;
     private String precio;
-    private byte[] audio;
+    private String audioLink;
 
 
     public Attraction(Integer id, String name, String moreInfo, Double latitude, Double longitude, Bitmap image) {
@@ -30,19 +30,19 @@ public class Attraction {
         this.longitude = longitude;
         this.images = new ArrayList<>();
         this.images.add(image);
-        this.audio = null;
+        this.audioLink = null;
     }
 
-    public byte[] getAudio() {
-        return audio;
+    public String getAudio() {
+        return audioLink;
     }
 
-    public void setAudio(byte[] audio) {
-        this.audio = audio;
+    public void setAudio(String audio) {
+        this.audioLink = audio;
     }
 
     public Boolean hasAudio() {
-        return this.audio != null;
+        return this.audioLink != null;
     }
 
     public void setHorario(String horario) {
@@ -51,14 +51,6 @@ public class Attraction {
 
     public void setPrecio(String precio) {
         this.precio = precio;
-    }
-
-    public String getHorario() {
-        return horario;
-    }
-
-    public String getPrecio() {
-        return precio;
     }
 
     public String getName() {
@@ -87,5 +79,9 @@ public class Attraction {
 
     public void addImage(Bitmap image) {
         this.images.add(this.images.size(), image);
+    }
+
+    public ArrayList<Bitmap> getImages() {
+        return this.images;
     }
 }

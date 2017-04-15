@@ -4,6 +4,9 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Base64;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.ImageGalleryAdapter;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.Attraction;
@@ -40,6 +44,8 @@ public class AttractionDetailActivity extends AppCompatActivity
     private ImageButton refreshButton;
     private LinearLayout contentView;
     private LinearLayout loadingView;
+    private ImageGalleryAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +87,14 @@ public class AttractionDetailActivity extends AppCompatActivity
             }
         });
 
+        TextView galleryTitle = (TextView) findViewById(R.id.gallery_title);
+        galleryTitle.setText(getResources().getText(R.string.gallery_title));
+
+        adapter = new ImageGalleryAdapter(this.attraction.getImages(), this);
+        RecyclerView galleryRecycler = (RecyclerView) findViewById(R.id.gallery_recycler);
+        galleryRecycler.setLayoutManager(new GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false));
+        galleryRecycler.setAdapter(adapter);
+
     }
 
 
@@ -93,7 +107,7 @@ public class AttractionDetailActivity extends AppCompatActivity
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.e("ERROR RESPONSE", error.getMessage());
+        Log.e("ERROR RESPONSE", error.toString());
         Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
         progress.setVisibility(GONE);
         refreshButton.setVisibility(View.VISIBLE);
@@ -112,7 +126,7 @@ public class AttractionDetailActivity extends AppCompatActivity
             }
             String audio = data.getString(getResources().getString(R.string.audioXML));
             if (!audio.equals("null")){
-                 this.attraction.setAudio(Base64.decode(audio, Base64.DEFAULT));
+                 this.attraction.setAudio(audio);
             }
         } catch (JSONException e) {
             Log.e("ERROR JSON", e.getMessage());
@@ -143,6 +157,9 @@ public class AttractionDetailActivity extends AppCompatActivity
         TextView commentsView = (TextView) findViewById(R.id.comments);
         commentsView.setText("Aca van todos los comentarios previos.");
 
+
+        this.adapter.setList(this.attraction.getImages());
         this.contentView.setVisibility(View.VISIBLE);
     }
+
 }
