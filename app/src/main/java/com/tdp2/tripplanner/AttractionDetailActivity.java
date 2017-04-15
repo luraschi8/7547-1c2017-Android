@@ -47,7 +47,7 @@ public class AttractionDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_attraction_detail);
         contentView = (LinearLayout) findViewById(R.id.content_layout);
         loadingView = (LinearLayout) findViewById(R.id.loading_layout);
-        contentView.setVisibility(View.GONE);
+        contentView.setVisibility(GONE);
 
         this.attraction = AttractionDataHolder.getData();
 
