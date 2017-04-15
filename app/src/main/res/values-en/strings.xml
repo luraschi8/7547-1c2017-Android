@@ -18,4 +18,6 @@
     <string name="title_activity_atraction_grid_view"></string>
     <string name="share_button">Share</string>
     <string name="grid_view">Grid view</string>
+    <string name="no_internet_error">Unable to connect to server right now.</string>
+    <string name="audioXML">audioEN</string>
 </resources>

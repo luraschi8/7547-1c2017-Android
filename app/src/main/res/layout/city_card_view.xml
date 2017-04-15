@@ -9,13 +9,16 @@
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="2dp"
         card_view:cardElevation="4dp"
-        card_view:cardUseCompatPadding="true">
+        card_view:cardUseCompatPadding="true"
+        android:id="@+id/cityCardView">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
-            android:background="@drawable/selector_row">
+            android:background="@drawable/selector_row"
+            android:id="@+id/cityRelativeView"
+            android:contextClickable="true">
 
 
             <ImageView

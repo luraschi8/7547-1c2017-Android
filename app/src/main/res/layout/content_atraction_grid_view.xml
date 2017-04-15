@@ -7,6 +7,29 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.tdp2.tripplanner.AtractionGridViewActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBarAttractions"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+    </ProgressBar>
+
+    <ImageButton
+        android:id="@+id/refreshButtonAttractions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/refresh"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/attraction_recycler_view"
         android:layout_width="match_parent"

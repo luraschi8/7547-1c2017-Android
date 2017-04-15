@@ -1,59 +1,138 @@
 package com.tdp2.tripplanner;
 
-import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.EditText;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.IOException;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
+import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.modelo.Attraction;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class AttractionDetailActivity extends AppCompatActivity {
+import static android.view.View.GONE;
 
+public class AttractionDetailActivity extends AppCompatActivity
+        implements Response.Listener<JSONObject>, Response.ErrorListener{
 
-
-
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-
-        }
-
+    private APIDAO dao;
+    private Attraction attraction;
+    private ProgressBar progress;
+    private ImageButton refreshButton;
+    private LinearLayout contentView;
+    private LinearLayout loadingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attraction_detail);
+        contentView = (LinearLayout) findViewById(R.id.content_layout);
+        loadingView = (LinearLayout) findViewById(R.id.loading_layout);
+        contentView.setVisibility(GONE);
+
+        this.attraction = AttractionDataHolder.getData();
+
+        dao = new APIDAO();
+        this.getAttraction(this.attraction.getId());
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Nombre de la atrracion");
+
+        getSupportActionBar().setTitle(this.attraction.getName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ImageView imageView = (ImageView) findViewById(R.id.attractionDetailImage);
-        imageView.setImageResource(R.drawable.colon_sample);
+        imageView.setImageBitmap(this.attraction.getMainImage());
 
+
+        //Obtener el progress bar
+        progress = (ProgressBar) findViewById(R.id.progressBarAttraction);
+        progress.setVisibility(View.VISIBLE);
+
+        //Obtengo el refreshButton
+        refreshButton = (ImageButton) findViewById(R.id.refreshButtonAttraction);
+        refreshButton.setVisibility(GONE);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getAttraction(attraction.getId());
+                refreshButton.setVisibility(GONE);
+                progress.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_attraction_detail, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Log.e("ERROR RESPONSE", error.getMessage());
+        Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+        progress.setVisibility(GONE);
+        refreshButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        try {
+            JSONObject data = response.getJSONObject("data");
+            this.attraction.setHorario(data.getString("horario"));
+            this.attraction.setPrecio(data.getString("precio"));
+            JSONArray imagenes = data.getJSONArray("listaImagenes");
+            for (int i = 1; i < imagenes.length(); i++) {
+                byte[] img = Base64.decode(imagenes.getString(i), Base64.DEFAULT);
+                this.attraction.addImage(BitmapFactory.decodeByteArray(img, 0, img.length));
+            }
+            String audio = data.getString(getResources().getString(R.string.audioXML));
+            if (!audio.equals("null")){
+                 this.attraction.setAudio(Base64.decode(audio, Base64.DEFAULT));
+            }
+        } catch (JSONException e) {
+            Log.e("ERROR JSON", e.getMessage());
+            return;
+        }
+        progress.setVisibility(GONE);
+        loadingView.setVisibility(GONE);
+        this.notifyDataChanged();
+    }
+
+    private void getAttraction(Integer attractionID) {
+        this.dao.getAttractionInfo(this.getApplicationContext(), this, this, attractionID);
+    }
+
+    private void notifyDataChanged() {
         //Get the attraction info text view
         TextView moreInfo = (TextView) findViewById(R.id.attraction_more_info);
-        moreInfo.setText("Esto es la informacion de la atraccion que viene en el json.\n Podria incluir horarios y bla bla bla");
-
-        //Get the eta
-        TextView etaText = (TextView) findViewById(R.id.eta);
-        etaText.setText("Tiempo estimado: 4 minutos a pie.");
+        if (Build.VERSION.SDK_INT >= 24) {
+            moreInfo.setText(Html.fromHtml(this.attraction.getFullInfo(), Html.FROM_HTML_MODE_COMPACT)); // for 24 api and more
+        } else {
+            moreInfo.setText(Html.fromHtml(this.attraction.getFullInfo())); //api 23 or less.
+        }
 
         //Le saco el autofocus al campo de comentarios
         EditText commentField = (EditText) findViewById(R.id.comment_edit_text);
@@ -62,13 +141,9 @@ public class AttractionDetailActivity extends AppCompatActivity {
         TextView commentsView = (TextView) findViewById(R.id.comments);
         commentsView.setText("Aca van todos los comentarios previos.");
 
-        TextView tags = (TextView) findViewById(R.id.tags);
-        tags.setTextColor(Color.WHITE);
-        tags.setText("Tag1, Tag2, Tag3, ..., Tag n");
+        this.contentView.setVisibility(View.VISIBLE); FloatingActionButton myFab = (FloatingActionButton) this.findViewById(R.id.play_audio_fab);
 
 
-
-        FloatingActionButton myFab = (FloatingActionButton) this.findViewById(R.id.play_audio_fab);
         myFab.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -82,13 +157,4 @@ public class AttractionDetailActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_attraction_detail, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
 }
