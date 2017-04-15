@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -40,7 +40,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView imgDisplay;
-        Button btnClose;
+        ImageButton btnClose;
 
         inflater = (LayoutInflater) _activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -48,7 +48,7 @@ public class FullScreenImageAdapter extends PagerAdapter {
                 false);
 
         imgDisplay = (ImageView) viewLayout.findViewById(R.id.imgDisplay);
-        btnClose = (Button) viewLayout.findViewById(R.id.btnClose);
+        btnClose = (ImageButton) viewLayout.findViewById(R.id.btnClose);
 
         imgDisplay.setImageBitmap(AttractionDataHolder.getData().getImages().get(position));
 
