@@ -1,7 +1,6 @@
 package com.tdp2.tripplanner;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +46,7 @@ public class AttractionDetailActivity extends AppCompatActivity
     private LinearLayout loadingView;
     private ImageGalleryAdapter adapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,10 +90,11 @@ public class AttractionDetailActivity extends AppCompatActivity
         TextView galleryTitle = (TextView) findViewById(R.id.gallery_title);
         galleryTitle.setText(getResources().getText(R.string.gallery_title));
 
-        adapter = new ImageGalleryAdapter(this.attraction.getImages());
+        adapter = new ImageGalleryAdapter(this.attraction.getImages(), this);
         RecyclerView galleryRecycler = (RecyclerView) findViewById(R.id.gallery_recycler);
         galleryRecycler.setLayoutManager(new GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false));
         galleryRecycler.setAdapter(adapter);
+
     }
 
 
@@ -106,7 +107,7 @@ public class AttractionDetailActivity extends AppCompatActivity
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.e("ERROR RESPONSE", error.getMessage());
+        Log.e("ERROR RESPONSE", error.toString());
         Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
         progress.setVisibility(GONE);
         refreshButton.setVisibility(View.VISIBLE);
@@ -160,4 +161,5 @@ public class AttractionDetailActivity extends AppCompatActivity
         this.adapter.setList(this.attraction.getImages());
         this.contentView.setVisibility(View.VISIBLE);
     }
+
 }

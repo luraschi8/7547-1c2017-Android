@@ -1,5 +1,7 @@
 package com.tdp2.tripplanner.attractionDetailActivityExtras;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.tdp2.tripplanner.AttractionDetailActivity;
+import com.tdp2.tripplanner.FullscreenImageViewActivity;
 import com.tdp2.tripplanner.R;
 
 import java.util.ArrayList;
@@ -19,9 +21,11 @@ import java.util.ArrayList;
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder> {
 
     private ArrayList<Bitmap> imageList;
+    private Context mContext;
 
-    public ImageGalleryAdapter(ArrayList<Bitmap> images) {
+    public ImageGalleryAdapter(ArrayList<Bitmap> images, Context context) {
         this.imageList = images;
+        this.mContext = context;
     }
 
     @Override
@@ -33,9 +37,17 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     }
 
     @Override
-    public void onBindViewHolder(final ImageGalleryAdapter.ImageViewHolder holder, int position) {
+    public void onBindViewHolder(final ImageGalleryAdapter.ImageViewHolder holder, final int position) {
         Bitmap image = imageList.get(position);
         holder.thumbnail.setImageBitmap(image);
+        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, FullscreenImageViewActivity.class);
+                intent.putExtra("POSITION", position);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     // set adapter filtered list

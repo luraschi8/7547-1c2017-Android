@@ -262,7 +262,7 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.e("ERROR RESPONSE", error.getMessage());
+        Log.e("ERROR RESPONSE", error.toString());
         Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
         progress.setVisibility(View.GONE);
         refreshButton.setVisibility(View.VISIBLE);

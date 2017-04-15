@@ -23,4 +23,8 @@
     <string name="no_internet_error">Unable to connect to server right now.</string>
     <string name="audioXML">audioEN</string>
     <string name="gallery_title">Image gallery:</string>
+
+    <string name="title_activity_fullscreen_image_view">FullscreenImageView</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
