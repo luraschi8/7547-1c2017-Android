@@ -29,7 +29,6 @@ public class CitySelectionActivity extends AppCompatActivity {
     //private Boolean locationPermission;
     //private Integer locationsReceived;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

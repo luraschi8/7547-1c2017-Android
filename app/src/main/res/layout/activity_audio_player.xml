@@ -54,6 +54,7 @@
             android:layout_alignParentStart="true"
             android:text="@string/forward"
             android:textSize="18sp"
+            android:onClick="forwardAction"
             tools:layout_editor_absoluteY="0dp"
             tools:layout_editor_absoluteX="0dp" />
 
@@ -110,6 +111,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="@string/rewind"
+            android:onClick="backwardAction"
             tools:layout_editor_absoluteY="0dp"
             tools:layout_editor_absoluteX="0dp" />
 
@@ -122,6 +124,7 @@
             android:layout_toLeftOf="@+id/backward_button"
             android:layout_toStartOf="@+id/backward_button"
             android:text="@string/back"
+            android:onClick="playAction"
             android:textSize="18sp"
             tools:layout_editor_absoluteY="0dp"
             tools:layout_editor_absoluteX="0dp" />
@@ -136,6 +139,7 @@
             android:layout_toRightOf="@+id/forward_button"
             android:text="@string/pause"
             android:textSize="18sp"
+            android:onClick="pauseAction"
             tools:layout_editor_absoluteY="0dp"
             tools:layout_editor_absoluteX="0dp" />
 

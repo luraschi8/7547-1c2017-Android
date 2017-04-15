@@ -24,8 +24,16 @@ import java.io.IOException;
 
 public class AttractionDetailActivity extends AppCompatActivity {
 
-    MediaPlayer mediaPlayer;
-    public final static String EXTRA_MESSAGE = "com.tdp2.tripplanner.MediaPlayer";
+
+
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+
+        }
 
 
     @Override
@@ -58,22 +66,7 @@ public class AttractionDetailActivity extends AppCompatActivity {
         tags.setTextColor(Color.WHITE);
         tags.setText("Tag1, Tag2, Tag3, ..., Tag n");
 
-        String url = "https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3"; // your URL here
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mediaPlayer.setDataSource(url);
-           /* mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener(){
 
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                }
-            });*/
-            mediaPlayer.prepareAsync();; // might take long! (for buffering, etc)
-        } catch (IOException e) {
-            FloatingActionButton play_audio_fab = (FloatingActionButton)findViewById(R.id.play_audio_fab);
-            play_audio_fab.setEnabled(false);       }
 
         FloatingActionButton myFab = (FloatingActionButton) this.findViewById(R.id.play_audio_fab);
         myFab.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +77,7 @@ public class AttractionDetailActivity extends AppCompatActivity {
                 //EditText editText = (EditText) findViewById(R.id.edit_message);
                 //String message = editText.getText().toString();
                 //intent.putExtra(EXTRA_MESSAGE, message);
-                AudioPlayerActivity.mediaPlayer = mediaPlayer;
+
                 startActivity(intent);
             }
         });
