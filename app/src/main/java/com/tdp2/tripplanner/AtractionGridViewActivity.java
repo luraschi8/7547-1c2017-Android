@@ -255,7 +255,7 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
 
             //Get view title
             TextView title = (TextView) view.findViewById(R.id.map_title);
-            title.setText(markedAttraction.getName());
+            title.setText(String.format("%s >", markedAttraction.getName()));
 
             return view;
         }
