@@ -19,7 +19,18 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.RecyclerView
+    <ImageView
+        android:id="@+id/mp3Image"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:src="@drawable/planetario_sample"
+        android:background="#ffffff"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="64dp"
+        app:layout_constraintHorizontal_bias="0.0" />
+<!--    <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -30,20 +41,33 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0" />-->
+    <TextView
+        android:id="@+id/attraction_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/mp3Image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_centerHorizontal="true"
+        android:text="Planetario"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="32dp" />
 
     <RelativeLayout
         android:id="@+id/audioPlayer"
-        android:layout_height="143dp"
         android:layout_width="wrap_content"
+        android:layout_height="143dp"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler"
-        app:layout_constraintHorizontal_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/attraction_name"
+        app:layout_constraintVertical_bias="0.0">
+
         <Button
             android:id="@+id/forward_button"
             style="@style/Widget.AppCompat.Button.Borderless"
@@ -52,55 +76,44 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:onClick="forwardAction"
             android:text="@string/forward"
             android:textSize="18sp"
-            android:onClick="forwardAction"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="0dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/forward_button"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="8dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
             android:id="@+id/textView2"
-            android:layout_above="@+id/seekBar"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="0dp" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_above="@+id/seekBar"
             android:text="Small Text"
-            android:id="@+id/textView3"
-            android:layout_above="@+id/seekBar"
-            android:layout_alignRight="@+id/backward_button"
-            android:layout_alignEnd="@+id/backward_button"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="0dp" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/textView4"
-            android:layout_alignBaseline="@+id/textView2"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_centerHorizontal="true"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="0dp" />
+            android:layout_above="@+id/seekBar"
+            android:layout_alignEnd="@+id/backward_button"
+            android:layout_alignRight="@+id/backward_button"
+            android:text="Small Text"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
 
         <Button
             android:id="@+id/backward_button"
@@ -110,10 +123,10 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:text="@string/rewind"
             android:onClick="backwardAction"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="0dp" />
+            android:text="@string/rewind"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <Button
             android:id="@+id/play_button"
@@ -123,11 +136,11 @@
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/backward_button"
             android:layout_toStartOf="@+id/backward_button"
-            android:text="@string/back"
             android:onClick="playAction"
+            android:text="@string/back"
             android:textSize="18sp"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="0dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <Button
             android:id="@+id/pause_button"
@@ -137,14 +150,13 @@
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/forward_button"
             android:layout_toRightOf="@+id/forward_button"
+            android:onClick="pauseAction"
             android:text="@string/pause"
             android:textSize="18sp"
-            android:onClick="pauseAction"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="0dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
 
     </RelativeLayout>
-
 
 
 </android.support.constraint.ConstraintLayout>

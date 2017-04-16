@@ -1,6 +1,5 @@
 package com.tdp2.tripplanner;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -15,13 +14,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tdp2.tripplanner.AudioActivityExtras.AudioAdapter;
 import com.tdp2.tripplanner.modelo.Attraction;
-import com.tdp2.tripplanner.modelo.City;
 import com.tdp2.tripplanner.modelo.InterestingPoint;
 
 import java.io.IOException;
@@ -44,6 +43,7 @@ public class AudioPlayerActivity extends AppCompatActivity {
     private int backwardTime = 5000;
     private SeekBar seekbar;
     private TextView tx1,tx2,tx3;
+    ImageView attractionImage;
     private RecyclerView.LayoutManager lManager;
     public static Attraction attraction;
 
@@ -80,9 +80,12 @@ public class AudioPlayerActivity extends AppCompatActivity {
         //Textos del audio
         tx1 = (TextView)findViewById(R.id.textView2);
         tx2 = (TextView)findViewById(R.id.textView3);
-        tx3 = (TextView)findViewById(R.id.textView4);
-        tx3.setText(R.string.recordName);
+        tx3 = (TextView)findViewById(R.id.attraction_name);
+        tx3.setText(attraction.getName());
 
+        //Image
+        attractionImage = (ImageView) findViewById(R.id.mp3Image);
+        attractionImage.setImageBitmap(attraction.getMainImage());
         //Data
         List items = new ArrayList();
 
@@ -91,18 +94,18 @@ public class AudioPlayerActivity extends AppCompatActivity {
         items.add(new InterestingPoint("Atraccion Nro 3",3, R.drawable.buenos_aires_sample));
 
         //Recycler
-        recycler = (RecyclerView) findViewById(R.id.recycler);
-        recycler.setHasFixedSize(true);
+        //recycler = (RecyclerView) findViewById(R.id.recycler);
+        //recycler.setHasFixedSize(true);
 
 
 
         // Usar un administrador para LinearLayout
-        lManager = new LinearLayoutManager(this);
-        recycler.setLayoutManager(lManager);
+       // lManager = new LinearLayoutManager(this);
+       // recycler.setLayoutManager(lManager);
 
         // Crear un nuevo adaptador
-        adapter = new AudioAdapter(items);
-        recycler.setAdapter(adapter);
+       // adapter = new AudioAdapter(items);
+      //  recycler.setAdapter(adapter);
 
         String url = attraction.getAudio();
         mediaPlayer = new MediaPlayer();
