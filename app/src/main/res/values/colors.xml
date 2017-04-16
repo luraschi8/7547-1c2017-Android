@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorSelectedRow">#3E9EFF</color>
-    <color name="unnabledButton">#999999</color>
+    <color name="unenabledButton">#9e9e9e</color>
     <color name="black_overlay">#66000000</color>
+    <color name="enabledButton">#e65100</color>
 </resources>

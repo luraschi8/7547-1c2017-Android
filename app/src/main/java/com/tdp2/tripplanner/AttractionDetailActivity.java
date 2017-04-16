@@ -1,6 +1,5 @@
 package com.tdp2.tripplanner;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -49,6 +48,7 @@ public class AttractionDetailActivity extends AppCompatActivity
     private LinearLayout contentView;
     private LinearLayout loadingView;
     private ImageGalleryAdapter adapter;
+    FloatingActionButton playButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,23 +59,39 @@ public class AttractionDetailActivity extends AppCompatActivity
         contentView.setVisibility(GONE);
 
         this.attraction = AttractionDataHolder.getData();
-
         dao = new APIDAO();
         this.getAttraction(this.attraction.getId());
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        configToolBar();
+        setMainImage();
+        configProgressBar();
+        configRefreshButton();
+        configPlayAudioButton();
+        configImageGallery();
 
-        getSupportActionBar().setTitle(this.attraction.getName());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ImageView imageView = (ImageView) findViewById(R.id.attractionDetailImage);
-        imageView.setImageBitmap(this.attraction.getMainImage());
 
+    }
 
-        //Obtener el progress bar
-        progress = (ProgressBar) findViewById(R.id.progressBarAttraction);
-        progress.setVisibility(View.VISIBLE);
+    private void configImageGallery() {
+        TextView galleryTitle = (TextView) findViewById(R.id.gallery_title);
+        galleryTitle.setText(getResources().getText(R.string.gallery_title));
 
+        adapter = new ImageGalleryAdapter(this.attraction.getImages(), this);
+        RecyclerView galleryRecycler = (RecyclerView) findViewById(R.id.gallery_recycler);
+        galleryRecycler.setLayoutManager(new GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false));
+        galleryRecycler.setAdapter(adapter);
+    }
+
+    private void configPlayAudioButton() {
+        playButton = (FloatingActionButton) this.findViewById(R.id.play_audio_fab);
+        if (!attraction.hasAudio()) {
+
+            playButton.setEnabled(false);
+            playButton.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.unenabledButton));
+        }
+    }
+
+    private void configRefreshButton() {
         //Obtengo el refreshButton
         refreshButton = (ImageButton) findViewById(R.id.refreshButtonAttraction);
         refreshButton.setVisibility(GONE);
@@ -87,32 +103,24 @@ public class AttractionDetailActivity extends AppCompatActivity
                 progress.setVisibility(View.VISIBLE);
             }
         });
-
-
-        FloatingActionButton myFab = (FloatingActionButton) this.findViewById(R.id.play_audio_fab);
-        if (!attraction.hasAudio()) {
-
-            myFab.setEnabled(false);
-            myFab.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.unnabledButton));
     }
-        myFab.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View v) {
+    private void configProgressBar() {
+        //Obtener el progress bar
+        progress = (ProgressBar) findViewById(R.id.progressBarAttraction);
+        progress.setVisibility(View.VISIBLE);
+    }
 
-                Intent intent = new Intent(getBaseContext(), AudioPlayerActivity.class);
-                startActivity(intent);
-            }
-        });
+    private void setMainImage() {
+        ImageView imageView = (ImageView) findViewById(R.id.attractionDetailImage);
+        imageView.setImageBitmap(this.attraction.getMainImage());
+    }
 
-        TextView galleryTitle = (TextView) findViewById(R.id.gallery_title);
-        galleryTitle.setText(getResources().getText(R.string.gallery_title));
-
-        adapter = new ImageGalleryAdapter(this.attraction.getImages(), this);
-        RecyclerView galleryRecycler = (RecyclerView) findViewById(R.id.gallery_recycler);
-        galleryRecycler.setLayoutManager(new GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false));
-        galleryRecycler.setAdapter(adapter);
-
-
+    private void configToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(this.attraction.getName());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -181,7 +189,22 @@ public class AttractionDetailActivity extends AppCompatActivity
 
         this.adapter.setList(this.attraction.getImages());
         this.contentView.setVisibility(View.VISIBLE);
+        updatePlayAudioButton();
+
 
     }
 
+    private void updatePlayAudioButton() {
+        if (attraction.hasAudio()) {
+
+            playButton.setEnabled(true);
+            playButton.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.enabledButton));
+        }
+    }
+
+    public void playAudio(View view) {
+        Intent intent = new Intent(getBaseContext(), AudioPlayerActivity.class);
+        AudioPlayerActivity.attraction = this.attraction;
+        startActivity(intent);
+    }
 }

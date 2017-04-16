@@ -55,10 +55,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
+        android:onClick="playAudio"
         android:src="@android:drawable/ic_media_play"
         app:backgroundTint="@android:color/holo_orange_dark"
-        app:layout_anchor="@id/header_layout"
-        app:layout_anchorGravity="bottom|right|end" />
+        android:layout_gravity="bottom|end"/>
 
 
 

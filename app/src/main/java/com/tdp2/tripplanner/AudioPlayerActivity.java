@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tdp2.tripplanner.AudioActivityExtras.AudioAdapter;
+import com.tdp2.tripplanner.modelo.Attraction;
 import com.tdp2.tripplanner.modelo.City;
 import com.tdp2.tripplanner.modelo.InterestingPoint;
 
@@ -44,6 +45,7 @@ public class AudioPlayerActivity extends AppCompatActivity {
     private SeekBar seekbar;
     private TextView tx1,tx2,tx3;
     private RecyclerView.LayoutManager lManager;
+    public static Attraction attraction;
 
     public static int oneTimeOnly = 0;
 
@@ -102,7 +104,7 @@ public class AudioPlayerActivity extends AppCompatActivity {
         adapter = new AudioAdapter(items);
         recycler.setAdapter(adapter);
 
-        String url = "https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3"; // your URL here
+        String url = attraction.getAudio();
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
