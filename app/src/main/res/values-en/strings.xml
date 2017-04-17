@@ -21,4 +21,8 @@
     <string name="no_internet_error">Unable to connect to server right now.</string>
     <string name="audioXML">audioEN</string>
     <string name="gallery_title">Image gallery:</string>
+    <string name="Cancel">Cancel</string>
+    <string name="city_detected">City Detected</string>
+    <string name="detection_text">"We detected that you are in: "</string>
+    <string name="see_attractions">Do you want to see the attractions available?</string>
 </resources>

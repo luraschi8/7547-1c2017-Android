@@ -124,7 +124,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         return currentIdx;
     }
 
-    public City getCityAtPosition(Integer position) {
+    public City getCityAtPosition(int position) {
         return this.items.get(position);
     }
 }
