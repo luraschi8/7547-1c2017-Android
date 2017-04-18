@@ -16,6 +16,8 @@ import com.tdp2.tripplanner.AttractionDetailActivity;
 import com.tdp2.tripplanner.R;
 import com.tdp2.tripplanner.modelo.Attraction;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -83,6 +85,12 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
 
     // set adapter filtered list
     public void setList(List<Attraction> list) {
+        Collections.sort(list, new Comparator<Attraction>() {
+            @Override
+            public int compare(Attraction attraction, Attraction t1) {
+                return attraction.getName().compareTo(t1.getName());
+            }
+        });
         this.attractionList = list;
     }
     //call when you want to filter
