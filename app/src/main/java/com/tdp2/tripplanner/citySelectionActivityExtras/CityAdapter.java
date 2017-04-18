@@ -62,7 +62,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
             }
         });
         this.mContext = context;
-        this.items = items;
+        this.setList(items);
         this.filter = new CityFilter(this.items, this);
     }
 
@@ -87,6 +87,12 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
     // set adapter filtered list
     public void setList(List<City> list) {
+        Collections.sort( list,new Comparator<City>() {
+            @Override
+            public int compare(City city, City t1) {
+                return city.getName().compareTo(t1.getName());
+            }
+        });
         this.items = list;
     }
     //call when you want to filter
