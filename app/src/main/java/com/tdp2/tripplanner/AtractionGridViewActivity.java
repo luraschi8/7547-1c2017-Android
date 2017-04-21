@@ -68,6 +68,7 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
     private ImageButton refreshButton;
     private Integer cityId;
     private Marker marker;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
         toolbar.setTitle(this.getString(R.string.atraction_grid) + " " + cityName);
         setSupportActionBar(toolbar);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
 
 
         dao = new APIDAO();
@@ -108,7 +109,6 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
 
         //Obtengo el refreshButton
         refreshButton = (ImageButton) findViewById(R.id.refreshButtonAttractions);
-        refreshButton.setVisibility(View.GONE);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,8 +117,8 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
                 progress.setVisibility(View.VISIBLE);
             }
         });
-
-
+        refreshButton.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
 
     }
 
@@ -300,6 +300,7 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
         this.adapter.setList(lista);
         this.attractionList = lista;
         this.adapter.notifyDataSetChanged();
+        recyclerView.setVisibility(View.VISIBLE);
     }
 }
 
