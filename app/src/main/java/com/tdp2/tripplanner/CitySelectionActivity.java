@@ -61,9 +61,6 @@ public class CitySelectionActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_selection);
 
-        //Inicio el contador de updates de ubicacion
-        //this.locationsReceived = 0;
-
         dao = new APIDAO();
         this.refreshCities();
 
