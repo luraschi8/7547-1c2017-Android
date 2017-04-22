@@ -1,5 +1,6 @@
 package com.tdp2.tripplanner;
 
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.tdp2.tripplanner.helpers.LocationService.MY_PERMISSIONS_REQUEST_FINE_LOCATION;
 
 
 public class AtractionGridViewActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
@@ -226,6 +229,25 @@ public class AtractionGridViewActivity extends AppCompatActivity implements Resp
         recyclerView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.mMapHandler.setLocationPermission(true);
+                } else {
+                    Toast.makeText(this, R.string.location_service_required,
+                            Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
 
 }
 
