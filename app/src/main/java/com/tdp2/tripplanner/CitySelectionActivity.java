@@ -47,6 +47,7 @@ public class CitySelectionActivity extends AppCompatActivity
         implements Response.Listener<JSONObject>, Response.ErrorListener, LocationRequester{
 
     private CityAdapter adapter;
+    private RecyclerView recycler;
     private ProgressBar progress;
     private ImageButton refreshButton;
     private APIDAO dao;
@@ -76,7 +77,7 @@ public class CitySelectionActivity extends AppCompatActivity
 
 
         // Obtener el Recycler
-        RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
+        recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
 
         // Usar un administrador para LinearLayout
@@ -166,9 +167,9 @@ public class CitySelectionActivity extends AppCompatActivity
             return;
         }
         progress.setVisibility(View.GONE);
-        this.adapter.setList(lista);
+        this.adapter = new CityAdapter(lista, this);
+        this.recycler.setAdapter(this.adapter);
         locationButton.setClickable(true);
-        this.adapter.notifyDataSetChanged();
     }
 
 

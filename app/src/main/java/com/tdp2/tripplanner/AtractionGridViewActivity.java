@@ -222,10 +222,10 @@ public class AtractionGridViewActivity extends AppCompatActivity implements Resp
             return;
         }
         progress.setVisibility(View.GONE);
-        this.adapter.setList(lista);
+        this.adapter = new AttractionAdapter(this, lista);
+        this.recyclerView.setAdapter(this.adapter);
         this.attractionList = lista;
         this.mMapHandler.setList(lista);
-        this.adapter.notifyDataSetChanged();
         recyclerView.setVisibility(View.VISIBLE);
     }
 
