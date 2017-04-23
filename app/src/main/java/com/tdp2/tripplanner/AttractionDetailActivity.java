@@ -2,6 +2,7 @@ package com.tdp2.tripplanner;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -68,8 +69,21 @@ public class AttractionDetailActivity extends AppCompatActivity
         configRefreshButton();
         configPlayAudioButton();
         configImageGallery();
+        configDirectionsButton();
+    }
 
-
+    private void configDirectionsButton() {
+        FloatingActionButton directions = (FloatingActionButton) findViewById(R.id.directions_fab);
+        directions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + String.valueOf(attraction.getLatitude()) + "," +
+                String.valueOf(attraction.getLongitude()));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
     }
 
     private void configImageGallery() {

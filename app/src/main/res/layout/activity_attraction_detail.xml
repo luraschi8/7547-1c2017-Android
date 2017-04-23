@@ -49,6 +49,23 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/directions_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/directions_white"
+        android:clickable="true"/>
+
+    <View
+        android:id="@+id/dummy"
+        android:layout_width="1dp"
+        android:layout_height="16dp"
+        app:layout_anchor="@id/directions_fab"
+        app:layout_anchorGravity="top|right|end" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/play_audio_fab"
         android:layout_width="wrap_content"
@@ -56,10 +73,11 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:onClick="playAudio"
-        android:src="@android:drawable/ic_media_play"
+        android:src="@drawable/play_arrow_black"
         app:backgroundTint="@android:color/holo_orange_dark"
-        android:layout_gravity="bottom|end"/>
-
+        android:layout_gravity="top|end"
+        app:layout_anchor="@id/dummy"
+        app:layout_anchorGravity="top|end"/>
 
 
 </android.support.design.widget.CoordinatorLayout>
