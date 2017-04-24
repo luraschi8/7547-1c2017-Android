@@ -68,8 +68,21 @@
         <activity
             android:name=".InterestingPointSelection"
             android:label="@string/title_activity_interesting_point_selection"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".InterestingPointDetailActivity"></activity>
+            android:parentActivityName=".AttractionDetailActivity"
+            android:theme="@style/AppTheme" >
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.tdp2.tripplanner.AttractionDetailActivity" />
+        </activity>
+        <activity
+            android:name=".InterestingPointDetailActivity"
+            android:label="@string/interesting_point_detal_activity"
+            android:parentActivityName=".InterestingPointSelection"
+            android:theme="@style/AppTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.InterestingPointSelection" />
+        </activity>
     </application>
 
 </manifest>
