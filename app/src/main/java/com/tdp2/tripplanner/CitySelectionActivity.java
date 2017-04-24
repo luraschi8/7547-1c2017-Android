@@ -1,6 +1,7 @@
 package com.tdp2.tripplanner;
 
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.City;
+import com.tdp2.tripplanner.modelo.InterestingPoint;
 
 import org.json.JSONArray;
 import org.json.JSONException;

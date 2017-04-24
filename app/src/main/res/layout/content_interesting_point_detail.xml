@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.tdp2.tripplanner.InterestingPointDetailActivity"
+    tools:showIn="@layout/activity_interesting_point_detail">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical"
+            android:id="@+id/loading_layout"
+            android:layout_marginTop="1dp">
+
+            <ProgressBar
+                android:id="@+id/progressBarAttraction"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
+            <ImageButton
+                android:id="@+id/refreshButtonAttraction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/refresh"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loading_layout"
+            app:layout_constraintBottom_toTopOf="@+id/audioPlayer"
+            android:orientation="vertical"
+            android:layout_marginBottom="50dp"
+            android:id="@+id/content_layout_ip">
+
+            <TextView
+                android:id="@+id/ip_description_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Descripcion"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/ip_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Descripcion muy cosadglkjasjdfgklaslkdfjglkjaslkdfjglkajsdlkgjalskjdglkjasldkgjlkajsdglkjasldkjglajsdglkjalskdjglkajsdglkjaslgdrta"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/audioPlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="143dp"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/content_layout"
+            app:layout_constraintVertical_bias="0.0">
+
+            <Button
+                android:id="@+id/forward_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:onClick="forwardAction"
+                android:text="@string/forward"
+                android:textSize="18sp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/forward_button"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--:--"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp"
+                android:layout_above="@+id/seekBar"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/seekBar"
+                android:layout_alignEnd="@+id/backward_button"
+                android:layout_alignRight="@+id/backward_button"
+                android:text="--:--"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+
+            <Button
+                android:id="@+id/backward_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:onClick="backwardAction"
+                android:text="@string/rewind"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+            <Button
+                android:id="@+id/play_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/backward_button"
+                android:layout_toStartOf="@+id/backward_button"
+                android:onClick="playAction"
+                android:text="@string/back"
+                android:textSize="18sp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+            <Button
+                android:id="@+id/pause_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@+id/forward_button"
+                android:layout_toRightOf="@+id/forward_button"
+                android:onClick="pauseAction"
+                android:text="@string/pause"
+                android:textSize="18sp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+        </RelativeLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

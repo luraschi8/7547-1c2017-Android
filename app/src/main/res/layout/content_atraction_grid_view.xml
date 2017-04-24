@@ -32,9 +32,11 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/attraction_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="128dp"
+        android:layout_height="551dp"
         android:clipToPadding="false"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp" />
 
 </android.support.constraint.ConstraintLayout>

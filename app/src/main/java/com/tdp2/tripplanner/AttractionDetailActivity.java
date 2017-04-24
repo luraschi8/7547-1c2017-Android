@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,6 +46,7 @@ public class AttractionDetailActivity extends AppCompatActivity
     private Attraction attraction;
     private ProgressBar progress;
     private ImageButton refreshButton;
+    private Button puntosDeInteresButton;
     private LinearLayout contentView;
     private LinearLayout loadingView;
     private ImageGalleryAdapter adapter;
@@ -62,6 +64,7 @@ public class AttractionDetailActivity extends AppCompatActivity
         dao = new APIDAO();
         this.getAttraction(this.attraction.getId());
 
+        configPuntosDeInteresButton();
         configToolBar();
         setMainImage();
         configProgressBar();
@@ -70,6 +73,10 @@ public class AttractionDetailActivity extends AppCompatActivity
         configImageGallery();
 
 
+    }
+
+    private void configPuntosDeInteresButton() {
+        puntosDeInteresButton = (Button) findViewById(R.id.button_puntos_interes);
     }
 
     private void configImageGallery() {
@@ -112,9 +119,9 @@ public class AttractionDetailActivity extends AppCompatActivity
     }
 
     private void setMainImage() {
-        ImageView imageView = (ImageView) findViewById(R.id.attractionDetailImage);
+    ImageView imageView = (ImageView) findViewById(R.id.attractionDetailImage);
         imageView.setImageBitmap(this.attraction.getMainImage());
-    }
+}
 
     private void configToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -144,18 +151,24 @@ public class AttractionDetailActivity extends AppCompatActivity
         try {
             JSONObject data = response.getJSONObject("data");
             this.attraction.setHorario(data.getString("horario"));
+            //this.attraction.setId(2);
             this.attraction.setPrecio(data.getString("precio"));
+            Integer recorrible = data.getInt("recorrible");
+            Boolean brecorrible = recorrible == 1;
+            this.attraction.setEsRecorrible(brecorrible);
             JSONArray imagenes = data.getJSONArray("listaImagenes");
             for (int i = 1; i < imagenes.length(); i++) {
                 byte[] img = Base64.decode(imagenes.getString(i), Base64.DEFAULT);
                 this.attraction.addImage(BitmapFactory.decodeByteArray(img, 0, img.length));
             }
             String audio = data.getString(getResources().getString(R.string.audioXML));
+
             if (!audio.equals("null")){
 
                  this.attraction.setAudio(audio);
 
             }
+
         } catch (JSONException e) {
             Log.e("ERROR JSON", e.getMessage());
             return;
@@ -190,8 +203,15 @@ public class AttractionDetailActivity extends AppCompatActivity
         this.adapter.setList(this.attraction.getImages());
         this.contentView.setVisibility(View.VISIBLE);
         updatePlayAudioButton();
+        updatePuntosDeInteresButton();
 
 
+    }
+
+    private void updatePuntosDeInteresButton() {
+        if (!attraction.getEsRecorrible()) {
+            this.puntosDeInteresButton.setVisibility(View.GONE);
+        }
     }
 
     private void updatePlayAudioButton() {
@@ -205,6 +225,12 @@ public class AttractionDetailActivity extends AppCompatActivity
     public void playAudio(View view) {
         Intent intent = new Intent(getBaseContext(), AudioPlayerActivity.class);
         AudioPlayerActivity.attraction = this.attraction;
+        startActivity(intent);
+    }
+
+    public void verListaPuntosDeInteres(View view) {
+        Intent intent = new Intent(getBaseContext(), InterestingPointSelection.class);
+        intent.putExtra("attractionId", this.attraction.getId().toString());
         startActivity(intent);
     }
 }

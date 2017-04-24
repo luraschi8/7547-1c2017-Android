@@ -45,11 +45,24 @@
             android:orientation="vertical"
             android:id="@+id/content_layout">
 
+
             <TextView
                 android:id="@+id/attraction_more_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/button_puntos_interes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ver Puntos de Interes"
+                android:onClick="verListaPuntosDeInteres"
+                android:gravity="left|center_vertical"
+                android:textSize="18sp" />
+
+
+
 
             <TextView
                 android:id="@+id/gallery_title"

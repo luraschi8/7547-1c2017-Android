@@ -1,6 +1,7 @@
 package com.tdp2.tripplanner.modelo;
 
 import android.graphics.Bitmap;
+import android.text.BoringLayout;
 
 import java.util.ArrayList;
 
@@ -18,12 +19,12 @@ public class Attraction {
     private Integer id;
     private String horario;
     private String precio;
+    private boolean esRecorrible;
     private String audioLink;
 
 
     public Attraction(Integer id, String name, String moreInfo, Double latitude, Double longitude, Bitmap image) {
         this.id = id;
-
         this.name = name;
         this.moreInfo = moreInfo;
         this.latitude = latitude;
@@ -52,6 +53,8 @@ public class Attraction {
     public void setPrecio(String precio) {
         this.precio = precio;
     }
+
+    public void setEsRecorrible(Boolean esRecorrible) { this.esRecorrible = esRecorrible; }
 
     public String getName() {
         return name;
@@ -83,5 +86,13 @@ public class Attraction {
 
     public ArrayList<Bitmap> getImages() {
         return this.images;
+    }
+
+    public boolean getEsRecorrible() {
+        return esRecorrible;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
