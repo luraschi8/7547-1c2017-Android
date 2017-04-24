@@ -215,7 +215,23 @@ public class CitySelectionActivity extends AppCompatActivity
         if (locationUpdates > 1) return; //only one location is required.
         Integer pos = this.adapter.selectByLocation(location);
         final City detectada = this.adapter.getCityAtPosition(pos);
-        //TODO validate distance to detected city
+        float[] results = {0.0f};
+        Location.distanceBetween(location.getLatitude(), location.getLongitude(),
+                detectada.getLatitude(), detectada.getLongitude(), results);
+        if (results[0] > getResources().getInteger(R.integer.max_distance_meters)) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle(R.string.no_city_detected);
+            alert.setMessage(R.string.no_cities_msg);
+            alert.setCancelable(false);
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+            alert.show();
+            locationButton.setClickable(true);
+            return;
+        }
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(R.string.city_detected);
         alert.setMessage(getResources().getString(R.string.detection_text) + detectada.getName() + "\n" +
