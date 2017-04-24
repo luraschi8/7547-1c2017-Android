@@ -44,10 +44,7 @@ public class InterestingPointSelection extends AppCompatActivity implements Resp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interesting_point_selection);
-        // getIntent() is a method from the started activity
-        Intent myIntent = getIntent(); // gets the previously created intent
         attractionId = AttractionDataHolder.getData().getId();
-                // Integer.valueOf(myIntent.getStringExtra("attractionId")); // will return "FirstKeyValue"
 
         dao = new APIDAO();
         refreshInterestingPoints();

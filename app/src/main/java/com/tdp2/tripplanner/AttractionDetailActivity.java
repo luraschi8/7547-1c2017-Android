@@ -244,7 +244,6 @@ public class AttractionDetailActivity extends AppCompatActivity
 
     public void verListaPuntosDeInteres(View view) {
         Intent intent = new Intent(getBaseContext(), InterestingPointSelection.class);
-        intent.putExtra("attractionId", this.attraction.getId().toString());
         startActivity(intent);
     }
 }
