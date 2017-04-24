@@ -1,9 +1,21 @@
 package com.tdp2.tripplanner;
 
 
+
 import android.graphics.Bitmap;
+
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,7 +32,10 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
+import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.LocationRequester;
+import com.tdp2.tripplanner.helpers.LocationService;
 import com.tdp2.tripplanner.modelo.City;
 import com.tdp2.tripplanner.modelo.InterestingPoint;
 
@@ -31,22 +46,26 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tdp2.tripplanner.helpers.LocationService.MY_PERMISSIONS_REQUEST_FINE_LOCATION;
+
 public class CitySelectionActivity extends AppCompatActivity
-        implements Response.Listener<JSONObject>, Response.ErrorListener{
+        implements Response.Listener<JSONObject>, Response.ErrorListener, LocationRequester{
 
     private CityAdapter adapter;
+    private RecyclerView recycler;
     private ProgressBar progress;
     private ImageButton refreshButton;
     private APIDAO dao;
+    private Boolean locationPermission;
+    private LocationService locationService;
+    private Integer locationUpdates = 0;
+    FloatingActionButton locationButton;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_selection);
-
-        //Inicio el contador de updates de ubicacion
-        //this.locationsReceived = 0;
 
         dao = new APIDAO();
         this.refreshCities();
@@ -63,7 +82,7 @@ public class CitySelectionActivity extends AppCompatActivity
 
 
         // Obtener el Recycler
-        RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler);
+        recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
 
         // Usar un administrador para LinearLayout
@@ -104,6 +123,18 @@ public class CitySelectionActivity extends AppCompatActivity
                 progress.setVisibility(View.VISIBLE);
             }
         });
+
+        locationButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                locationUpdates = 0;
+                initLocationServices();
+            }
+        });
+        locationButton.setClickable(false);
+
+        this.locationPermission = false;
     }
 
     public void refreshCities() {
@@ -141,7 +172,82 @@ public class CitySelectionActivity extends AppCompatActivity
             return;
         }
         progress.setVisibility(View.GONE);
-        this.adapter.setList(lista);
-        this.adapter.notifyDataSetChanged();
+        this.adapter = new CityAdapter(lista, this);
+        this.recycler.setAdapter(this.adapter);
+        locationButton.setClickable(true);
+    }
+
+
+    public void checkForLocationPermission() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+        }
+        else this.locationPermission = true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.initLocationServices();
+
+                } else {
+                    Toast.makeText(this, R.string.location_service_required,
+                            Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    @Override
+    public void updateLocation(Location location) {
+        locationUpdates++;
+        if (locationUpdates > 1) return; //only one location is required.
+        Integer pos = this.adapter.selectByLocation(location);
+        final City detectada = this.adapter.getCityAtPosition(pos);
+        //TODO validate distance to detected city
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(R.string.city_detected);
+        alert.setMessage(getResources().getString(R.string.detection_text) + detectada.getName() + "\n" +
+                getResources().getString(R.string.see_attractions));
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                Intent intent = new Intent(CitySelectionActivity.this, AtractionGridViewActivity.class);
+                CityDataHolder.setData(detectada);
+                CitySelectionActivity.this.startActivity(intent);
+            }
+        });
+
+        alert.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+        alert.show();
+        locationButton.setClickable(true);
+    }
+
+    private void initLocationServices() {
+        this.locationButton.setClickable(false);
+        this.checkForLocationPermission();
+        if (!this.locationPermission) {
+            Toast.makeText(this, R.string.location_service_required, Toast.LENGTH_SHORT).show();
+            this.locationButton.setClickable(true);
+            return;
+        }
+        this.locationService = new LocationService(this, this);
+        if (!locationService.isAvailable())
+            Toast.makeText(this, R.string.no_location_service, Toast.LENGTH_SHORT).show();
     }
 }

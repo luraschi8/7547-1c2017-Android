@@ -1,13 +1,9 @@
 package com.tdp2.tripplanner;
 
-
-import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,51 +19,41 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.android.gms.common.data.DataHolder;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionAdapter;
-import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
+import com.tdp2.tripplanner.attractionSelectionActivityExtras.MapHandler;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.Attraction;
-import com.tdp2.tripplanner.modelo.City;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
 
-public class AtractionGridViewActivity extends AppCompatActivity implements OnMapReadyCallback,
-        Response.Listener<JSONObject>, Response.ErrorListener, GoogleMap.OnInfoWindowClickListener{
+import static com.tdp2.tripplanner.helpers.LocationService.MY_PERMISSIONS_REQUEST_FINE_LOCATION;
 
+
+public class AtractionGridViewActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
+        Response.ErrorListener {
+
+    private MapHandler mMapHandler;
     private AttractionAdapter adapter;
-    private List<Attraction> attractionList;
+    private ArrayList<Attraction> attractionList;
     private View gridView, mapView;
     private Boolean viewingMap;
     private Boolean lazyMap;
-    private Hashtable<String, Attraction> markers;
     private APIDAO dao;
     private ProgressBar progress;
     private ImageButton refreshButton;
     private Integer cityId;
-    private Marker marker;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +72,12 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
         toolbar.setTitle(this.getString(R.string.atraction_grid) + " " + cityName);
         setSupportActionBar(toolbar);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
 
 
         dao = new APIDAO();
         this.refreshAttractions(cityId);
         attractionList = new ArrayList<>();
-        markers = new Hashtable<>();
         //TODO Change to json from API
         //prepareAttractions();
         adapter = new AttractionAdapter(this, attractionList);
@@ -108,7 +93,6 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
 
         //Obtengo el refreshButton
         refreshButton = (ImageButton) findViewById(R.id.refreshButtonAttractions);
-        refreshButton.setVisibility(View.GONE);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,9 +101,10 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
                 progress.setVisibility(View.VISIBLE);
             }
         });
+        refreshButton.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
 
-
-
+        this.mMapHandler = new MapHandler(this);
     }
 
     @Override
@@ -197,25 +182,7 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
         setSupportActionBar(toolbar);
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.attraction_map);
-        mapFragment.getMapAsync(this);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
-        googleMap.setOnInfoWindowClickListener(this);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.getUiSettings().setMapToolbarEnabled(false);
-        Double sumLat = 0D, sumLong =0D;
-        for (Attraction attraction : attractionList){
-            sumLat = sumLat + attraction.getLatitude();
-            sumLong = sumLong + attraction.getLongitude();
-            LatLng currentLat = new LatLng(attraction.getLatitude(), attraction.getLongitude());
-            final Marker currentMarker =  googleMap.addMarker(new MarkerOptions().position(currentLat).title(attraction.getName()));
-            markers.put(currentMarker.getId(), attraction);
-        }
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(sumLat / attractionList.size(), sumLong / attractionList.size()), 12.0f));
+        mapFragment.getMapAsync(this.mMapHandler);
     }
 
 
@@ -223,48 +190,6 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
         this.dao.getAttractionForCity(this.getApplicationContext(), this, this, cityId);
     }
 
-
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        final Attraction markedAttraction = markers.get(marker.getId());
-        Intent intent = new Intent(AtractionGridViewActivity.this, AttractionDetailActivity.class);
-        AttractionDataHolder.setData(markedAttraction);
-        AtractionGridViewActivity.this.startActivity(intent);
-    }
-
-    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
-
-        private View view;
-
-        public CustomInfoWindowAdapter() {
-            view = getLayoutInflater().inflate(R.layout.map_info_window, null);
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-
-            AtractionGridViewActivity.this.marker = marker;
-
-            final Attraction markedAttraction = markers.get(marker.getId());
-
-            view = getLayoutInflater().inflate(R.layout.map_info_window, null);
-
-            //Get map badge
-            ImageView img = (ImageView) view.findViewById(R.id.map_badge);
-            img.setImageBitmap(markedAttraction.getMainImage());
-
-            //Get view title
-            TextView title = (TextView) view.findViewById(R.id.map_title);
-            title.setText(String.format("%s >", markedAttraction.getName()));
-
-            return view;
-        }
-
-        @Override
-        public View getInfoWindow(final Marker marker) {
-            return null;
-        }
-    }
 
     @Override
     public void onErrorResponse(VolleyError error) {
@@ -297,9 +222,32 @@ public class AtractionGridViewActivity extends AppCompatActivity implements OnMa
             return;
         }
         progress.setVisibility(View.GONE);
-        this.adapter.setList(lista);
+        this.adapter = new AttractionAdapter(this, lista);
+        this.recyclerView.setAdapter(this.adapter);
         this.attractionList = lista;
-        this.adapter.notifyDataSetChanged();
+        this.mMapHandler.setList(lista);
+        recyclerView.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    this.mMapHandler.setLocationPermission(true);
+                } else {
+                    Toast.makeText(this, R.string.location_service_required,
+                            Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
 }
 
