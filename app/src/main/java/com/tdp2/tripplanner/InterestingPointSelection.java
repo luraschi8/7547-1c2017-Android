@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.AudioActivityExtras.InterestingPointAdapter;
+import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.InterestingPoint;
 
@@ -45,7 +46,8 @@ public class InterestingPointSelection extends AppCompatActivity implements Resp
         setContentView(R.layout.activity_interesting_point_selection);
         // getIntent() is a method from the started activity
         Intent myIntent = getIntent(); // gets the previously created intent
-        attractionId = Integer.valueOf(myIntent.getStringExtra("attractionId")); // will return "FirstKeyValue"
+        attractionId = AttractionDataHolder.getData().getId();
+                // Integer.valueOf(myIntent.getStringExtra("attractionId")); // will return "FirstKeyValue"
 
         dao = new APIDAO();
         refreshInterestingPoints();
