@@ -76,12 +76,6 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="horizontal" />
 
-            <View
-                android:layout_width="300dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center"
-                android:layout_margin="10sp"
-                android:background="@android:color/darker_gray" />
 
             <TextView
                 android:layout_width="match_parent"
