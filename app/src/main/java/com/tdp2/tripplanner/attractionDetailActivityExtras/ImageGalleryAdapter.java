@@ -20,10 +20,10 @@ import java.util.ArrayList;
 
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder> {
 
-    private ArrayList<Bitmap> imageList;
+    private ArrayList<GalleryContent> imageList;
     private Context mContext;
 
-    public ImageGalleryAdapter(ArrayList<Bitmap> images, Context context) {
+    public ImageGalleryAdapter(ArrayList<GalleryContent> images, Context context) {
         this.imageList = images;
         this.mContext = context;
     }
@@ -38,7 +38,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
 
     @Override
     public void onBindViewHolder(final ImageGalleryAdapter.ImageViewHolder holder, final int position) {
-        Bitmap image = imageList.get(position);
+        Bitmap image = imageList.get(position).getImage();
         holder.thumbnail.setImageBitmap(image);
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +51,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     }
 
     // set adapter filtered list
-    public void setList(ArrayList<Bitmap> list) {
+    public void setList(ArrayList<GalleryContent> list) {
         this.imageList = list;
         this.notifyDataSetChanged();
     }

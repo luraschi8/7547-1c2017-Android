@@ -1,6 +1,7 @@
 package com.tdp2.tripplanner;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.GalleryContent;
 import com.tdp2.tripplanner.attractionDetailActivityExtras.ImageGalleryAdapter;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
@@ -37,6 +39,8 @@ import com.tdp2.tripplanner.modelo.Attraction;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import static android.view.View.GONE;
 
@@ -52,6 +56,7 @@ public class AttractionDetailActivity extends AppCompatActivity
     private LinearLayout loadingView;
     private ImageGalleryAdapter adapter;
     FloatingActionButton playButton;
+    private ArrayList<GalleryContent> galleryContents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +102,8 @@ public class AttractionDetailActivity extends AppCompatActivity
         TextView galleryTitle = (TextView) findViewById(R.id.gallery_title);
         galleryTitle.setText(getResources().getText(R.string.gallery_title));
 
-        adapter = new ImageGalleryAdapter(this.attraction.getImages(), this);
+        getGalleryContents();
+        adapter = new ImageGalleryAdapter(this.galleryContents, this);
         RecyclerView galleryRecycler = (RecyclerView) findViewById(R.id.gallery_recycler);
         galleryRecycler.setLayoutManager(new GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false));
         galleryRecycler.setAdapter(adapter);
@@ -144,6 +150,18 @@ public class AttractionDetailActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+
+    private void getGalleryContents() {
+        this.galleryContents = new ArrayList<>();
+        for (Bitmap img : this.attraction.getImages()) {
+            this.galleryContents.add(new GalleryContent(img));
+        }
+        if (this.attraction.getVideoLink() != null) {
+            this.galleryContents.add(new GalleryContent(
+                    BitmapFactory.decodeResource(getResources(), R.drawable.play)
+            ));
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -212,8 +230,8 @@ public class AttractionDetailActivity extends AppCompatActivity
         commentsView.setText("Aca van todos los comentarios previos.");
 
 
-
-        this.adapter.setList(this.attraction.getImages());
+        getGalleryContents();
+        this.adapter.setList(this.galleryContents);
         this.contentView.setVisibility(View.VISIBLE);
         updatePlayAudioButton();
         updatePuntosDeInteresButton();
