@@ -175,13 +175,12 @@ public class AttractionDetailActivity extends AppCompatActivity
                 byte[] img = Base64.decode(imagenes.getString(i), Base64.DEFAULT);
                 this.attraction.addImage(BitmapFactory.decodeByteArray(img, 0, img.length));
             }
+
             String audio = data.getString(getResources().getString(R.string.audioXML));
+            if (!audio.equals("null")) this.attraction.setAudio(audio);
 
-            if (!audio.equals("null")){
-
-                 this.attraction.setAudio(audio);
-
-            }
+            String video = data.getString(getString(R.string.videoXML));
+            if(!video.equals("null")) this.attraction.setVideoLink(video);
 
         } catch (JSONException e) {
             Log.e("ERROR JSON", e.getMessage());
@@ -218,7 +217,6 @@ public class AttractionDetailActivity extends AppCompatActivity
         this.contentView.setVisibility(View.VISIBLE);
         updatePlayAudioButton();
         updatePuntosDeInteresButton();
-
 
     }
 
