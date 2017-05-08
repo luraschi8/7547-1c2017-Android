@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.tdp2.tripplanner.FullscreenImageViewActivity;
 import com.tdp2.tripplanner.R;
+import com.tdp2.tripplanner.VideoPlayerActivity;
 
 import java.util.ArrayList;
 
@@ -38,16 +39,28 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
 
     @Override
     public void onBindViewHolder(final ImageGalleryAdapter.ImageViewHolder holder, final int position) {
-        Bitmap image = imageList.get(position).getImage();
+        final Bitmap image = imageList.get(position).getImage();
+        String type = imageList.get(position).getType();
         holder.thumbnail.setImageBitmap(image);
-        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, FullscreenImageViewActivity.class);
-                intent.putExtra("POSITION", position);
-                mContext.startActivity(intent);
-            }
-        });
+        if (type.equals("img")) {
+            holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, FullscreenImageViewActivity.class);
+                    intent.putExtra("POSITION", position);
+                    mContext.startActivity(intent);
+                }
+            });
+        } else if (type.equals("vid")) {
+            holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, VideoPlayerActivity.class);
+                    intent.putExtra("URL", imageList.get(position).getUrl());
+                    mContext.startActivity(intent);
+                }
+            });
+        }
     }
 
     // set adapter filtered list

@@ -69,19 +69,29 @@
             android:name=".InterestingPointSelection"
             android:label="@string/title_activity_interesting_point_selection"
             android:parentActivityName=".AttractionDetailActivity"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
             <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.tdp2.tripplanner.AttractionDetailActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.AttractionDetailActivity" />
         </activity>
         <activity
             android:name=".InterestingPointDetailActivity"
             android:label="@string/interesting_point_detal_activity"
             android:parentActivityName=".InterestingPointSelection"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tdp2.tripplanner.InterestingPointSelection" />
+        </activity>
+        <activity
+            android:name=".VideoPlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_video_player"
+            android:parentActivityName=".AttractionDetailActivity"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.AttractionDetailActivity" />
         </activity>
     </application>
 

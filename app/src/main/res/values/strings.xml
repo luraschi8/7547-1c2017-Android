@@ -45,4 +45,8 @@
     <string name="no_cities_msg">Sorry, there are no cities near your location.</string>
     <string name="videoXML">video</string>
 
+    <string name="title_activity_video_player">VideoPlayerActivity</string>
+    <string name="video_dialog">Attraction Video</string>
+    <string name="buffering">Buffering...</string>
+
 </resources>

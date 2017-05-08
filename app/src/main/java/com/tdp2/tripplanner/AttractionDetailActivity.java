@@ -154,12 +154,13 @@ public class AttractionDetailActivity extends AppCompatActivity
     private void getGalleryContents() {
         this.galleryContents = new ArrayList<>();
         for (Bitmap img : this.attraction.getImages()) {
-            this.galleryContents.add(new GalleryContent(img));
+            this.galleryContents.add(new GalleryContent(img, "img"));
         }
         if (this.attraction.getVideoLink() != null) {
-            this.galleryContents.add(new GalleryContent(
-                    BitmapFactory.decodeResource(getResources(), R.drawable.play)
-            ));
+            GalleryContent contenido = new GalleryContent(
+                    BitmapFactory.decodeResource(getResources(), R.drawable.play), "vid");
+            contenido.setUrl(this.attraction.getVideoLink());
+            this.galleryContents.add(contenido);
         }
     }
 
