@@ -52,6 +52,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
                 }
             });
         } else if (type.equals("vid")) {
+            holder.play.setVisibility(View.VISIBLE);
             holder.thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -77,10 +78,12 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
 
     public class ImageViewHolder extends RecyclerView.ViewHolder {
         private ImageView thumbnail;
+        private ImageView play;
 
         public ImageViewHolder(View view) {
             super(view);
             thumbnail = (ImageView) view.findViewById(R.id.image_gallery);
+            play = (ImageView) view.findViewById(R.id.play_overlay);
         }
     }
 }

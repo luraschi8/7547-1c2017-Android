@@ -3,6 +3,7 @@ package com.tdp2.tripplanner;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.view.View.GONE;
 
@@ -157,11 +159,36 @@ public class AttractionDetailActivity extends AppCompatActivity
             this.galleryContents.add(new GalleryContent(img, "img"));
         }
         if (this.attraction.getVideoLink() != null) {
-            GalleryContent contenido = new GalleryContent(
-                    BitmapFactory.decodeResource(getResources(), R.drawable.play), "vid");
-            contenido.setUrl(this.attraction.getVideoLink());
+            String url = this.attraction.getVideoLink();
+            GalleryContent contenido = new GalleryContent(this.attraction.getVideoThumb(), "vid");
+            contenido.setUrl(url);
             this.galleryContents.add(contenido);
         }
+    }
+
+    public static Bitmap retriveVideoFrameFromVideo(String videoPath)
+    {
+        Bitmap bitmap = null;
+        MediaMetadataRetriever mediaMetadataRetriever = null;
+        try
+        {
+            mediaMetadataRetriever = new MediaMetadataRetriever();
+            if (Build.VERSION.SDK_INT >= 14)
+                mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
+            else
+                mediaMetadataRetriever.setDataSource(videoPath);
+            //   mediaMetadataRetriever.setDataSource(videoPath);
+            bitmap = mediaMetadataRetriever.getFrameAtTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.getMessage());
+
+        } finally {
+            if (mediaMetadataRetriever != null) {
+                mediaMetadataRetriever.release();
+            }
+        }
+        return bitmap;
     }
 
     @Override
@@ -199,7 +226,11 @@ public class AttractionDetailActivity extends AppCompatActivity
             if (!audio.equals("null")) this.attraction.setAudio(audio);
 
             String video = data.getString(getString(R.string.videoXML));
-            if(!video.equals("null")) this.attraction.setVideoLink(video);
+            if(!video.equals("null")){
+                //video = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
+                this.attraction.setVideoLink(video);
+                this.attraction.setVideoThumb(retriveVideoFrameFromVideo(video));
+            }
 
         } catch (JSONException e) {
             Log.e("ERROR JSON", e.getMessage());
