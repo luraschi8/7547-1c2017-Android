@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.tdp2.tripplanner.AttractionDetailActivity"
-    tools:showIn="@layout/activity_attraction_detail">
+    tools:showIn="@layout/activity_attraction_detail"
+    android:id="@+id/nested_scroll">
 
     <LinearLayout
         android:id="@+id/container"
@@ -83,9 +84,6 @@
                 android:text="@string/comment"
                 android:textSize="16sp"/>
 
-            <LinearLayout android:focusable="true"
-                android:focusableInTouchMode="true" android:layout_width="0px"
-                android:layout_height="0px" />
 
             <EditText
                 android:id="@+id/comment_edit_text"
@@ -108,12 +106,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/share_button" />
 
-            <TextView
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/comments_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/comments"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
+
 
     </LinearLayout>
 

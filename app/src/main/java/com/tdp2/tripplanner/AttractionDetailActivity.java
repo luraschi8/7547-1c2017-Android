@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,11 +32,15 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.CommentsAdapter;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.CommentsDownloader;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.EndlessNestedScrollListener;
 import com.tdp2.tripplanner.attractionDetailActivityExtras.GalleryContent;
 import com.tdp2.tripplanner.attractionDetailActivityExtras.ImageGalleryAdapter;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.Attraction;
+import com.tdp2.tripplanner.modelo.Comment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,6 +64,8 @@ public class AttractionDetailActivity extends AppCompatActivity
     private ImageGalleryAdapter adapter;
     FloatingActionButton playButton;
     private ArrayList<GalleryContent> galleryContents;
+    private CommentsDownloader commentsDownloader;
+    private CommentsAdapter commentsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +79,11 @@ public class AttractionDetailActivity extends AppCompatActivity
         dao = new APIDAO();
         this.getAttraction(this.attraction.getId());
 
+        this.commentsDownloader = new CommentsDownloader(this);
+
+        NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.nested_scroll);
+        scrollView.setOnScrollChangeListener(new EndlessNestedScrollListener(this.commentsDownloader));
+
         configPuntosDeInteresButton();
         configToolBar();
         setMainImage();
@@ -80,6 +92,15 @@ public class AttractionDetailActivity extends AppCompatActivity
         configPlayAudioButton();
         configImageGallery();
         configDirectionsButton();
+        configCommentsSection();
+    }
+
+    private void configCommentsSection() {
+        RecyclerView commentsRecyclerView = (RecyclerView) findViewById(R.id.comments_list);
+        this.commentsAdapter = new CommentsAdapter();
+        commentsRecyclerView.setAdapter(this.commentsAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        commentsRecyclerView.setLayoutManager(linearLayoutManager);
     }
 
     private void configDirectionsButton() {
@@ -258,16 +279,17 @@ public class AttractionDetailActivity extends AppCompatActivity
         EditText commentField = (EditText) findViewById(R.id.comment_edit_text);
         commentField.setSelected(false);
 
-        TextView commentsView = (TextView) findViewById(R.id.comments);
-        commentsView.setText("Aca van todos los comentarios previos.");
-
 
         getGalleryContents();
         this.adapter.setList(this.galleryContents);
         this.contentView.setVisibility(View.VISIBLE);
         updatePlayAudioButton();
         updatePuntosDeInteresButton();
+        updateComments();
+    }
 
+    private void updateComments() {
+        this.commentsDownloader.getNextPage();
     }
 
     private void updatePuntosDeInteresButton() {
@@ -293,5 +315,9 @@ public class AttractionDetailActivity extends AppCompatActivity
     public void verListaPuntosDeInteres(View view) {
         Intent intent = new Intent(getBaseContext(), InterestingPointSelection.class);
         startActivity(intent);
+    }
+
+    public void appendComments(ArrayList<Comment> newComments) {
+        this.commentsAdapter.setList(newComments);
     }
 }

@@ -25,7 +25,16 @@ public class APIDAO {
     private static String ATRACCION = "atraccion/";
     private static String PUNTO_DE_INTERES = "punto";
     private static String BASE_URL = "http://secure-dawn-22758.herokuapp.com/";
+    private static String RESENIAS = "reseniasPaginadasAtraccionJson/";
 
+
+    public void getComments(Context appContext, Response.Listener<JSONObject> callback, Response.ErrorListener errorCallback,
+                            Integer attractionID,Integer pageNumber) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, BASE_URL + RESENIAS + String.valueOf(attractionID) +
+        "/" + String.valueOf(pageNumber), null , callback, errorCallback);
+
+        APIAccessor.getInstance(appContext).addToRequestQueue(request);
+    }
 
     public void getCities(Context appContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback) {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
