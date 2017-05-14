@@ -48,5 +48,7 @@
     <string name="title_activity_video_player">VideoPlayerActivity</string>
     <string name="video_dialog">Attraction Video</string>
     <string name="buffering">Buffering...</string>
+    <string name="missing_comment">You forgot to write your comment.</string>
+    <string name="thank_you">Thank you for yor comment.</string>
 
 </resources>

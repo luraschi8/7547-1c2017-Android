@@ -1,7 +1,9 @@
 package com.tdp2.tripplanner.dao;
 
+import android.app.DownloadManager;
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -9,8 +11,11 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.tdp2.tripplanner.InterestingPointDetailActivity;
 import com.tdp2.tripplanner.InterestingPointSelection;
+import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.helpers.APIAccessor;
+import com.tdp2.tripplanner.modelo.Comment;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -26,6 +31,7 @@ public class APIDAO {
     private static String PUNTO_DE_INTERES = "punto";
     private static String BASE_URL = "http://secure-dawn-22758.herokuapp.com/";
     private static String RESENIAS = "reseniasPaginadasAtraccionJson/";
+    private static String CREAR_RESENIA = "crearResenia";
 
 
     public void getComments(Context appContext, Response.Listener<JSONObject> callback, Response.ErrorListener errorCallback,
@@ -76,5 +82,29 @@ public class APIDAO {
 
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(applicationContext).addToRequestQueue(jsObjRequest);
+    }
+
+    public void postComment(Context applicationContext, Response.Listener<JSONObject> responseCallback,
+                            Response.ErrorListener errorListener, Comment comment) {
+        JSONObject toPost = this.buildJSonFromComment(comment);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + CREAR_RESENIA, toPost,
+                responseCallback, errorListener);
+        APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
+    }
+
+    private JSONObject buildJSonFromComment(Comment comment){
+        JSONObject json = new JSONObject();
+        JSONObject jsonAtraccion = new JSONObject();
+        try {
+            json.put("comentario", comment.getComment());
+            json.put("nombreUsuario", "AndroidAPP"); //TODO cambiar por el username de la red social.
+            json.put("calificacion", comment.getRating());
+            jsonAtraccion.put("id", AttractionDataHolder.getData().getId());
+            json.put("atraccion", jsonAtraccion);
+        } catch (JSONException e) {
+            Log.e("JSON ERROR", "buildJSonFromComment: " + e.toString());
+            return null;
+        }
+        return json;
     }
 }

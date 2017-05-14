@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import com.tdp2.tripplanner.attractionDetailActivityExtras.CommentsDownloader;
 import com.tdp2.tripplanner.attractionDetailActivityExtras.EndlessNestedScrollListener;
 import com.tdp2.tripplanner.attractionDetailActivityExtras.GalleryContent;
 import com.tdp2.tripplanner.attractionDetailActivityExtras.ImageGalleryAdapter;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.ShareCommentController;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.Attraction;
@@ -93,6 +95,14 @@ public class AttractionDetailActivity extends AppCompatActivity
         configImageGallery();
         configDirectionsButton();
         configCommentsSection();
+        configMyCommentSection();
+    }
+
+    private void configMyCommentSection() {
+        Button shareButton = (Button) findViewById(R.id.share_button);
+        final RatingBar myRating = (RatingBar) findViewById(R.id.myrating_bar);
+        final EditText myComment = (EditText) findViewById(R.id.comment_edit_text);
+        shareButton.setOnClickListener(new ShareCommentController(this.getBaseContext(), myComment, myRating, this.dao));
     }
 
     private void configCommentsSection() {
