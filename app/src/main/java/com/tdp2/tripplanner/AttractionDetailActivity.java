@@ -106,7 +106,7 @@ public class AttractionDetailActivity extends AppCompatActivity
         Button shareButton = (Button) findViewById(R.id.share_button);
         final RatingBar myRating = (RatingBar) findViewById(R.id.myrating_bar);
         final EditText myComment = (EditText) findViewById(R.id.comment_edit_text);
-        shareButton.setOnClickListener(new ShareCommentController(this.getBaseContext(), myComment, myRating, this.dao));
+        shareButton.setOnClickListener(new ShareCommentController(this.getApplicationContext(), myComment, myRating, this.dao));
     }
 
     private void configCommentsSection() {

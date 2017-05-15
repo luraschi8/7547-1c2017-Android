@@ -111,7 +111,7 @@ public class APIDAO {
         JSONObject jsonAtraccion = new JSONObject();
         try {
             json.put("comentario", comment.getComment());
-            json.put("nombreUsuario", "AndroidAPP"); //TODO cambiar por el username de la red social.
+            json.put("nombreUsuario", comment.getUsername()); //TODO cambiar por el username de la red social.
             json.put("calificacion", comment.getRating());
             jsonAtraccion.put("id", AttractionDataHolder.getData().getId());
             json.put("atraccion", jsonAtraccion);

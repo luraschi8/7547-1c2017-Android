@@ -14,6 +14,7 @@ import com.tdp2.tripplanner.AttractionDetailActivity;
 import com.tdp2.tripplanner.R;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.modelo.Comment;
+import com.tdp2.tripplanner.modelo.UserInstance;
 
 import org.json.JSONObject;
 
@@ -37,11 +38,16 @@ public class ShareCommentController implements View.OnClickListener, Response.Li
 
     @Override
     public void onClick(View view) {
+        if (UserInstance.getInstance(this.context) == null ){
+            Toast.makeText(this.context, "You have to be logged in to continue.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (myComment.getText().equals("")) {
             Toast.makeText(context, R.string.missing_comment, Toast.LENGTH_SHORT).show();
             return;
         }
-        Comment comentario = new Comment(myComment.getText().toString(), "USERNAME", "", myRating.getRating());
+        String username = UserInstance.getInstance(this.context).getName();
+        Comment comentario = new Comment(myComment.getText().toString(), username, "", myRating.getRating());
         dao.postComment(context, this, this, comentario);
     }
 
