@@ -27,4 +27,12 @@
     <string name="see_attractions">Do you want to see the attractions available?</string>
     <string name="no_city_detected">No city detected</string>
     <string name="no_cities_msg">Sorry, there are no cities near your location.</string>
+    <string name="video_dialog">Attraction Video</string>
+    <string name="buffering">Buffering...</string>
+    <string name="missing_comment">You forgot to write your comment.</string>
+    <string name="thank_you">Thank you for yor comment.</string>
+    <string name="action_settings">Settings</string>
+    <string name="select_interesting_point"></string>
+    <string name="Accounts">Accounts</string>
+    <string name="Languaje">Languaje</string>
 </resources>

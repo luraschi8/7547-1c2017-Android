@@ -1,12 +1,15 @@
 package com.tdp2.tripplanner;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,19 +27,30 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.CommentsAdapter;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.CommentsDownloader;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.EndlessNestedScrollListener;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.GalleryContent;
 import com.tdp2.tripplanner.attractionDetailActivityExtras.ImageGalleryAdapter;
+import com.tdp2.tripplanner.attractionDetailActivityExtras.ShareCommentController;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.modelo.Attraction;
+import com.tdp2.tripplanner.modelo.Comment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.view.View.GONE;
 
@@ -52,6 +66,9 @@ public class AttractionDetailActivity extends AppCompatActivity
     private LinearLayout loadingView;
     private ImageGalleryAdapter adapter;
     FloatingActionButton playButton;
+    private ArrayList<GalleryContent> galleryContents;
+    private CommentsDownloader commentsDownloader;
+    private CommentsAdapter commentsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +78,17 @@ public class AttractionDetailActivity extends AppCompatActivity
         loadingView = (LinearLayout) findViewById(R.id.loading_layout);
         contentView.setVisibility(GONE);
 
+
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
+
         this.attraction = AttractionDataHolder.getData();
         dao = new APIDAO();
         this.getAttraction(this.attraction.getId());
+
+        this.commentsDownloader = new CommentsDownloader(this);
+
+        NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.nested_scroll);
+        scrollView.setOnScrollChangeListener(new EndlessNestedScrollListener(this.commentsDownloader));
 
         configPuntosDeInteresButton();
         configToolBar();
@@ -73,6 +98,23 @@ public class AttractionDetailActivity extends AppCompatActivity
         configPlayAudioButton();
         configImageGallery();
         configDirectionsButton();
+        configCommentsSection();
+        configMyCommentSection();
+    }
+
+    private void configMyCommentSection() {
+        Button shareButton = (Button) findViewById(R.id.share_button);
+        final RatingBar myRating = (RatingBar) findViewById(R.id.myrating_bar);
+        final EditText myComment = (EditText) findViewById(R.id.comment_edit_text);
+        shareButton.setOnClickListener(new ShareCommentController(this.getBaseContext(), myComment, myRating, this.dao));
+    }
+
+    private void configCommentsSection() {
+        RecyclerView commentsRecyclerView = (RecyclerView) findViewById(R.id.comments_list);
+        this.commentsAdapter = new CommentsAdapter();
+        commentsRecyclerView.setAdapter(this.commentsAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        commentsRecyclerView.setLayoutManager(linearLayoutManager);
     }
 
     private void configDirectionsButton() {
@@ -97,7 +139,8 @@ public class AttractionDetailActivity extends AppCompatActivity
         TextView galleryTitle = (TextView) findViewById(R.id.gallery_title);
         galleryTitle.setText(getResources().getText(R.string.gallery_title));
 
-        adapter = new ImageGalleryAdapter(this.attraction.getImages(), this);
+        getGalleryContents();
+        adapter = new ImageGalleryAdapter(this.galleryContents, this);
         RecyclerView galleryRecycler = (RecyclerView) findViewById(R.id.gallery_recycler);
         galleryRecycler.setLayoutManager(new GridLayoutManager(this, 1, LinearLayoutManager.HORIZONTAL, false));
         galleryRecycler.setAdapter(adapter);
@@ -145,6 +188,44 @@ public class AttractionDetailActivity extends AppCompatActivity
     }
 
 
+    private void getGalleryContents() {
+        this.galleryContents = new ArrayList<>();
+        for (Bitmap img : this.attraction.getImages()) {
+            this.galleryContents.add(new GalleryContent(img, "img"));
+        }
+        if (this.attraction.getVideoLink() != null) {
+            String url = this.attraction.getVideoLink();
+            GalleryContent contenido = new GalleryContent(this.attraction.getVideoThumb(), "vid");
+            contenido.setUrl(url);
+            this.galleryContents.add(contenido);
+        }
+    }
+
+    public static Bitmap retriveVideoFrameFromVideo(String videoPath)
+    {
+        Bitmap bitmap = null;
+        MediaMetadataRetriever mediaMetadataRetriever = null;
+        try
+        {
+            mediaMetadataRetriever = new MediaMetadataRetriever();
+            if (Build.VERSION.SDK_INT >= 14)
+                mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
+            else
+                mediaMetadataRetriever.setDataSource(videoPath);
+            //   mediaMetadataRetriever.setDataSource(videoPath);
+            bitmap = mediaMetadataRetriever.getFrameAtTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.getMessage());
+
+        } finally {
+            if (mediaMetadataRetriever != null) {
+                mediaMetadataRetriever.release();
+            }
+        }
+        return bitmap;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -175,12 +256,15 @@ public class AttractionDetailActivity extends AppCompatActivity
                 byte[] img = Base64.decode(imagenes.getString(i), Base64.DEFAULT);
                 this.attraction.addImage(BitmapFactory.decodeByteArray(img, 0, img.length));
             }
+
             String audio = data.getString(getResources().getString(R.string.audioXML));
+            if (!audio.equals("null")) this.attraction.setAudio(audio);
 
-            if (!audio.equals("null")){
-
-                 this.attraction.setAudio(audio);
-
+            String video = data.getString(getString(R.string.videoXML));
+            if(!video.equals("null")){
+                //video = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
+                this.attraction.setVideoLink(video);
+                this.attraction.setVideoThumb(retriveVideoFrameFromVideo(video));
             }
 
         } catch (JSONException e) {
@@ -209,17 +293,17 @@ public class AttractionDetailActivity extends AppCompatActivity
         EditText commentField = (EditText) findViewById(R.id.comment_edit_text);
         commentField.setSelected(false);
 
-        TextView commentsView = (TextView) findViewById(R.id.comments);
-        commentsView.setText("Aca van todos los comentarios previos.");
 
-
-
-        this.adapter.setList(this.attraction.getImages());
+        getGalleryContents();
+        this.adapter.setList(this.galleryContents);
         this.contentView.setVisibility(View.VISIBLE);
         updatePlayAudioButton();
         updatePuntosDeInteresButton();
+        updateComments();
+    }
 
-
+    private void updateComments() {
+        this.commentsDownloader.getNextPage();
     }
 
     private void updatePuntosDeInteresButton() {
@@ -245,5 +329,9 @@ public class AttractionDetailActivity extends AppCompatActivity
     public void verListaPuntosDeInteres(View view) {
         Intent intent = new Intent(getBaseContext(), InterestingPointSelection.class);
         startActivity(intent);
+    }
+
+    public void appendComments(ArrayList<Comment> newComments) {
+        this.commentsAdapter.setList(newComments);
     }
 }

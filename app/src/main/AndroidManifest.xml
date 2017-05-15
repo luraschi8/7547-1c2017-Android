@@ -124,6 +124,17 @@
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".VideoPlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_video_player"
+            android:parentActivityName=".AttractionDetailActivity"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.AttractionDetailActivity" />
+        </activity>
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

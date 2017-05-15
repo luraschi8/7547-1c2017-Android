@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tdp2.tripplanner.AudioActivityExtras.InterestingPointAdapter;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.modelo.Attraction;
 import com.tdp2.tripplanner.modelo.InterestingPoint;
 
@@ -57,6 +58,8 @@ public class AudioPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_player);
+
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
         oneTimeOnly = 0;
         //Obtener el toolbar

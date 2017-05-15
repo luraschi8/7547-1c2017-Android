@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.tdp2.tripplanner.fullscreenImageViewExtras.FullScreenImageAdapter;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -19,6 +20,9 @@ public class FullscreenImageViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen_image_view);
+
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
+
 
         viewPager = (ViewPager) findViewById(R.id.pager);
 
