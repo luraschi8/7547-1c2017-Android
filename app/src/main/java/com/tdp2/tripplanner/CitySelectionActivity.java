@@ -13,8 +13,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,7 +39,7 @@ import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.helpers.LocationRequester;
 import com.tdp2.tripplanner.helpers.LocationService;
 import com.tdp2.tripplanner.modelo.City;
-import com.tdp2.tripplanner.modelo.InterestingPoint;
+import com.tdp2.tripplanner.modelo.UserInstance;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,12 +126,15 @@ public class CitySelectionActivity extends AppCompatActivity
             }
         });
 
+
         locationButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locationUpdates = 0;
-                initLocationServices();
+                /*locationUpdates = 0;
+                initLocationServices();*/
+                //Todo: cambiar
+                UserInstance.loginRedirect(getApplicationContext());
             }
         });
         locationButton.setClickable(false);

@@ -1,15 +1,12 @@
 package com.tdp2.tripplanner.dao;
 
-import android.content.ContentValues;
 import android.content.Context;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.tdp2.tripplanner.InterestingPointDetailActivity;
-import com.tdp2.tripplanner.InterestingPointSelection;
 import com.tdp2.tripplanner.helpers.APIAccessor;
+import com.tdp2.tripplanner.modelo.SocialUser;
 
 import org.json.JSONObject;
 
@@ -24,7 +21,9 @@ public class APIDAO {
     private static String PUNTOS_DE_INTERES_ATRACCION = "puntoAtraccionJson";
     private static String ATRACCION = "atraccion/";
     private static String PUNTO_DE_INTERES = "punto";
+    private static String LOGIN = ""; //todo: completar
     private static String BASE_URL = "http://secure-dawn-22758.herokuapp.com/";
+
 
 
     public void getCities(Context appContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback) {
@@ -64,6 +63,15 @@ public class APIDAO {
     public void getInterestingPointInfo(Context applicationContext,  Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback, Integer id) {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, BASE_URL + PUNTO_DE_INTERES + "/" + String.valueOf(id), null, responseCallback, errorCallback);
+
+        // Access the RequestQueue through your singleton class.
+        APIAccessor.getInstance(applicationContext).addToRequestQueue(jsObjRequest);
+    }
+
+    public void postLoginProfile(Context applicationContext,  Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback, SocialUser profile) {
+        JSONObject params = profile.GetJsonObject();
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(BASE_URL + LOGIN + "/", params, responseCallback, errorCallback);
 
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(applicationContext).addToRequestQueue(jsObjRequest);

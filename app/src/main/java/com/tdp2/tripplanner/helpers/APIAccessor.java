@@ -14,7 +14,7 @@ import com.android.volley.toolbox.Volley;
 public class APIAccessor {
     private static APIAccessor mInstance;
     private RequestQueue mRequestQueue;
-    private static Context mCtx;;
+    private static Context mCtx;
 
     private APIAccessor(Context context) {
         mCtx = context;
