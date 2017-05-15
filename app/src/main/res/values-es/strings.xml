@@ -34,4 +34,5 @@
     <string name="no_cities_msg">Disculpa, no hay ninguna ciudad cerca tuyo.</string>
     <string name="videoXML">video</string>
     <string name="Accounts">Cuentas</string>
+    <string name="Languaje">Lenguaje</string>
 </resources>

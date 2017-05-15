@@ -1,9 +1,6 @@
 package com.tdp2.tripplanner;
 
 
-
-import android.graphics.Bitmap;
-
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,7 +38,6 @@ import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.helpers.LocationRequester;
 import com.tdp2.tripplanner.helpers.LocationService;
 import com.tdp2.tripplanner.modelo.City;
-import com.tdp2.tripplanner.modelo.InterestingPoint;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -287,6 +283,8 @@ public class CitySelectionActivity extends AppCompatActivity
         switch (item.getItemId())
         {
             case R.id.settings_item:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                this.startActivity(intent);
                 return true;
             case R.id.accounts_item:
                 //TODO agregar lo de mile aca.
@@ -294,5 +292,11 @@ public class CitySelectionActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocaleHandler.updateLocaleSettings(this);
     }
 }

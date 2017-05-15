@@ -93,6 +93,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tdp2.tripplanner.AttractionDetailActivity" />
         </activity>
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

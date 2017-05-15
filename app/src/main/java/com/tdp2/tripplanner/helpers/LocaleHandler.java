@@ -31,12 +31,35 @@ public class LocaleHandler {
     public static void saveLanguageSelection(Context context, String language) {
         SharedPreferences languagepref = context.getSharedPreferences(FILE_NAME ,MODE_PRIVATE);
         SharedPreferences.Editor editor = languagepref.edit();
-        editor.putString(LANGUAGE_KEY, language );
+        String code = LocaleHandler.languageToCode(language);
+        editor.putString(LANGUAGE_KEY, code );
         editor.apply();
     }
 
     public static String loadLanguageSelection(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(FILE_NAME , MODE_PRIVATE);
         return preferences.getString(LANGUAGE_KEY, DEFAULT_LANGUAGE);
+    }
+
+    public static String languageToCode(String language) {
+        switch (language) {
+            case "Español":
+                return "ES";
+            case "English":
+                return "EN";
+            default:
+                return "";
+        }
+    }
+
+    public static String codeToLanguage(String code) {
+        switch (code) {
+            case "ES":
+                return "Español";
+            case "EN":
+                return "English";
+            default:
+                return "";
+        }
     }
 }
