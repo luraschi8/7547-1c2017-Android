@@ -24,6 +24,9 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -82,6 +85,7 @@ public class CitySelectionActivity extends AppCompatActivity
         toolbar.setSubtitle(R.string.select_city);
         toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
 
 
         // Obtener el Recycler
@@ -142,6 +146,13 @@ public class CitySelectionActivity extends AppCompatActivity
 
     public void refreshCities() {
         this.dao.getCities(this.getApplicationContext(), this, this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.city_selection_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -268,5 +279,20 @@ public class CitySelectionActivity extends AppCompatActivity
         this.locationService = new LocationService(this, this);
         if (!locationService.isAvailable())
             Toast.makeText(this, R.string.no_location_service, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.settings_item:
+                return true;
+            case R.id.accounts_item:
+                //TODO agregar lo de mile aca.
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

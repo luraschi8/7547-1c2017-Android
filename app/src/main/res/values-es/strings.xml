@@ -33,4 +33,5 @@
     <string name="select_interesting_point">Seleccion de punto de interes</string>
     <string name="no_cities_msg">Disculpa, no hay ninguna ciudad cerca tuyo.</string>
     <string name="videoXML">video</string>
+    <string name="Accounts">Cuentas</string>
 </resources>
