@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.tdp2.tripplanner.FullscreenImageViewActivity;
 import com.tdp2.tripplanner.R;
+import com.tdp2.tripplanner.VideoPlayerActivity;
 
 import java.util.ArrayList;
 
@@ -20,10 +21,10 @@ import java.util.ArrayList;
 
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.ImageViewHolder> {
 
-    private ArrayList<Bitmap> imageList;
+    private ArrayList<GalleryContent> imageList;
     private Context mContext;
 
-    public ImageGalleryAdapter(ArrayList<Bitmap> images, Context context) {
+    public ImageGalleryAdapter(ArrayList<GalleryContent> images, Context context) {
         this.imageList = images;
         this.mContext = context;
     }
@@ -38,20 +39,33 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
 
     @Override
     public void onBindViewHolder(final ImageGalleryAdapter.ImageViewHolder holder, final int position) {
-        Bitmap image = imageList.get(position);
+        final Bitmap image = imageList.get(position).getImage();
+        String type = imageList.get(position).getType();
         holder.thumbnail.setImageBitmap(image);
-        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, FullscreenImageViewActivity.class);
-                intent.putExtra("POSITION", position);
-                mContext.startActivity(intent);
-            }
-        });
+        if (type.equals("img")) {
+            holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, FullscreenImageViewActivity.class);
+                    intent.putExtra("POSITION", position);
+                    mContext.startActivity(intent);
+                }
+            });
+        } else if (type.equals("vid")) {
+            holder.play.setVisibility(View.VISIBLE);
+            holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, VideoPlayerActivity.class);
+                    intent.putExtra("URL", imageList.get(position).getUrl());
+                    mContext.startActivity(intent);
+                }
+            });
+        }
     }
 
     // set adapter filtered list
-    public void setList(ArrayList<Bitmap> list) {
+    public void setList(ArrayList<GalleryContent> list) {
         this.imageList = list;
         this.notifyDataSetChanged();
     }
@@ -64,10 +78,12 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
 
     public class ImageViewHolder extends RecyclerView.ViewHolder {
         private ImageView thumbnail;
+        private ImageView play;
 
         public ImageViewHolder(View view) {
             super(view);
             thumbnail = (ImageView) view.findViewById(R.id.image_gallery);
+            play = (ImageView) view.findViewById(R.id.play_overlay);
         }
     }
 }

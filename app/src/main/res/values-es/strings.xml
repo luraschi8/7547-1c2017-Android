@@ -24,4 +24,8 @@
     <string name="city_detected">Ciudad Detectada</string>
     <string name="detection_text">"Detectamos que te encuentras en: "</string>
     <string name="see_attractions">Deseas ver las atraccioens disponibles?</string>
+    <string name="video_dialog">Attraction Video</string>
+    <string name="buffering">Buffering...</string>
+    <string name="missing_comment">You forgot to write your comment.</string>
+    <string name="thank_you">Thank you for yor comment.</string>
 </resources>

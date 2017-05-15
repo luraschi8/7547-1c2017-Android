@@ -21,6 +21,8 @@ public class Attraction {
     private String precio;
     private boolean esRecorrible;
     private String audioLink;
+    private String videoLink;
+    private Bitmap videoThumb;
 
 
     public Attraction(Integer id, String name, String moreInfo, Double latitude, Double longitude, Bitmap image) {
@@ -32,6 +34,17 @@ public class Attraction {
         this.images = new ArrayList<>();
         this.images.add(image);
         this.audioLink = null;
+        this.videoLink = null;
+        this.videoThumb = null;
+    }
+
+
+    public String getVideoLink() {
+        return videoLink;
+    }
+
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
     }
 
     public String getAudio() {
@@ -94,5 +107,13 @@ public class Attraction {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Bitmap getVideoThumb() {
+        return videoThumb;
+    }
+
+    public void setVideoThumb(Bitmap videoThumb) {
+        this.videoThumb = videoThumb;
     }
 }
