@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.helpers.LocationRequester;
 import com.tdp2.tripplanner.helpers.LocationService;
 import com.tdp2.tripplanner.modelo.City;
@@ -66,6 +67,8 @@ public class CitySelectionActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_selection);
+
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
         dao = new APIDAO();
         this.refreshCities();

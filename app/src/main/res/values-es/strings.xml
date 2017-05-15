@@ -25,7 +25,12 @@
     <string name="detection_text">"Detectamos que te encuentras en: "</string>
     <string name="see_attractions">Deseas ver las atraccioens disponibles?</string>
     <string name="video_dialog">Attraction Video</string>
-    <string name="buffering">Buffering...</string>
-    <string name="missing_comment">You forgot to write your comment.</string>
+    <string name="buffering">Cargando...</string>
+    <string name="missing_comment">Olvidaste escribir tu comentario.</string>
     <string name="thank_you">Thank you for yor comment.</string>
+    <string name="action_settings">Configuracion</string>
+    <string name="no_city_detected">Lo lamento, fue imposible detectar la ciudad</string>
+    <string name="select_interesting_point">Seleccion de punto de interes</string>
+    <string name="no_cities_msg">Disculpa, no hay ninguna ciudad cerca tuyo.</string>
+    <string name="videoXML">video</string>
 </resources>

@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.AudioActivityExtras.InterestingPointDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.modelo.InterestingPoint;
 
 import org.json.JSONException;
@@ -63,6 +64,9 @@ public class InterestingPointDetailActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interesting_point_detail);
+
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
+
         contentView = (LinearLayout) findViewById(R.id.content_layout_ip);
         loadingView = (LinearLayout) findViewById(R.id.loading_layout);
         audioPlayer = (RelativeLayout) findViewById(R.id.audioPlayer);

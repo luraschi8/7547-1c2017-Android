@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.tdp2.tripplanner.helpers.LocaleHandler;
+
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
@@ -22,6 +24,9 @@ public class VideoPlayerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
         setContentView(R.layout.activity_video_player);
         ActionBar actionBar = getSupportActionBar();

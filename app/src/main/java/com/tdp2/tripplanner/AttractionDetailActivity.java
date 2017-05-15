@@ -41,6 +41,7 @@ import com.tdp2.tripplanner.attractionDetailActivityExtras.ImageGalleryAdapter;
 import com.tdp2.tripplanner.attractionDetailActivityExtras.ShareCommentController;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.modelo.Attraction;
 import com.tdp2.tripplanner.modelo.Comment;
 
@@ -76,6 +77,9 @@ public class AttractionDetailActivity extends AppCompatActivity
         contentView = (LinearLayout) findViewById(R.id.content_layout);
         loadingView = (LinearLayout) findViewById(R.id.loading_layout);
         contentView.setVisibility(GONE);
+
+
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
         this.attraction = AttractionDataHolder.getData();
         dao = new APIDAO();
