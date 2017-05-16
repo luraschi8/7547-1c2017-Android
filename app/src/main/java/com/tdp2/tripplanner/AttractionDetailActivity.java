@@ -55,7 +55,7 @@ import java.util.HashMap;
 import static android.view.View.GONE;
 
 public class AttractionDetailActivity extends AppCompatActivity
-        implements Response.Listener<JSONObject>, Response.ErrorListener{
+        implements Response.Listener<JSONObject>, Response.ErrorListener, ShareCommentController.CommentResponse{
 
     private APIDAO dao;
     private Attraction attraction;
@@ -106,7 +106,9 @@ public class AttractionDetailActivity extends AppCompatActivity
         Button shareButton = (Button) findViewById(R.id.share_button);
         final RatingBar myRating = (RatingBar) findViewById(R.id.myrating_bar);
         final EditText myComment = (EditText) findViewById(R.id.comment_edit_text);
-        shareButton.setOnClickListener(new ShareCommentController(this.getApplicationContext(), myComment, myRating, this.dao));
+        ShareCommentController controller = new ShareCommentController(this.getApplicationContext(), myComment, myRating, this.dao);
+        controller.setCallback(this);
+        shareButton.setOnClickListener(controller);
     }
 
     private void configCommentsSection() {
@@ -333,5 +335,13 @@ public class AttractionDetailActivity extends AppCompatActivity
 
     public void appendComments(ArrayList<Comment> newComments) {
         this.commentsAdapter.setList(newComments);
+    }
+
+    @Override
+    public void onCommentPost() {
+        final RatingBar myRating = (RatingBar) findViewById(R.id.myrating_bar);
+        final EditText myComment = (EditText) findViewById(R.id.comment_edit_text);
+        myComment.setText("");
+        myRating.setRating(2.5f);
     }
 }

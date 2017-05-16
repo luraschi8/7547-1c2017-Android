@@ -28,6 +28,7 @@ public class ShareCommentController implements View.OnClickListener, Response.Li
     private Context context;
     private RatingBar myRating;
     private APIDAO dao;
+    private CommentResponse callback;
 
     public ShareCommentController(Context context, EditText text, RatingBar bar, APIDAO dao) {
         this.myComment = text;
@@ -59,6 +60,15 @@ public class ShareCommentController implements View.OnClickListener, Response.Li
     @Override
     public void onResponse(JSONObject response) {
         Toast.makeText(context, R.string.thank_you, Toast.LENGTH_SHORT).show();
+        if(this.callback != null) this.callback.onCommentPost();
         return;
+    }
+
+    public void setCallback(CommentResponse callback) {
+        this.callback= callback;
+    }
+
+    public interface CommentResponse{
+        void onCommentPost();
     }
 }
