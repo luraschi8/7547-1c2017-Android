@@ -43,7 +43,7 @@ public class ShareCommentController implements View.OnClickListener, Response.Li
             Toast.makeText(this.context, "You have to be logged in to continue.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (myComment.getText().equals("")) {
+        if (myComment.getText().toString().equals("")) {
             Toast.makeText(context, R.string.missing_comment, Toast.LENGTH_SHORT).show();
             return;
         }
