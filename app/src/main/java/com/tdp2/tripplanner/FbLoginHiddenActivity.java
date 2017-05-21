@@ -61,6 +61,7 @@ public class FbLoginHiddenActivity extends AppCompatActivity
         parameters.putString("fields", "id,name,email,link");
         request.setParameters(parameters);
         request.executeAsync();
+        finish();
     }
 
     private void handleLoginSuccess(LoginResult result) {

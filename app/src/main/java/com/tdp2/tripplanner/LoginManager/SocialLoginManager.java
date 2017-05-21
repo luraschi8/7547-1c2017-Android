@@ -60,6 +60,10 @@ public class SocialLoginManager {
         FacebookSdk.sdkInitialize(application.getApplicationContext());
     }
 
+    public void login2() {
+        appContext.startActivity(getIntent());
+    }
+
     public Observable<SocialUser> login() {
         userEmitter = PublishSubject.create();
         appContext.startActivity(getIntent());

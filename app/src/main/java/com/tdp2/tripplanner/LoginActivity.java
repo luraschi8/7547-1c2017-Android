@@ -58,8 +58,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void loginByFacebook() {
-        SocialLoginManager.getInstance(this)
-                .facebook()
+        SocialLoginManager.getInstance(this).login2();
+                /*.facebook()
                 .login() //Se inicializa la actividad de login oculta que se encarga de los estados de respuesta de Facebook.
                 .subscribe((socialUser) -> {
                             Log.d(TAG, "userId: " + socialUser.get_id());
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                                     getApplicationContext(),
                                     "Error while accesing with FB",
                                     Toast.LENGTH_SHORT).show();
-                        });
+                        });*/
     }
 }
 

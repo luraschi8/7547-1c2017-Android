@@ -24,9 +24,6 @@ public class UserInstance {
     }
 
     public static SocialUser getInstance(final Context context) {
-        if (userProfile == null && getSocialUser(context) == null) {
-            securityRedirect(context);
-        }
         return userProfile;
     }
 
