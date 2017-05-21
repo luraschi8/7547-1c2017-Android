@@ -1,6 +1,5 @@
 package com.tdp2.tripplanner.dao;
 
-import android.app.DownloadManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
@@ -9,14 +8,16 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.tdp2.tripplanner.InterestingPointDetailActivity;
-import com.tdp2.tripplanner.InterestingPointSelection;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.helpers.APIAccessor;
 import com.tdp2.tripplanner.modelo.SocialUser;
-import org.json.JSONObject;
-import org.json.JSONException;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.modelo.Comment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 /**
  * Created by matias on 4/5/17.
  */
@@ -41,6 +42,7 @@ public class APIDAO {
         APIAccessor.getInstance(appContext).addToRequestQueue(request);
     }
 
+
     public void getCities(Context appContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback) {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, BASE_URL + CIUDADES, null, responseCallback, errorCallback);
@@ -51,8 +53,9 @@ public class APIDAO {
 
     public void getAttractionForCity(Context appContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback,
                                       Integer cityId) {
+        String url = BASE_URL + ATRACCIONES_CIUDAD + "/" + String.valueOf(cityId) + "/" + LocaleHandler.loadLanguageSelection(appContext);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, BASE_URL + ATRACCIONES_CIUDAD + "/" + String.valueOf(cityId), null, responseCallback, errorCallback);
+                (Request.Method.GET, url , null, responseCallback, errorCallback);
 
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(appContext).addToRequestQueue(jsObjRequest);
@@ -60,24 +63,27 @@ public class APIDAO {
 
     public void getAttractionInfo(Context appContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback,
                                      Integer attractionId) {
+        String url =  BASE_URL + ATRACCION + "/" + String.valueOf(attractionId) + "/" + LocaleHandler.loadLanguageSelection(appContext);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, BASE_URL + ATRACCION + "/" + String.valueOf(attractionId), null, responseCallback, errorCallback);
+                (Request.Method.GET, url, null, responseCallback, errorCallback);
 
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(appContext).addToRequestQueue(jsObjRequest);
     }
 
     public void getInterestingPointsForAttraction(Context applicationContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback,  Integer id) {
+        String url = BASE_URL + PUNTOS_DE_INTERES_ATRACCION + "/" + String.valueOf(id) + "/" + LocaleHandler.loadLanguageSelection(applicationContext);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, BASE_URL + PUNTOS_DE_INTERES_ATRACCION + "/" + String.valueOf(id), null, responseCallback, errorCallback);
+                (Request.Method.GET, url, null, responseCallback, errorCallback);
 
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(applicationContext).addToRequestQueue(jsObjRequest);
     }
 
     public void getInterestingPointInfo(Context applicationContext,  Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback, Integer id) {
+        String url = BASE_URL + PUNTO_DE_INTERES + "/" + String.valueOf(id) + "/" + LocaleHandler.loadLanguageSelection(applicationContext);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, BASE_URL + PUNTO_DE_INTERES + "/" + String.valueOf(id), null, responseCallback, errorCallback);
+                (Request.Method.GET,url, null, responseCallback, errorCallback);
 
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(applicationContext).addToRequestQueue(jsObjRequest);
@@ -105,7 +111,7 @@ public class APIDAO {
         JSONObject jsonAtraccion = new JSONObject();
         try {
             json.put("comentario", comment.getComment());
-            json.put("nombreUsuario", "AndroidAPP"); //TODO cambiar por el username de la red social.
+            json.put("nombreUsuario", comment.getUsername());
             json.put("calificacion", comment.getRating());
             jsonAtraccion.put("id", AttractionDataHolder.getData().getId());
             json.put("atraccion", jsonAtraccion);

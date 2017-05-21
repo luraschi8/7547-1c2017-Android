@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.AudioActivityExtras.InterestingPointAdapter;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.modelo.InterestingPoint;
 
 import org.json.JSONArray;
@@ -45,6 +46,9 @@ public class InterestingPointSelection extends AppCompatActivity implements Resp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interesting_point_selection);
         attractionId = AttractionDataHolder.getData().getId();
+
+
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
         dao = new APIDAO();
         refreshInterestingPoints();

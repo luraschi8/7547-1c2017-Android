@@ -41,6 +41,7 @@ import com.tdp2.tripplanner.attractionDetailActivityExtras.ImageGalleryAdapter;
 import com.tdp2.tripplanner.attractionDetailActivityExtras.ShareCommentController;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.modelo.Attraction;
 import com.tdp2.tripplanner.modelo.Comment;
 
@@ -54,7 +55,7 @@ import java.util.HashMap;
 import static android.view.View.GONE;
 
 public class AttractionDetailActivity extends AppCompatActivity
-        implements Response.Listener<JSONObject>, Response.ErrorListener{
+        implements Response.Listener<JSONObject>, Response.ErrorListener, ShareCommentController.CommentResponse {
 
     private APIDAO dao;
     private Attraction attraction;
@@ -68,6 +69,7 @@ public class AttractionDetailActivity extends AppCompatActivity
     private ArrayList<GalleryContent> galleryContents;
     private CommentsDownloader commentsDownloader;
     private CommentsAdapter commentsAdapter;
+    private RecyclerView commentsRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,9 @@ public class AttractionDetailActivity extends AppCompatActivity
         contentView = (LinearLayout) findViewById(R.id.content_layout);
         loadingView = (LinearLayout) findViewById(R.id.loading_layout);
         contentView.setVisibility(GONE);
+
+
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
         this.attraction = AttractionDataHolder.getData();
         dao = new APIDAO();
@@ -102,11 +107,13 @@ public class AttractionDetailActivity extends AppCompatActivity
         Button shareButton = (Button) findViewById(R.id.share_button);
         final RatingBar myRating = (RatingBar) findViewById(R.id.myrating_bar);
         final EditText myComment = (EditText) findViewById(R.id.comment_edit_text);
-        shareButton.setOnClickListener(new ShareCommentController(this.getBaseContext(), myComment, myRating, this.dao));
+        ShareCommentController controller = new ShareCommentController(this.getApplicationContext(), myComment, myRating, this.dao);
+        controller.setCallback(this);
+        shareButton.setOnClickListener(controller);
     }
 
     private void configCommentsSection() {
-        RecyclerView commentsRecyclerView = (RecyclerView) findViewById(R.id.comments_list);
+        this.commentsRecyclerView = (RecyclerView) findViewById(R.id.comments_list);
         this.commentsAdapter = new CommentsAdapter();
         commentsRecyclerView.setAdapter(this.commentsAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -119,7 +126,7 @@ public class AttractionDetailActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + String.valueOf(attraction.getLatitude()) + "," +
-                String.valueOf(attraction.getLongitude()));
+                        String.valueOf(attraction.getLongitude()));
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);
@@ -172,9 +179,9 @@ public class AttractionDetailActivity extends AppCompatActivity
     }
 
     private void setMainImage() {
-    ImageView imageView = (ImageView) findViewById(R.id.attractionDetailImage);
+        ImageView imageView = (ImageView) findViewById(R.id.attractionDetailImage);
         imageView.setImageBitmap(this.attraction.getMainImage());
-}
+    }
 
     private void configToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -197,12 +204,10 @@ public class AttractionDetailActivity extends AppCompatActivity
         }
     }
 
-    public static Bitmap retriveVideoFrameFromVideo(String videoPath)
-    {
+    public static Bitmap retriveVideoFrameFromVideo(String videoPath) {
         Bitmap bitmap = null;
         MediaMetadataRetriever mediaMetadataRetriever = null;
-        try
-        {
+        try {
             mediaMetadataRetriever = new MediaMetadataRetriever();
             if (Build.VERSION.SDK_INT >= 14)
                 mediaMetadataRetriever.setDataSource(videoPath, new HashMap<String, String>());
@@ -257,7 +262,7 @@ public class AttractionDetailActivity extends AppCompatActivity
             if (!audio.equals("null")) this.attraction.setAudio(audio);
 
             String video = data.getString(getString(R.string.videoXML));
-            if(!video.equals("null")){
+            if (!video.equals("null")) {
                 //video = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
                 this.attraction.setVideoLink(video);
                 this.attraction.setVideoThumb(retriveVideoFrameFromVideo(video));
@@ -329,5 +334,21 @@ public class AttractionDetailActivity extends AppCompatActivity
 
     public void appendComments(ArrayList<Comment> newComments) {
         this.commentsAdapter.setList(newComments);
+    }
+
+    @Override
+    public void onCommentPost() {
+        final RatingBar myRating = (RatingBar) findViewById(R.id.myrating_bar);
+        final EditText myComment = (EditText) findViewById(R.id.comment_edit_text);
+        myComment.setText("");
+        myRating.setRating(2.5f);
+        reloadComments();
+    }
+
+    private void reloadComments() {
+        this.commentsDownloader = new CommentsDownloader(this);
+        this.commentsAdapter = new CommentsAdapter();
+        this.commentsRecyclerView.setAdapter(this.commentsAdapter);
+        this.commentsDownloader.getNextPage();
     }
 }

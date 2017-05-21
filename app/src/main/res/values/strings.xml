@@ -50,6 +50,8 @@
     <string name="buffering">Buffering...</string>
     <string name="missing_comment">You forgot to write your comment.</string>
     <string name="thank_you">Thank you for yor comment.</string>
+    <string name="Accounts">Accounts</string>
+    <string name="Languaje">Languaje</string>
 
     <string name="facebook_app_id">274591552951688</string>
     <string name="title_activity_login">Sign in</string>

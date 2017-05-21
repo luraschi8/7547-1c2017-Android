@@ -13,10 +13,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +24,9 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -36,6 +37,7 @@ import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.helpers.LocationRequester;
 import com.tdp2.tripplanner.helpers.LocationService;
 import com.tdp2.tripplanner.modelo.City;
@@ -69,6 +71,8 @@ public class CitySelectionActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_selection);
 
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
+
         dao = new APIDAO();
         this.refreshCities();
 
@@ -81,6 +85,7 @@ public class CitySelectionActivity extends AppCompatActivity
         toolbar.setSubtitle(R.string.select_city);
         toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
 
 
         // Obtener el Recycler
@@ -126,15 +131,12 @@ public class CitySelectionActivity extends AppCompatActivity
             }
         });
 
-
         locationButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*locationUpdates = 0;
-                initLocationServices();*/
-                //Todo: cambiar
-                UserInstance.loginRedirect(getApplicationContext());
+                locationUpdates = 0;
+                initLocationServices();
             }
         });
         locationButton.setClickable(false);
@@ -144,6 +146,13 @@ public class CitySelectionActivity extends AppCompatActivity
 
     public void refreshCities() {
         this.dao.getCities(this.getApplicationContext(), this, this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.city_selection_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -270,5 +279,28 @@ public class CitySelectionActivity extends AppCompatActivity
         this.locationService = new LocationService(this, this);
         if (!locationService.isAvailable())
             Toast.makeText(this, R.string.no_location_service, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.settings_item:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                this.startActivity(intent);
+                return true;
+            case R.id.accounts_item:
+                UserInstance.loginRedirect(getApplicationContext());
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocaleHandler.updateLocaleSettings(this);
     }
 }

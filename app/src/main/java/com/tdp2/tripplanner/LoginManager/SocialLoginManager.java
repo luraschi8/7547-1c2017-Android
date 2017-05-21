@@ -85,6 +85,7 @@ public class SocialLoginManager {
 
         }
         Intent intent = new Intent(appContext, CitySelectionActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         appContext.startActivity(intent);
     }
 

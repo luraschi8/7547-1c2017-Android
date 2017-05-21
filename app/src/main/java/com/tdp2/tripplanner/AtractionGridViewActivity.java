@@ -29,6 +29,7 @@ import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionAdapter;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.MapHandler;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.modelo.Attraction;
 
 import org.json.JSONArray;
@@ -63,6 +64,9 @@ public class AtractionGridViewActivity extends AppCompatActivity implements Resp
         gridView = getLayoutInflater().inflate(R.layout.activity_atraction_grid_view, null);
         mapView = getLayoutInflater().inflate(R.layout.attractions_map_view, null);
         setContentView(gridView);
+
+
+        LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
         cityId = CityDataHolder.getData().getId();
         String cityName = CityDataHolder.getData().getName();
