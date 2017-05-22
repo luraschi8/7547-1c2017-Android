@@ -29,7 +29,7 @@ public class APIDAO {
     private static String ATRACCION = "atraccion/";
     private static String PUNTO_DE_INTERES = "punto";
     private static String LOGIN = ""; //todo: completar
-    private static String BASE_URL = "http://secure-dawn-22758.herokuapp.com/";
+    private static String BASE_URL = "http://10.0.2.2:8080/";
     private static String RESENIAS = "reseniasPaginadasAtraccionJson/";
     private static String CREAR_RESENIA = "crearResenia";
 

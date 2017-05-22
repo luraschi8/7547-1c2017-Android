@@ -79,8 +79,6 @@ public class AtractionGridViewActivity extends AppCompatActivity implements Resp
         recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
 
 
-        dao = new APIDAO();
-        this.refreshAttractions(cityId);
         attractionList = new ArrayList<>();
         //TODO Change to json from API
         //prepareAttractions();
@@ -109,6 +107,8 @@ public class AtractionGridViewActivity extends AppCompatActivity implements Resp
         recyclerView.setVisibility(View.GONE);
 
         this.mMapHandler = new MapHandler(this);
+        dao = new APIDAO();
+        this.refreshAttractions(cityId);
     }
 
     @Override

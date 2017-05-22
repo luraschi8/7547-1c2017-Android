@@ -64,6 +64,7 @@ public class CitySelectionActivity extends AppCompatActivity
     private LocationService locationService;
     private Integer locationUpdates = 0;
     FloatingActionButton locationButton;
+    private String currentLanguage;
 
 
     @Override
@@ -71,6 +72,7 @@ public class CitySelectionActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_selection);
 
+        this.currentLanguage = LocaleHandler.loadLanguageSelection(this.getBaseContext());
         LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
         dao = new APIDAO();
@@ -301,6 +303,8 @@ public class CitySelectionActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        LocaleHandler.updateLocaleSettings(this);
+        if (!this.currentLanguage.equals(LocaleHandler.loadLanguageSelection(this.getBaseContext()))) {
+            this.recreate();
+        }
     }
 }
