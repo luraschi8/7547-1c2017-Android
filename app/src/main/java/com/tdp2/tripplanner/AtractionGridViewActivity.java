@@ -211,12 +211,12 @@ public class AtractionGridViewActivity extends AppCompatActivity implements Resp
             for (int i = 0; i < data.length(); i++) {
                 JSONObject current = data.getJSONObject(i);
                 if( current.get("imagen").toString().equals("null") )
-                    lista.add(new Attraction(current.getInt("id"), current.getString("nombre"), current.getString("descripcion"),
+                    lista.add(new Attraction(current.getInt("idAtraccion"), current.getString("nombre"), current.getString("descripcion"),
                             current.getDouble("latitud"), current.getDouble("longitud"),
                             BitmapFactory.decodeResource(this.getResources(), R.drawable.colon_sample)));
                 else {
                     byte[] img = Base64.decode(current.getString("imagen"), Base64.DEFAULT);
-                    lista.add(new Attraction(current.getInt("id"), current.getString("nombre"), current.getString("descripcion"),
+                    lista.add(new Attraction(current.getInt("idAtraccion"), current.getString("nombre"), current.getString("descripcion"),
                             current.getDouble("latitud"), current.getDouble("longitud"),
                             BitmapFactory.decodeByteArray(img, 0, img.length)));
                 }

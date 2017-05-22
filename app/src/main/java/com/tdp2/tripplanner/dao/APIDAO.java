@@ -26,7 +26,7 @@ public class APIDAO {
     private static String CIUDADES = "ciudadesJson";
     private static String ATRACCIONES_CIUDAD = "atraccionesCiudadJson/";
     private static String PUNTOS_DE_INTERES_ATRACCION = "puntoAtraccionJson";
-    private static String ATRACCION = "atraccion/";
+    private static String ATRACCION = "atraccion";
     private static String PUNTO_DE_INTERES = "punto";
     private static String LOGIN = ""; //todo: completar
     private static String BASE_URL = "http://10.0.2.2:8080/";
