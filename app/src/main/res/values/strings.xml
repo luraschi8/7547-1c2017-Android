@@ -74,4 +74,6 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="userProfile">com.tdp2.tripplanner.socialuser</string>
     <string name="loginToken">com.tdp2.tripplanner.token</string>
+    <string name="title_activity_plano">PlanoActivity</string>
+    <string name="title_activity_plano_atraccion">PlanoAtraccionActivity</string>
 </resources>

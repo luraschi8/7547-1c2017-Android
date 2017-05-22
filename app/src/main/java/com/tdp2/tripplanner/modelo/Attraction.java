@@ -23,6 +23,7 @@ public class Attraction {
     private String audioLink;
     private String videoLink;
     private Bitmap videoThumb;
+    private String planoURL;
 
 
     public Attraction(Integer id, String name, String moreInfo, Double latitude, Double longitude, Bitmap image) {
@@ -115,5 +116,13 @@ public class Attraction {
 
     public void setVideoThumb(Bitmap videoThumb) {
         this.videoThumb = videoThumb;
+    }
+
+    public void setPlanoURL(String planoURL) {
+        this.planoURL = planoURL;
+    }
+
+    public String getPlanoURL() {
+        return planoURL;
     }
 }

@@ -261,6 +261,10 @@ public class AttractionDetailActivity extends AppCompatActivity
             String audio = data.getString(getResources().getString(R.string.audioXML));
             if (!audio.equals("null")) this.attraction.setAudio(audio);
 
+            String plano_URL = data.getString("plano");
+            if (plano_URL.equals("null")) this.attraction.setPlanoURL("");
+            else this.attraction.setPlanoURL(plano_URL);
+
             String video = data.getString(getString(R.string.videoXML));
             if (!video.equals("null")) {
                 //video = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
