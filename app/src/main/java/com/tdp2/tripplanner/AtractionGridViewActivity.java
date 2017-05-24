@@ -225,11 +225,11 @@ public class AtractionGridViewActivity extends AppCompatActivity implements Resp
             Log.e("ERROR JSON", e.getMessage());
             return;
         }
-        progress.setVisibility(View.GONE);
         this.adapter = new AttractionAdapter(this, lista);
         this.recyclerView.setAdapter(this.adapter);
         this.attractionList = lista;
         this.mMapHandler.setList(lista);
+        progress.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
 

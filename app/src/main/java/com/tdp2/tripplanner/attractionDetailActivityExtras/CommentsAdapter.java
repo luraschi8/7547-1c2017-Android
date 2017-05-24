@@ -43,7 +43,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     public void setList(ArrayList<Comment> list) {
         Integer curSize = this.getItemCount();
         this.commentsList.addAll(list);
-        this.notifyItemRangeInserted(curSize, this.getItemCount() - 1);
+        this.notifyItemRangeInserted(curSize, this.getItemCount());
     }
 
     @Override
