@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.view.View.GONE;
+import static android.view.View.generateViewId;
 
 public class AttractionDetailActivity extends AppCompatActivity
         implements Response.Listener<JSONObject>, Response.ErrorListener, ShareCommentController.CommentResponse {
@@ -152,7 +153,7 @@ public class AttractionDetailActivity extends AppCompatActivity
     private void configPlayAudioButton() {
         playButton = (FloatingActionButton) this.findViewById(R.id.play_audio_fab);
         if (!attraction.hasAudio()) {
-
+            playButton.setVisibility(View.GONE);
             playButton.setEnabled(false);
             playButton.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.unenabledButton));
         }
@@ -315,7 +316,7 @@ public class AttractionDetailActivity extends AppCompatActivity
 
     private void updatePlayAudioButton() {
         if (attraction.hasAudio()) {
-
+            playButton.setVisibility(View.VISIBLE);
             playButton.setEnabled(true);
             playButton.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.enabledButton));
         }

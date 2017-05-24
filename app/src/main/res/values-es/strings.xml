@@ -18,7 +18,7 @@
     <string name="share_button">Compartir</string>
     <string name="grid_view">Ver tabla</string>
     <string name="no_internet_error">No es posible conectarse con el servidor.</string>
-    <string name="audioXML">audioES</string>
+    <string name="audioXML">audioEN</string>
     <string name="gallery_title">Galeria de imagenes:</string>
     <string name="Cancel">Cancelar</string>
     <string name="city_detected">Ciudad Detectada</string>
