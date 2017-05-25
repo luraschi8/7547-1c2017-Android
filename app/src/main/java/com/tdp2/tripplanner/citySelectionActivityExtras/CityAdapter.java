@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tdp2.tripplanner.AtractionGridViewActivity;
+import com.tdp2.tripplanner.CityMenuActivity;
 import com.tdp2.tripplanner.R;
 import com.tdp2.tripplanner.modelo.City;
 
@@ -46,7 +47,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
             bg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(CityViewHolder.this.mContext, AtractionGridViewActivity.class);
+                    Intent intent = new Intent(CityViewHolder.this.mContext, CityMenuActivity.class);
                     CityDataHolder.setData(items.get(getAdapterPosition()));
                     CityViewHolder.this.mContext.startActivity(intent);
                 }

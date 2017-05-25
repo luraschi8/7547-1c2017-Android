@@ -75,6 +75,7 @@ public class AtractionGridViewActivity extends AppCompatActivity implements Resp
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle(this.getString(R.string.atraction_grid) + " " + cityName);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
 

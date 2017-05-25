@@ -40,8 +40,7 @@
         <activity
             android:name=".CitySelectionActivity"
             android:label="CitySelectionActivity"
-            android:theme="@style/AppTheme"
-        />
+            android:theme="@style/AppTheme" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,13 +69,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AtractionGridViewActivity"
-            android:label="@string/title_activity_atraction_grid_view"
+            android:name=".CityMenuActivity"
+            android:label="@string/title_activity_city_menu"
             android:parentActivityName=".CitySelectionActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tdp2.tripplanner.CitySelectionActivity" />
+        </activity>
+        <activity
+            android:name=".AtractionGridViewActivity"
+            android:label="@string/title_activity_atraction_grid_view"
+            android:parentActivityName=".CityMenuActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.CityMenuActivity" />
         </activity>
         <activity
             android:name=".AttractionDetailActivity"
@@ -124,7 +132,6 @@
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".VideoPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -135,7 +142,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tdp2.tripplanner.AttractionDetailActivity" />
         </activity>
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+
     </application>
 
 </manifest>

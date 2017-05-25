@@ -35,4 +35,7 @@
     <string name="videoXML">video</string>
     <string name="Accounts">Cuentas</string>
     <string name="Languaje">Lenguaje</string>
+    <string name="atracciones_menu">Atracciones</string>
+    <string name="my_favorites_menu">Mis Favoritos</string>
+    <string name="tours_menu">Recorridos</string>
 </resources>
