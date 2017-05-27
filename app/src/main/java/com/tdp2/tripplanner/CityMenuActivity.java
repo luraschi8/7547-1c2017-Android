@@ -30,7 +30,7 @@ public class CityMenuActivity extends AppCompatActivity {
         attractions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CityMenuActivity.this, AtractionGridViewActivity.class);
+                Intent intent = new Intent(CityMenuActivity.this, AttractionSelectionActivity.class);
                 CityMenuActivity.this.startActivity(intent);
             }
         });

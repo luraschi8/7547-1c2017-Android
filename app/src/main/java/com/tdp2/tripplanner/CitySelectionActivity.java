@@ -34,7 +34,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
-import com.tdp2.tripplanner.helpers.UserRegistrationListener;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.helpers.LocationRequester;
@@ -253,7 +252,7 @@ public class CitySelectionActivity extends AppCompatActivity
                 getResources().getString(R.string.see_attractions));
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                Intent intent = new Intent(CitySelectionActivity.this, AtractionGridViewActivity.class);
+                Intent intent = new Intent(CitySelectionActivity.this, AttractionSelectionActivity.class);
                 CityDataHolder.setData(detectada);
                 CitySelectionActivity.this.startActivity(intent);
             }

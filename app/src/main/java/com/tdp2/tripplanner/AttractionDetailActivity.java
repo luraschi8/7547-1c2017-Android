@@ -247,27 +247,9 @@ public class AttractionDetailActivity extends AppCompatActivity
     public void onResponse(JSONObject response) {
         try {
             JSONObject data = response.getJSONObject("data");
-            this.attraction.setHorario(data.getString("horario"));
-            //this.attraction.setId(2);
-            this.attraction.setPrecio(data.getString("precio"));
-            Integer recorrible = data.getInt("recorrible");
-            Boolean brecorrible = recorrible == 1;
-            this.attraction.setEsRecorrible(brecorrible);
-            JSONArray imagenes = data.getJSONArray("listaImagenes");
-            for (int i = 1; i < imagenes.length(); i++) {
-                byte[] img = Base64.decode(imagenes.getString(i), Base64.DEFAULT);
-                this.attraction.addImage(BitmapFactory.decodeByteArray(img, 0, img.length));
-            }
-
-            String audio = data.getString(getResources().getString(R.string.audioXML));
-            if (!audio.equals("null")) this.attraction.setAudio(audio);
-
-            String video = data.getString(getString(R.string.videoXML));
-            if (!video.equals("null")) {
-                //video = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
-                this.attraction.setVideoLink(video);
-                this.attraction.setVideoThumb(retriveVideoFrameFromVideo(video));
-            }
+            this.attraction.addDetailsFromJson(data);
+            if(this.attraction.hasVideo())
+                this.attraction.setVideoThumb(retriveVideoFrameFromVideo(this.attraction.getVideoLink()));
 
         } catch (JSONException e) {
             Log.e("ERROR JSON", e.getMessage());

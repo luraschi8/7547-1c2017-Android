@@ -23,7 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.tdp2.tripplanner.AtractionGridViewActivity;
+import com.tdp2.tripplanner.AttractionSelectionActivity;
 import com.tdp2.tripplanner.AttractionDetailActivity;
 import com.tdp2.tripplanner.R;
 import com.tdp2.tripplanner.modelo.Attraction;
@@ -41,7 +41,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnInfoWindowCli
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    private AtractionGridViewActivity mOwner;
+    private AttractionSelectionActivity mOwner;
     private Hashtable<String, Attraction> markers;
     private ArrayList<Attraction> attractionList;
     private Boolean locationPermission;
@@ -50,7 +50,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnInfoWindowCli
     private Location mLastLocation;
     private GoogleMap mMap;
 
-    public MapHandler (AtractionGridViewActivity mOwner) {
+    public MapHandler (AttractionSelectionActivity mOwner) {
         this.mOwner = mOwner;
         this.markers = new Hashtable<>();
         this.attractionList = new ArrayList<>();

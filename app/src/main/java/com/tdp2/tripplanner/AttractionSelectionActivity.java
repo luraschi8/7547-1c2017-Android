@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import static com.tdp2.tripplanner.helpers.LocationService.MY_PERMISSIONS_REQUEST_FINE_LOCATION;
 
 
-public class AtractionGridViewActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
+public class AttractionSelectionActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
         Response.ErrorListener {
 
     private MapHandler mMapHandler;
@@ -211,16 +211,7 @@ public class AtractionGridViewActivity extends AppCompatActivity implements Resp
             JSONArray data = response.getJSONArray("data");
             for (int i = 0; i < data.length(); i++) {
                 JSONObject current = data.getJSONObject(i);
-                if( current.get("imagen").toString().equals("null") )
-                    lista.add(new Attraction(current.getInt("idAtraccion"), current.getString("nombre"), current.getString("descripcion"),
-                            current.getDouble("latitud"), current.getDouble("longitud"),
-                            BitmapFactory.decodeResource(this.getResources(), R.drawable.colon_sample)));
-                else {
-                    byte[] img = Base64.decode(current.getString("imagen"), Base64.DEFAULT);
-                    lista.add(new Attraction(current.getInt("idAtraccion"), current.getString("nombre"), current.getString("descripcion"),
-                            current.getDouble("latitud"), current.getDouble("longitud"),
-                            BitmapFactory.decodeByteArray(img, 0, img.length)));
-                }
+                lista.add(Attraction.buildFromJson(current));
             }
         } catch (JSONException e) {
             Log.e("ERROR JSON", e.getMessage());

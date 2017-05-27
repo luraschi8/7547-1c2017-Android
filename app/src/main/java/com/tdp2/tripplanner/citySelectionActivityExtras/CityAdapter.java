@@ -3,7 +3,6 @@ package com.tdp2.tripplanner.citySelectionActivityExtras;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.tdp2.tripplanner.AtractionGridViewActivity;
 import com.tdp2.tripplanner.CityMenuActivity;
 import com.tdp2.tripplanner.R;
 import com.tdp2.tripplanner.modelo.City;
