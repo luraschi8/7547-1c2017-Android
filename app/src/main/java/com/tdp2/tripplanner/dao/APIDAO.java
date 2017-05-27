@@ -7,6 +7,8 @@ import android.util.Log;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.helpers.APIAccessor;
@@ -30,7 +32,7 @@ public class APIDAO {
     private static String ATRACCION = "atraccion";
     private static String PUNTO_DE_INTERES = "punto";
     private static String LOGIN = ""; //todo: completar
-    private static String BASE_URL = "http://10.0.2.2:8080/";
+    private static String BASE_URL = "http://secure-dawn-22758.herokuapp.com/";
     private static String RESENIAS = "reseniasPaginadasAtraccionJson/";
     private static String CREAR_RESENIA = "crearResenia";
     private static String ACCESO_USUARIO = "accesoUsuario";
@@ -59,6 +61,9 @@ public class APIDAO {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url , null, responseCallback, errorCallback);
 
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(500000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(appContext).addToRequestQueue(jsObjRequest);
     }
@@ -67,9 +72,25 @@ public class APIDAO {
                                      Integer attractionId) {
         String url =  BASE_URL + ATRACCION + "/" + String.valueOf(attractionId) + "/" + LocaleHandler.loadLanguageSelection(appContext);
         JSONObject object = UserInstance.toJSON(appContext);
+
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.POST, url, object, responseCallback, errorCallback);
+        jsObjRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
 
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(appContext).addToRequestQueue(jsObjRequest);
     }

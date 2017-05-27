@@ -78,6 +78,11 @@ public class Attraction {
             String audio = data.getString("audioEN");
             if (!audio.equals("null")) this.setAudio(audio);
 
+
+            String plano_URL = "http://www.achus.info/public/fotos/Johannesburg-Zoo-mapa.jpg";
+            if (plano_URL.equals("null")) this.setPlanoURL("");
+            else this.setPlanoURL(plano_URL);
+
             String video = data.getString("video");
             if (!video.equals("null")) {
                 //video = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
