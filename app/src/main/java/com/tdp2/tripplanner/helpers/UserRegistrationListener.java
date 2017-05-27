@@ -1,4 +1,4 @@
-package com.tdp2.tripplanner.citySelectionActivityExtras;
+package com.tdp2.tripplanner.helpers;
 
 import android.util.Log;
 

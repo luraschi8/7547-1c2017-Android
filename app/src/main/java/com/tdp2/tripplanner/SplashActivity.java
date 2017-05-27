@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.facebook.FacebookSdk;
 import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.UserRegistrationListener;
 import com.tdp2.tripplanner.modelo.UserInstance;
 
 import org.json.JSONObject;
@@ -30,6 +31,9 @@ public class SplashActivity extends AppCompatActivity {
 
         FacebookSdk.sdkInitialize(this);
 
+        APIDAO dao = new APIDAO();
+        UserRegistrationListener listener = new UserRegistrationListener();
+        dao.registerUserAccess(this.getApplicationContext(), listener, listener);
 
         new Handler().postDelayed(new Runnable() {
             @Override
