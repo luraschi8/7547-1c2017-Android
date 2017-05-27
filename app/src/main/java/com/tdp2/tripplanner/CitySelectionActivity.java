@@ -36,6 +36,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
 import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
+import com.tdp2.tripplanner.citySelectionActivityExtras.UserRegistrationListener;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.helpers.LocationRequester;
@@ -76,6 +77,8 @@ public class CitySelectionActivity extends AppCompatActivity
         LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
         dao = new APIDAO();
+        UserRegistrationListener listener = new UserRegistrationListener();
+        dao.registerUserAccess(this.getApplicationContext(), listener, listener);
         this.refreshCities();
 
         // Inicializar Ciudades esto se cambia por pegarle al API
