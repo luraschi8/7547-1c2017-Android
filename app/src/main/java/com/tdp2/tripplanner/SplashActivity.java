@@ -3,9 +3,16 @@ package com.tdp2.tripplanner;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.facebook.FacebookSdk;
+import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.UserRegistrationListener;
 import com.tdp2.tripplanner.modelo.UserInstance;
+
+import org.json.JSONObject;
 
 /**
  * Clase inicializadora de la aplicación.
@@ -24,6 +31,10 @@ public class SplashActivity extends AppCompatActivity {
 
         FacebookSdk.sdkInitialize(this);
 
+        APIDAO dao = new APIDAO();
+        UserRegistrationListener listener = new UserRegistrationListener();
+        dao.registerUserAccess(this.getApplicationContext(), listener, listener);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -31,4 +42,5 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
+
 }

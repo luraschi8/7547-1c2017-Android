@@ -3,24 +3,43 @@ package com.tdp2.tripplanner.modelo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.iid.InstanceID;
 import com.google.gson.Gson;
 import com.tdp2.tripplanner.CitySelectionActivity;
 import com.tdp2.tripplanner.LoginActivity;
 import com.tdp2.tripplanner.ProfileActivity;
 import com.tdp2.tripplanner.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
+import java.util.UUID;
 
 public class UserInstance {
 
     private static SocialUser userProfile;
+    private static String deviceID;
 
     public static void finishInstance(final Context context) {
         LoginManager.getInstance().logOut();
         removeUserProfile(context);
+    }
+
+    public static String getDeviceID(Context context){
+        if (deviceID == null) {
+            deviceID = InstanceID.getInstance(context).getId();
+        }
+        return deviceID;
+    }
+
+    public static String getCountry(Context context) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        return manager.getSimCountryIso();
     }
 
     public static SocialUser getInstance(final Context context) {
@@ -120,5 +139,25 @@ public class UserInstance {
             applicationContext.startActivity(intent);
         }
 
+    }
+
+    public static JSONObject toJSON(Context context) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("idAndroid", UserInstance.getDeviceID(context));
+            data.put("pais", UserInstance.getCountry(context));
+            String username = "";
+            String socialID = "";
+            if (UserInstance.getInstance(context) != null) {
+                username = UserInstance.getInstance(context).getName();
+                socialID = UserInstance.getInstance(context).get_id();
+            }
+            data.put("nombre", username);
+            data.put("idRedSocial", socialID);
+        } catch (JSONException e) {
+            Log.e("JSON ERROR", "build user access json:" + e.toString());
+            return null;
+        }
+        return data;
     }
 }

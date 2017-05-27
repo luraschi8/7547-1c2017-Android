@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- Needed only if your app targets Android 5.0 (API level 21) or higher. -->
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-feature android:name="android.hardware.location.network" />
@@ -69,8 +70,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AtractionGridViewActivity"
-            android:label="@string/title_activity_atraction_grid_view"
+            android:name=".CityMenuActivity"
+            android:label="@string/title_activity_city_menu"
             android:parentActivityName=".CitySelectionActivity"
             android:theme="@style/AppTheme">
             <meta-data
@@ -78,14 +79,23 @@
                 android:value="com.tdp2.tripplanner.CitySelectionActivity" />
         </activity>
         <activity
+            android:name=".AttractionSelectionActivity"
+            android:label="@string/title_activity_atraction_grid_view"
+            android:parentActivityName=".CityMenuActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.CityMenuActivity" />
+        </activity>
+        <activity
             android:name=".AttractionDetailActivity"
             android:label="@string/title_activity_attraction_detail"
-            android:parentActivityName=".AtractionGridViewActivity"
+            android:parentActivityName=".AttractionSelectionActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.tdp2.tripplanner.AtractionGridViewActivity" />
+                android:value="com.tdp2.tripplanner.AttractionSelectionActivity" />
         </activity>
         <activity android:name=".AudioPlayerActivity" />
         <activity
@@ -134,6 +144,7 @@
                 android:value="com.tdp2.tripplanner.AttractionDetailActivity" />
         </activity>
         <activity android:name=".SettingsActivity" />
+
     </application>
 
 </manifest>

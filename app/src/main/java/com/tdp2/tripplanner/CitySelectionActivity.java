@@ -2,8 +2,6 @@ package com.tdp2.tripplanner;
 
 
 
-import android.graphics.Bitmap;
-
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,6 +62,7 @@ public class CitySelectionActivity extends AppCompatActivity
     private LocationService locationService;
     private Integer locationUpdates = 0;
     FloatingActionButton locationButton;
+    private String currentLanguage;
 
 
     @Override
@@ -71,6 +70,7 @@ public class CitySelectionActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_selection);
 
+        this.currentLanguage = LocaleHandler.loadLanguageSelection(this.getBaseContext());
         LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
         dao = new APIDAO();
@@ -252,7 +252,7 @@ public class CitySelectionActivity extends AppCompatActivity
                 getResources().getString(R.string.see_attractions));
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                Intent intent = new Intent(CitySelectionActivity.this, AtractionGridViewActivity.class);
+                Intent intent = new Intent(CitySelectionActivity.this, AttractionSelectionActivity.class);
                 CityDataHolder.setData(detectada);
                 CitySelectionActivity.this.startActivity(intent);
             }
@@ -301,6 +301,8 @@ public class CitySelectionActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        LocaleHandler.updateLocaleSettings(this);
+        if (!this.currentLanguage.equals(LocaleHandler.loadLanguageSelection(this.getBaseContext()))) {
+            this.recreate();
+        }
     }
 }

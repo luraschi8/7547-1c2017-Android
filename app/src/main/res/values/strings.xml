@@ -76,4 +76,8 @@
     <string name="loginToken">com.tdp2.tripplanner.token</string>
     <string name="title_activity_plano">PlanoActivity</string>
     <string name="title_activity_plano_atraccion">PlanoAtraccionActivity</string>
+    <string name="title_activity_city_menu">City</string>
+    <string name="atracciones_menu">Attractions</string>
+    <string name="my_favorites_menu">My Favorites</string>
+    <string name="tours_menu">Tours</string>
 </resources>

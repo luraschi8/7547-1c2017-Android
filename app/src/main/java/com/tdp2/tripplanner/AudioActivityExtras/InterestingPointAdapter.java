@@ -10,16 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.tdp2.tripplanner.AtractionGridViewActivity;
 import com.tdp2.tripplanner.InterestingPointDetailActivity;
 import com.tdp2.tripplanner.R;
-import com.tdp2.tripplanner.citySelectionActivityExtras.CityAdapter;
-import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
-import com.tdp2.tripplanner.citySelectionActivityExtras.CityFilter;
-import com.tdp2.tripplanner.modelo.City;
 import com.tdp2.tripplanner.modelo.InterestingPoint;
 
 import java.util.Collections;
