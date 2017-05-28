@@ -144,7 +144,14 @@
                 android:value="com.tdp2.tripplanner.AttractionDetailActivity" />
         </activity>
         <activity android:name=".SettingsActivity" />
-
+        <activity
+            android:name=".ToursSelectionActivity"
+            android:label="@string/title_activity_tours_selection"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AttractionsInTourActivity"
+            android:label="@string/title_activity_attractions_in_tour"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

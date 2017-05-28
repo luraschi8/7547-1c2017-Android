@@ -8,6 +8,8 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.tdp2.tripplanner.AttractionsInTourActivity;
+import com.tdp2.tripplanner.ToursSelectionActivity;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionDataHolder;
 import com.tdp2.tripplanner.helpers.APIAccessor;
 import com.tdp2.tripplanner.modelo.SocialUser;
@@ -24,9 +26,11 @@ import org.json.JSONObject;
  */
 
 public class APIDAO {
+    private static String ATRACCIONES_TOUR = "atraccionesTourJson";
     private static String CIUDADES = "ciudadesJson";
     private static String ATRACCIONES_CIUDAD = "atraccionesCiudadJson/";
     private static String PUNTOS_DE_INTERES_ATRACCION = "puntoAtraccionJson";
+    private static String RECORRIDOS_CIUDAD = "recorridosCiudadJson/";
     private static String ATRACCION = "atraccion";
     private static String PUNTO_DE_INTERES = "punto";
     private static String LOGIN = ""; //todo: completar
@@ -117,5 +121,22 @@ public class APIDAO {
         APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
     }
 
+    public void getToursForCity(Context applicationContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback, Integer cityId) {
+        String url = BASE_URL + RECORRIDOS_CIUDAD + "/" + String.valueOf(cityId) + "/" + LocaleHandler.loadLanguageSelection(applicationContext);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, responseCallback, errorCallback);
 
+        // Access the RequestQueue through your singleton class.
+        APIAccessor.getInstance(applicationContext).addToRequestQueue(jsObjRequest);
+
+    }
+
+    public void getAttractionsForTour(Context applicationContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback, int tourId) {
+        String url = BASE_URL + ATRACCIONES_TOUR + "/" + String.valueOf(tourId) + "/" + LocaleHandler.loadLanguageSelection(applicationContext);
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url , null, responseCallback, errorCallback);
+
+        // Access the RequestQueue through your singleton class.
+        APIAccessor.getInstance(applicationContext).addToRequestQueue(jsObjRequest);
+    }
 }

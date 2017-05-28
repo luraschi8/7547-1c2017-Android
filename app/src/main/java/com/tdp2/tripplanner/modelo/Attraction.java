@@ -32,6 +32,7 @@ public class Attraction {
     private String audioLink;
     private String videoLink;
     private Bitmap videoThumb;
+    public int order;
 
 
     public Attraction(Integer id, String name, String moreInfo, Double latitude, Double longitude, Bitmap image) {
@@ -53,6 +54,7 @@ public class Attraction {
             Attraction nueva = new Attraction(current.getInt("idAtraccion"), current.getString("nombre"), current.getString("descripcion"),
                     current.getDouble("latitud"), current.getDouble("longitud"),
                     BitmapFactory.decodeByteArray(img, 0, img.length));
+            nueva.setOrder(current.optInt("orden",0));
             return nueva;
         } catch (JSONException e) {
             Log.e("ATTRACTION_JSON", "error building from json " + e.toString());
@@ -167,5 +169,13 @@ public class Attraction {
 
     public void setVideoThumb(Bitmap videoThumb) {
         this.videoThumb = videoThumb;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

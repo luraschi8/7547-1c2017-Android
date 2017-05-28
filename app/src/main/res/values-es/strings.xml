@@ -38,4 +38,6 @@
     <string name="atracciones_menu">Atracciones</string>
     <string name="my_favorites_menu">Mis Favoritos</string>
     <string name="tours_menu">Recorridos</string>
+    <string name="tours_grid">Recorridos en </string>
+    <string name="attractions_in_tour">Atracciones en </string>
 </resources>

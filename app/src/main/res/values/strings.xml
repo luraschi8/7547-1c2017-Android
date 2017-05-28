@@ -78,4 +78,9 @@
     <string name="atracciones_menu">Attractions</string>
     <string name="my_favorites_menu">My Favorites</string>
     <string name="tours_menu">Tours</string>
+    <string name="title_activity_tours_selection">ToursSelectionActivity</string>
+    <string name="tours_grid">ToursGridView</string>
+    <string name="title_activity_attractions_in_tour">AttractionsInTourActivity</string>
+    <string name="attractions_in_tour">Attractions in</string>
+
 </resources>
