@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.tdp2.tripplanner.AttractionsInTourActivity;
 import com.tdp2.tripplanner.R;
@@ -58,13 +59,13 @@ public class ToursAdapter extends RecyclerView.Adapter<ToursAdapter.TourViewHold
     }
 
     public class TourViewHolder extends RecyclerView.ViewHolder {
-        public Button cardViewMainButton;
+        public TextView cardViewMainButton;
 
         private final Context tourContext;
         public TourViewHolder(View view, Context context) {
             super(view);
             tourContext = context;
-            cardViewMainButton = (Button) view.findViewById(R.id.tour_button);
+            cardViewMainButton = (TextView) view.findViewById(R.id.tour_button);
             cardViewMainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -14,18 +15,23 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="100dp"
+            android:clickable="true"
+            >
 
-            <Button
+            <TextView
                 android:id="@+id/tour_button"
-                android:paddingLeft="30dp"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                style="?android:attr/borderlessButtonStyle"
-                android:drawablePadding="-30dp"
-                android:text="Mis atracciones" />
+                android:layout_height="wrap_content"
+                android:text="Recorrido de los mejores cafés de la historia de la humanidad."
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:layout_centerVertical="true"
+                android:textAlignment="center"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/article_subheading"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

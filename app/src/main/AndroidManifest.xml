@@ -128,11 +128,22 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".CitySelectionActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.tdp2.tripplanner.CitySelectionActivity" />
+        </activity>
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".CitySelectionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.CitySelectionActivity" />
+        </activity>
         <activity
             android:name=".VideoPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -147,11 +158,21 @@
         <activity
             android:name=".ToursSelectionActivity"
             android:label="@string/title_activity_tours_selection"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".CityMenuActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.tdp2.tripplanner.CityMenuActivity" />
+        </activity>
         <activity
             android:name=".AttractionsInTourActivity"
             android:label="@string/title_activity_attractions_in_tour"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".ToursSelectionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.ToursSelectionActivity" />
+        </activity>
     </application>
 
 </manifest>

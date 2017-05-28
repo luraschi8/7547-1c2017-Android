@@ -110,10 +110,50 @@ public class InterestingPointSelection extends AppCompatActivity implements Resp
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.e("ERROR RESPONSE", error.toString());
-        Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+        if(!getResources().getBoolean(R.bool.mockUp)) {
+            Log.e("ERROR RESPONSE", error.toString());
+            Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+            progress.setVisibility(View.GONE);
+            refreshButton.setVisibility(View.VISIBLE);
+        } else {
+            this.mockInterestingPoints();
+        }
+
+    }
+
+    private void mockInterestingPoints() {
+        ArrayList<InterestingPoint> puntosDeInteresDeAtraccion = new ArrayList<>();
+        try {
+            JSONArray data = new JSONArray(getResources().getString(R.string.interestingPointsInAttractionMock));
+            for (int i = 0; i < data.length(); i++) {
+                JSONObject current = data.getJSONObject(i);
+                Integer borrado = current.getInt("borrado");
+                Boolean bborrado = borrado == 1 ;
+                if (!bborrado) {
+                    Bitmap image;
+                    if (current.get("imagenString").toString().equals("null")) {
+                        image = BitmapFactory.decodeResource(this.getResources(), R.drawable.buenos_aires_sample);
+                    } else {
+                        byte[] img = Base64.decode(current.getString("imagenString"), Base64.DEFAULT);
+                        image = BitmapFactory.decodeByteArray(img, 0, img.length);
+                    }
+                    Integer id = current.getInt("id");
+                    String descripcion = current.getString("descripcion");
+                    String nombre = current.getString("nombre");
+                    Integer orden = current.getInt("orden");
+                    InterestingPoint interestingPoint = new InterestingPoint(id, nombre, orden, descripcion, image);
+                    puntosDeInteresDeAtraccion.add(interestingPoint);
+
+                }
+
+            }
+        } catch (JSONException e) {
+            Log.e("ERROR JSON", e.getMessage());
+            return;
+        }
         progress.setVisibility(View.GONE);
-        refreshButton.setVisibility(View.VISIBLE);
+        this.adapter.setList(puntosDeInteresDeAtraccion);
+        this.adapter.notifyDataSetChanged();
     }
 
     @Override

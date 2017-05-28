@@ -198,10 +198,35 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.e("ERROR RESPONSE", error.toString());
-        Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+        if(getResources().getBoolean(R.bool.mockUp)) {
+            this.mockAttractions();
+        }else {
+            Log.e("ERROR RESPONSE", error.toString());
+            Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+            progress.setVisibility(View.GONE);
+            refreshButton.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+    private void mockAttractions() {
+        ArrayList<Attraction> lista = new ArrayList<>();
+        try {
+            JSONArray data = new JSONArray(getResources().getString(R.string.attractionsInCityMock));
+            for (int i = 0; i < data.length(); i++) {
+                JSONObject current = data.getJSONObject(i);
+                lista.add(Attraction.buildFromJson(current));
+            }
+        } catch (JSONException e) {
+            Log.e("ERROR JSON", e.getMessage());
+            return;
+        }
+        this.adapter = new AttractionAdapter(this, lista);
+        this.recyclerView.setAdapter(this.adapter);
+        this.attractionList = lista;
+        this.mMapHandler.setList(lista);
         progress.setVisibility(View.GONE);
-        refreshButton.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override

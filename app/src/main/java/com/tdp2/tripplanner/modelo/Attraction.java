@@ -50,10 +50,17 @@ public class Attraction {
 
     public static Attraction buildFromJson(JSONObject current) {
         try {
-            byte[] img = Base64.decode(current.getString("imagen"), Base64.DEFAULT);
+            Bitmap image;
+            try{
+                byte[] img = Base64.decode(current.getString("imagen"), Base64.DEFAULT);
+                 image = BitmapFactory.decodeByteArray(img, 0, img.length);
+            }catch (Exception e) {
+                image = null;
+            }
+
             Attraction nueva = new Attraction(current.getInt("idAtraccion"), current.getString("nombre"), current.getString("descripcion"),
-                    current.getDouble("latitud"), current.getDouble("longitud"),
-                    BitmapFactory.decodeByteArray(img, 0, img.length));
+                    current.getDouble("latitud"), current.getDouble("longitud"),image
+                    );
             nueva.setOrder(current.optInt("orden",0));
             return nueva;
         } catch (JSONException e) {

@@ -99,14 +99,22 @@ public class ToursSelectionActivity extends AppCompatActivity implements Respons
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        /*Log.e("ERROR RESPONSE", error.toString());
+        if (!getResources().getBoolean(R.bool.mockUp)){
+            Log.e("ERROR RESPONSE", error.toString());
+            Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
+            refreshButton.setVisibility(View.VISIBLE);
+        } else {
+            this.mockTours();
+        }
 
-        Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
-        progressBar.setVisibility(View.GONE);
-        refreshButton.setVisibility(View.VISIBLE);*/
+
+    }
+
+    private void mockTours() {
         ArrayList<Tour> tours = new ArrayList<>();
         try {
-            JSONArray data = new JSONArray("[{\"id\":1,\"nombre\":\"Recorrido de las mejores cafeterías de la ciudad\"},{\"id\":2,\"nombre\":\"Caminito\"}]");
+            JSONArray data = new JSONArray(getResources().getString(R.string.toursInCityMock));
             for (int i = 0; i < data.length(); i++) {
                 JSONObject current = data.getJSONObject(i);
                 tours.add(Tour.buildFromJson(current));
