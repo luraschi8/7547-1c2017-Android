@@ -34,6 +34,9 @@ public class APIDAO {
     private static String RESENIAS = "reseniasPaginadasAtraccionJson/";
     private static String CREAR_RESENIA = "crearResenia";
     private static String ACCESO_USUARIO = "accesoUsuario";
+    private static String AGREGAR_FAVORITO = "agregarFavorito";
+    private static String SACAR_FAVORITO = "sacarFavorito";
+    private static String OBTENER_FAVORITOS = "usuarioFavoritos";
 
 
     public void getComments(Context appContext, Response.Listener<JSONObject> callback, Response.ErrorListener errorCallback,
@@ -117,5 +120,43 @@ public class APIDAO {
         APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
     }
 
+    public void saveToFavorites(Context applicationContext, Response.Listener<JSONObject> callback,
+                                Response.ErrorListener errorListener, Integer idAtraccion) {
+        JSONObject object = UserInstance.toJSON(applicationContext);
+        try {
+            object.put("idAtraccion", String.valueOf(idAtraccion));
+        } catch (JSONException e) {
+            Log.e("ERROR", e.toString());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + AGREGAR_FAVORITO, object,
+                callback, errorListener);
+        APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
+    }
+
+    public void removeFavorite(Context applicationContext, Response.Listener<JSONObject> callback,
+                                    Response.ErrorListener errorListener, Integer idAtraccion) {
+        JSONObject object = UserInstance.toJSON(applicationContext);
+        try {
+            object.put("idAtraccion", String.valueOf(idAtraccion));
+        } catch (JSONException e) {
+            Log.e("ERROR", e.toString());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + SACAR_FAVORITO, object,
+                callback, errorListener);
+        APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
+    }
+
+    public void favoritesForUser(Context applicationContext, Response.Listener<JSONObject> callback,
+                               Response.ErrorListener errorListener, Integer idCity) {
+        JSONObject object = UserInstance.toJSON(applicationContext);
+        try {
+            object.put("idCiudad", String.valueOf(idCity));
+        } catch (JSONException e) {
+            Log.e("ERROR", e.toString());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + OBTENER_FAVORITOS, object,
+                callback, errorListener);
+        APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
+    }
 
 }

@@ -40,7 +40,7 @@ public class ShareCommentController implements View.OnClickListener, Response.Li
     @Override
     public void onClick(View view) {
         if (UserInstance.getInstance(this.context) == null ){
-            Toast.makeText(this.context, "You have to be logged in to continue.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.context, R.string.have_to_log, Toast.LENGTH_SHORT).show();
             return;
         }
         if (myComment.getText().toString().equals("")) {

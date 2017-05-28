@@ -81,8 +81,6 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
 
 
         attractionList = new ArrayList<>();
-        //TODO Change to json from API
-        //prepareAttractions();
         adapter = new AttractionAdapter(this, attractionList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);

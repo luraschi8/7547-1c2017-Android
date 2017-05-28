@@ -78,4 +78,6 @@
     <string name="atracciones_menu">Attractions</string>
     <string name="my_favorites_menu">My Favorites</string>
     <string name="tours_menu">Tours</string>
+    <string name="have_to_log">You have to be logged in to continue.</string>
+    <string name="remove_favorites">Attraction removed from favorites</string>
 </resources>

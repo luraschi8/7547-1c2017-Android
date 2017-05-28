@@ -32,6 +32,7 @@ public class Attraction {
     private String audioLink;
     private String videoLink;
     private Bitmap videoThumb;
+    private boolean isFavorite;
 
 
     public Attraction(Integer id, String name, String moreInfo, Double latitude, Double longitude, Bitmap image) {
@@ -45,6 +46,7 @@ public class Attraction {
         this.audioLink = null;
         this.videoLink = null;
         this.videoThumb = null;
+        this.isFavorite = false;
     }
 
     public static Attraction buildFromJson(JSONObject current) {
@@ -89,6 +91,14 @@ public class Attraction {
 
     public Boolean hasVideo() {
         return this.videoLink != null;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public String getVideoLink() {
