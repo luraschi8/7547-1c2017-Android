@@ -122,7 +122,7 @@ public class APIDAO {
     }
 
     public void getToursForCity(Context applicationContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback, Integer cityId) {
-        String url = BASE_URL + RECORRIDOS_CIUDAD + "/" + String.valueOf(cityId) + "/" + LocaleHandler.loadLanguageSelection(applicationContext);
+        String url = BASE_URL + RECORRIDOS_CIUDAD + "/" + String.valueOf(cityId);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, responseCallback, errorCallback);
 
@@ -132,7 +132,7 @@ public class APIDAO {
     }
 
     public void getAttractionsForTour(Context applicationContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback, int tourId) {
-        String url = BASE_URL + ATRACCIONES_TOUR + "/" + String.valueOf(tourId) + "/" + LocaleHandler.loadLanguageSelection(applicationContext);
+        String url = BASE_URL + ATRACCIONES_TOUR + "/" + String.valueOf(tourId);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url , null, responseCallback, errorCallback);
 
