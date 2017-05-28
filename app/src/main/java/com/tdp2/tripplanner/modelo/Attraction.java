@@ -32,6 +32,7 @@ public class Attraction {
     private String audioLink;
     private String videoLink;
     private Bitmap videoThumb;
+    private String planoURL;
     public int order;
 
 
@@ -85,6 +86,11 @@ public class Attraction {
 
             String audio = data.getString("audioEN");
             if (!audio.equals("null")) this.setAudio(audio);
+
+
+            String plano_URL = "http://www.achus.info/public/fotos/Johannesburg-Zoo-mapa.jpg";
+            if (plano_URL.equals("null")) this.setPlanoURL("");
+            else this.setPlanoURL(plano_URL);
 
             String video = data.getString("video");
             if (!video.equals("null")) {
@@ -176,6 +182,14 @@ public class Attraction {
 
     public void setVideoThumb(Bitmap videoThumb) {
         this.videoThumb = videoThumb;
+    }
+
+    public void setPlanoURL(String planoURL) {
+        this.planoURL = planoURL;
+    }
+
+    public String getPlanoURL() {
+        return planoURL;
     }
 
     public int getOrder() {
