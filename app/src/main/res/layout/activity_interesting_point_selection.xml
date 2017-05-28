@@ -5,10 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tdp2.tripplanner.CitySelectionActivity">
+    tools:context="com.tdp2.tripplanner.InterestingPointSelection">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_ipgrid"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:background="@color/colorPrimary"
@@ -20,37 +20,37 @@
 
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBar_interestingPoint"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_ipgrid"
         app:layout_constraintBottom_toBottomOf="parent">
     </ProgressBar>
 
     <ImageButton
-        android:id="@+id/refreshButton"
+        android:id="@+id/refreshButton_interestingPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_ipgrid"
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/refresh"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+        android:id="@+id/recycler_interestingPoint"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="0dp"
         android:scrollbars="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_ipgrid"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 

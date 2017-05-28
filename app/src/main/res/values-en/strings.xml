@@ -41,4 +41,6 @@
     <string name="tours_grid">Tours in </string>
     <string name="attractions_in_tour">Attractions in</string>
     <string name="logout">Logout</string>
+    <string name="interesting_point_in">Interesting Points in </string>
+    <string name="error_cargar_imagen">Error uploading image</string>
 </resources>

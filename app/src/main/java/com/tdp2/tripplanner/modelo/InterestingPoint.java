@@ -1,7 +1,15 @@
 package com.tdp2.tripplanner.modelo;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 import android.widget.ImageView;
+
+import com.tdp2.tripplanner.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Casa on 15/4/2017.
@@ -46,5 +54,27 @@ public class InterestingPoint {
 
     public String getAudio() {
         return audio;
+    }
+
+    public static InterestingPoint buildFromJson(JSONObject current) {
+        try {
+            Bitmap image;
+            try{
+                byte[] img = Base64.decode(current.getString("imagen"), Base64.DEFAULT);
+                image = BitmapFactory.decodeByteArray(img, 0, img.length);
+            }catch (Exception e) {
+                image = null;
+            }
+            Integer id = current.getInt("id");
+            String descripcion = current.getString("descripcion");
+            String nombre = current.getString("nombre");
+            Integer orden = current.getInt("orden");
+            InterestingPoint interestingPoint = new InterestingPoint(id, nombre, orden, descripcion, image);
+            return interestingPoint;
+
+        } catch (JSONException e) {
+            Log.e("ATTRACTION_JSON", "error building from json " + e.toString());
+            return null;
+        }
     }
 }
