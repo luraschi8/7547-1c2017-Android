@@ -18,21 +18,6 @@
             android:layout_below="@+id/textView"
             android:layout_marginTop="15dp" />
 
-        <include
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            layout="@layout/miperfil_card"
-            android:id="@+id/mis_comentarios"
-            android:layout_below="@+id/user_info"
-            android:layout_marginTop="25dp" />
-
-        <include
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            layout="@layout/miperfil_card"
-            android:id="@+id/mis_atracciones_favoritas"
-            android:layout_below="@+id/mis_comentarios"
-            android:layout_marginTop="15dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,20 +33,16 @@
         <Button
             android:layout_width="200dp"
             android:layout_height="42dp"
-            android:text="Salir"
+            android:text="@string/logout"
             android:id="@+id/salir"
             android:textSize="14sp"
             android:layout_marginTop="40dp"
             android:textColor="@color/white"
             android:background="@drawable/backg_selector2"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/mis_atracciones_favoritas"
- />
+            android:layout_below="@id/user_info"
+        />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_below="@+id/salir" />
 
     </RelativeLayout>
 </ScrollView>

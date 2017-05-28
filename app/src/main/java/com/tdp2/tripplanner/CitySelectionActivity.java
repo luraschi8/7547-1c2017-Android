@@ -323,7 +323,7 @@ public class CitySelectionActivity extends AppCompatActivity
                 this.startActivity(intent);
                 return true;
             case R.id.accounts_item:
-                UserInstance.loginRedirect(getApplicationContext());
+                UserInstance.loginRedirect(this);
                 return true;
         }
 

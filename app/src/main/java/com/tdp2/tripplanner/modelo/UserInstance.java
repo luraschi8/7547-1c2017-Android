@@ -129,13 +129,11 @@ public class UserInstance {
         final SocialUser socialUser = getSocialUser(applicationContext);
         if (socialUser != null && socialUser.getToken() != null) {
             Log.i(applicationContext.getClass().getName(), "User already exists.");
-            final Intent intent = new Intent(applicationContext, ProfileActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent = new Intent(applicationContext, ProfileActivity.class);
             applicationContext.startActivity(intent);
         } else {
             Log.i(applicationContext.getClass().getName(), "User doesn't exist.");
-            final Intent intent = new Intent(applicationContext, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent = new Intent(applicationContext, LoginActivity.class);
             applicationContext.startActivity(intent);
         }
 

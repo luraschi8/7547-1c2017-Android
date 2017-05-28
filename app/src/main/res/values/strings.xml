@@ -82,5 +82,6 @@
     <string name="tours_grid">ToursGridView</string>
     <string name="title_activity_attractions_in_tour">AttractionsInTourActivity</string>
     <string name="attractions_in_tour">Attractions in</string>
+    <string name="logout">Logout</string>
 
 </resources>
