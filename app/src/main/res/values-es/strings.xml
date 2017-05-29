@@ -24,7 +24,7 @@
     <string name="city_detected">Ciudad Detectada</string>
     <string name="detection_text">"Detectamos que te encuentras en: "</string>
     <string name="see_attractions">Deseas ver las atraccioens disponibles?</string>
-    <string name="video_dialog">Attraction Video</string>
+    <string name="video_dialog">Video de Atraccion.</string>
     <string name="buffering">Cargando...</string>
     <string name="missing_comment">Olvidaste escribir tu comentario.</string>
     <string name="thank_you">Gracias por tu comentario.</string>
@@ -38,12 +38,14 @@
     <string name="atracciones_menu">Atracciones</string>
     <string name="my_favorites_menu">Mis Favoritos</string>
     <string name="tours_menu">Recorridos</string>
-    <string name="have_to_log">You have to be logged in to continue.</string>
-    <string name="remove_favorites">Attraction removed from favorites</string>
+    <string name="have_to_log">Debes estar logueado para continuar.</string>
+    <string name="remove_favorites">Atraccion removida de favoritos.</string>
     <string name="tours_grid">Recorridos en </string>
     <string name="attractions_in_tour">Atracciones en </string>
     <string name="logout">Desloguarme</string>
     <string name="interesting_point_in">Puntos de Interes en</string>
     <string name="error_cargar_imagen">Error cargando la imagen</string>
-    <string name="second_comment">You have already commented.</string>
+    <string name="second_comment">Ya has comentado en esta atraccion.</string>
+    <string name="accept">Aceptar</string>
+    <string name="select_language">Selecciona el lenguaje</string>
 </resources>
