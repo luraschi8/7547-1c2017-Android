@@ -1,6 +1,8 @@
 package com.tdp2.tripplanner.attractionSelectionActivityExtras;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -41,7 +43,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnInfoWindowCli
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    private AttractionSelectionActivity mOwner;
+    private Activity mOwner;
     private Hashtable<String, Attraction> markers;
     private ArrayList<Attraction> attractionList;
     private Boolean locationPermission;
@@ -50,7 +52,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnInfoWindowCli
     private Location mLastLocation;
     private GoogleMap mMap;
 
-    public MapHandler (AttractionSelectionActivity mOwner) {
+    public MapHandler (Activity mOwner) {
         this.mOwner = mOwner;
         this.markers = new Hashtable<>();
         this.attractionList = new ArrayList<>();

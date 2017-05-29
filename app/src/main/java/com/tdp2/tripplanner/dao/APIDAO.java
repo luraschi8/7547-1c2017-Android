@@ -36,10 +36,17 @@ public class APIDAO {
     private static String ATRACCION = "atraccion";
     private static String PUNTO_DE_INTERES = "punto";
     private static String LOGIN = ""; //todo: completar
+<<<<<<< HEAD
     private static String BASE_URL = "http://10.0.2.2:8080/Trips/";
+=======
+    private static String BASE_URL = "http://10.0.2.2:8080/";
+>>>>>>> e55270ab354a58fa728f0ed422cf16d0e1a6b6da
     private static String RESENIAS = "reseniasPaginadasAtraccionJson/";
     private static String CREAR_RESENIA = "crearResenia";
     private static String ACCESO_USUARIO = "accesoUsuario";
+    private static String AGREGAR_FAVORITO = "agregarFavorito";
+    private static String SACAR_FAVORITO = "sacarFavorito";
+    private static String OBTENER_FAVORITOS = "usuarioFavoritos";
 
 
     public void getComments(Context appContext, Response.Listener<JSONObject> callback, Response.ErrorListener errorCallback,
@@ -62,12 +69,10 @@ public class APIDAO {
     public void getAttractionForCity(Context appContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback,
                                       Integer cityId) {
         String url = BASE_URL + ATRACCIONES_CIUDAD + "/" + String.valueOf(cityId) + "/" + LocaleHandler.loadLanguageSelection(appContext);
+        JSONObject object = UserInstance.toJSON(appContext);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url , null, responseCallback, errorCallback);
+                (Request.Method.POST, url , object, responseCallback, errorCallback);
 
-        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(500000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(appContext).addToRequestQueue(jsObjRequest);
     }
@@ -76,25 +81,9 @@ public class APIDAO {
                                      Integer attractionId) {
         String url =  BASE_URL + ATRACCION + "/" + String.valueOf(attractionId) + "/" + LocaleHandler.loadLanguageSelection(appContext);
         JSONObject object = UserInstance.toJSON(appContext);
-
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.POST, url, object, responseCallback, errorCallback);
-        jsObjRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
 
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(appContext).addToRequestQueue(jsObjRequest);
     }
@@ -129,6 +118,11 @@ public class APIDAO {
     public void postComment(Context applicationContext, Response.Listener<JSONObject> responseCallback,
                             Response.ErrorListener errorListener, Comment comment) {
         JSONObject toPost = comment.toJSON();
+        try {
+            toPost.put("idRedSocial", UserInstance.getInstance(applicationContext).get_id());
+        } catch (JSONException e){
+            Log.e("ERROR", e.toString());
+        }
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + CREAR_RESENIA, toPost,
                 responseCallback, errorListener);
         APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
@@ -139,6 +133,45 @@ public class APIDAO {
         JSONObject object = UserInstance.toJSON(applicationContext);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + ACCESO_USUARIO, object,
                 callback, errorListener);
+        APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
+    }
+
+    public void saveToFavorites(Context applicationContext, Response.Listener<JSONObject> callback,
+                                Response.ErrorListener errorListener, Integer idAtraccion) {
+        JSONObject object = UserInstance.toJSON(applicationContext);
+        try {
+            object.put("idAtraccion", String.valueOf(idAtraccion));
+        } catch (JSONException e) {
+            Log.e("ERROR", e.toString());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + AGREGAR_FAVORITO, object,
+                callback, errorListener);
+        APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
+    }
+
+    public void removeFavorite(Context applicationContext, Response.Listener<JSONObject> callback,
+                                    Response.ErrorListener errorListener, Integer idAtraccion) {
+        JSONObject object = UserInstance.toJSON(applicationContext);
+        try {
+            object.put("idAtraccion", String.valueOf(idAtraccion));
+        } catch (JSONException e) {
+            Log.e("ERROR", e.toString());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + SACAR_FAVORITO, object,
+                callback, errorListener);
+        APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
+    }
+
+    public void favoritesForUser(Context applicationContext, Response.Listener<JSONObject> callback,
+                               Response.ErrorListener errorListener, Integer idCity) {
+        JSONObject object = UserInstance.toJSON(applicationContext);
+        try {
+            object.put("idCiudad", String.valueOf(idCity));
+        } catch (JSONException e) {
+            Log.e("ERROR", e.toString());
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + OBTENER_FAVORITOS + "/" + LocaleHandler.loadLanguageSelection(applicationContext),
+                object, callback, errorListener);
         APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
     }
 

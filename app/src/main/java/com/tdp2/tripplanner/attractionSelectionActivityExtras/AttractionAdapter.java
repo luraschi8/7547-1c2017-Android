@@ -14,8 +14,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.tdp2.tripplanner.AttractionDetailActivity;
 import com.tdp2.tripplanner.R;
+import com.tdp2.tripplanner.dao.APIDAO;
+import com.tdp2.tripplanner.helpers.AddToFavoritesResponseListener;
+import com.tdp2.tripplanner.helpers.FavController;
+import com.tdp2.tripplanner.helpers.RemoveFavoriteResponseListener;
 import com.tdp2.tripplanner.modelo.Attraction;
+import com.tdp2.tripplanner.modelo.UserInstance;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -33,11 +39,12 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public ImageView thumbnail, more, fav, bookmark;
+        public ImageView thumbnail, fav;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.attractionName);
+            fav = (ImageView) view.findViewById(R.id.favAttraction);
             thumbnail = (ImageView) view.findViewById(R.id.atractionImage);
             thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -47,15 +54,6 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
                     mContext.startActivity(intent);
                 }
             });
-            more = (ImageView) view.findViewById(R.id.moreAttraction);
-            fav = (ImageView) view.findViewById(R.id.favAttraction);
-            fav.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(mContext, R.string.attraction_faved, Toast.LENGTH_SHORT).show();
-                }
-            });
-            bookmark = (ImageView) view.findViewById(R.id.saveAttraction);
         }
 
     }
@@ -63,7 +61,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
 
     public AttractionAdapter(Context mContext, List<Attraction> attractionList) {
         this.mContext = mContext;
-        this.attractionList = attractionList;
+        this.attractionList = new ArrayList<>(attractionList);
         this.filter = new AttractionFilter(this.attractionList, this);
     }
 
@@ -80,7 +78,8 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
         Attraction attraction = attractionList.get(position);
         holder.title.setText(attraction.getName());
         holder.thumbnail.setImageBitmap(attraction.getMainImage());
-        //TODO if already bookmarked draw the other icon, the same for favorites
+        if (attraction.isFavorite()) holder.fav.setImageResource(R.drawable.heart);
+        holder.fav.setOnClickListener(new FavController(mContext, attraction, holder.fav));
     }
 
     // set adapter filtered list

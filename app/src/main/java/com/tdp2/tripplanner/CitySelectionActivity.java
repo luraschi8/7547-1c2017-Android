@@ -38,6 +38,7 @@ import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.helpers.LocationRequester;
 import com.tdp2.tripplanner.helpers.LocationService;
+import com.tdp2.tripplanner.helpers.SpinnerDialog;
 import com.tdp2.tripplanner.modelo.City;
 import com.tdp2.tripplanner.modelo.UserInstance;
 
@@ -319,8 +320,20 @@ public class CitySelectionActivity extends AppCompatActivity
         switch (item.getItemId())
         {
             case R.id.settings_item:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                this.startActivity(intent);
+                SpinnerDialog dialog = new SpinnerDialog(this, new SpinnerDialog.DialogListener() {
+                    public void cancelled() {
+                        // do your code here
+                    }
+                    public void ready(String selected) {
+                        LocaleHandler.saveLanguageSelection(CitySelectionActivity.this, selected);
+                        Intent refresh = new Intent(CitySelectionActivity.this, CitySelectionActivity.class);
+                        startActivity(refresh);
+                        finish();
+                    }
+                });
+                dialog.show();
+                //Intent intent = new Intent(this, SettingsActivity.class);
+                //this.startActivity(intent);
                 return true;
             case R.id.accounts_item:
                 UserInstance.loginRedirect(this);

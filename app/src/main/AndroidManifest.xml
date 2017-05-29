@@ -173,6 +173,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tdp2.tripplanner.ToursSelectionActivity" />
         </activity>
+        <activity
+            android:name=".FavoriteAttractionActivity"
+            android:label="@string/title_activity_favorite_attraction"
+            android:parentActivityName=".CityMenuActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tdp2.tripplanner.CityMenuActivity" />
+        </activity>
     </application>
 
 </manifest>

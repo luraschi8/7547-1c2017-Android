@@ -38,9 +38,14 @@
     <string name="atracciones_menu">Attractions</string>
     <string name="my_favorites_menu">My Favorites</string>
     <string name="tours_menu">Tours</string>
+    <string name="have_to_log">You have to be logged in to continue.</string>
+    <string name="remove_favorites">Attraction removed from favorites</string>
     <string name="tours_grid">Tours in </string>
     <string name="attractions_in_tour">Attractions in</string>
     <string name="logout">Logout</string>
     <string name="interesting_point_in">Interesting Points in </string>
     <string name="error_cargar_imagen">Error uploading image</string>
+    <string name="second_comment">You have already commented.</string>
+    <string name="accept">Accept</string>
+    <string name="select_language">Select language</string>
 </resources>

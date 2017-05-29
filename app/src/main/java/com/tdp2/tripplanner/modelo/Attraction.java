@@ -32,6 +32,7 @@ public class Attraction {
     private String audioLink;
     private String videoLink;
     private Bitmap videoThumb;
+    private boolean isFavorite;
     private String planoURL;
     public int order;
 
@@ -47,22 +48,20 @@ public class Attraction {
         this.audioLink = null;
         this.videoLink = null;
         this.videoThumb = null;
+        this.isFavorite = false;
     }
 
     public static Attraction buildFromJson(JSONObject current) {
         try {
             Bitmap image;
-            try{
-                byte[] img = Base64.decode(current.getString("imagen"), Base64.DEFAULT);
-                 image = BitmapFactory.decodeByteArray(img, 0, img.length);
-            }catch (Exception e) {
-                image = null;
-            }
+            byte[] img = Base64.decode(current.getString("imagen"), Base64.DEFAULT);
+            image = BitmapFactory.decodeByteArray(img, 0, img.length);
 
             Attraction nueva = new Attraction(current.getInt("idAtraccion"), current.getString("nombre"), current.getString("descripcion"),
-                    current.getDouble("latitud"), current.getDouble("longitud"),image
-                    );
+                    current.getDouble("latitud"), current.getDouble("longitud"),image);
             nueva.setOrder(current.optInt("orden",0));
+            Boolean fav = current.getBoolean("favorito");
+            nueva.setFavorite(fav);
             return nueva;
         } catch (JSONException e) {
             Log.e("ATTRACTION_JSON", "error building from json " + e.toString());
@@ -104,6 +103,14 @@ public class Attraction {
 
     public Boolean hasVideo() {
         return this.videoLink != null;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public String getVideoLink() {
