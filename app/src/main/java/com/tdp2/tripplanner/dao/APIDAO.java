@@ -182,7 +182,7 @@ public class APIDAO {
     }
 
     public void getAttractionsForTour(Context applicationContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback, int tourId) {
-        String url = BASE_URL + ATRACCIONES_TOUR + "/" + String.valueOf(tourId);
+        String url = BASE_URL + ATRACCIONES_TOUR + "/" + String.valueOf(tourId) + "/" + LocaleHandler.loadLanguageSelection(applicationContext);;
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url , null, responseCallback, errorCallback);
 
