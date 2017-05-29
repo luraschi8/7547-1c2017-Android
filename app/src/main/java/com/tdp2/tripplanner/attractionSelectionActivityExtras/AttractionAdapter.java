@@ -21,6 +21,7 @@ import com.tdp2.tripplanner.helpers.RemoveFavoriteResponseListener;
 import com.tdp2.tripplanner.modelo.Attraction;
 import com.tdp2.tripplanner.modelo.UserInstance;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -60,7 +61,7 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
 
     public AttractionAdapter(Context mContext, List<Attraction> attractionList) {
         this.mContext = mContext;
-        this.attractionList = attractionList;
+        this.attractionList = new ArrayList<>(attractionList);
         this.filter = new AttractionFilter(this.attractionList, this);
     }
 

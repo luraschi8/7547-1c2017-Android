@@ -97,7 +97,7 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
             }
         });
         refreshButton.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
+        //recyclerView.setVisibility(View.GONE);
 
         this.mMapHandler = new MapHandler(this);
         dao = new APIDAO();
@@ -242,12 +242,12 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
             Log.e("ERROR JSON", e.getMessage());
             return;
         }
+        progress.setVisibility(View.GONE);
+        //recyclerView.setVisibility(View.VISIBLE);
         this.adapter = new AttractionAdapter(this, lista);
         this.recyclerView.setAdapter(this.adapter);
         this.attractionList = lista;
         this.mMapHandler.setList(lista);
-        progress.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
