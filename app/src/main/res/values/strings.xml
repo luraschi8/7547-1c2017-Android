@@ -82,6 +82,7 @@
     <string name="tours_menu">Tours</string>
     <string name="have_to_log">You have to be logged in to continue.</string>
     <string name="remove_favorites">Attraction removed from favorites</string>
+    <string name="title_activity_favorite_attraction">FavoriteAttractionActivity</string>
     <string name="title_activity_tours_selection">ToursSelectionActivity</string>
     <string name="tours_grid">ToursGridView</string>
     <string name="title_activity_attractions_in_tour">AttractionsInTourActivity</string>
@@ -89,5 +90,6 @@
     <string name="logout">Logout</string>
     <string name="interesting_point_in">Interesting Points in </string>
     <string name="error_cargar_imagen">Error uploading image</string>
+    <string name="second_comment">You have already commented.</string>
 
 </resources>

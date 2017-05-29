@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import static com.tdp2.tripplanner.helpers.LocationService.MY_PERMISSIONS_REQUEST_FINE_LOCATION;
 
 
-public class AttractionSelectionActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
+public class FavoriteAttractionActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
         Response.ErrorListener {
 
     private MapHandler mMapHandler;
@@ -72,7 +72,6 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
         configToolbar(cityName);
 
         recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
-
 
         attractionList = new ArrayList<>();
         adapter = new AttractionAdapter(this, attractionList);
@@ -107,7 +106,7 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
     private void configToolbar(String cityName) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle(this.getString(R.string.atraction_grid) + " " + cityName);
+        toolbar.setTitle(this.getString(R.string.my_favorites_menu));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -192,41 +191,16 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
 
 
     public void refreshAttractions(Integer cityId){
-        this.dao.getAttractionForCity(this.getApplicationContext(), this, this, cityId);
+        this.dao.favoritesForUser(this.getApplicationContext(), this, this, cityId);
     }
 
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        if(getResources().getBoolean(R.bool.mockUp)) {
-            this.mockAttractions();
-        }else {
-            Log.e("ERROR RESPONSE", error.toString());
-            Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
-            progress.setVisibility(View.GONE);
-            refreshButton.setVisibility(View.VISIBLE);
-
-        }
-    }
-
-    private void mockAttractions() {
-        ArrayList<Attraction> lista = new ArrayList<>();
-        try {
-            JSONArray data = new JSONArray(getResources().getString(R.string.attractionsInCityMock));
-            for (int i = 0; i < data.length(); i++) {
-                JSONObject current = data.getJSONObject(i);
-                lista.add(Attraction.buildFromJson(current));
-            }
-        } catch (JSONException e) {
-            Log.e("ERROR JSON", e.getMessage());
-            return;
-        }
-        this.adapter = new AttractionAdapter(this, lista);
-        this.recyclerView.setAdapter(this.adapter);
-        this.attractionList = lista;
-        this.mMapHandler.setList(lista);
+        Log.e("ERROR RESPONSE", error.toString());
+        Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
         progress.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+        refreshButton.setVisibility(View.VISIBLE);
     }
 
     @Override

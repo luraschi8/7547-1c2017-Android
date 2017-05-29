@@ -55,6 +55,7 @@ public class ShareCommentController implements View.OnClickListener, Response.Li
     @Override
     public void onErrorResponse(VolleyError error) {
         Log.e("ERROR", "Error posting comment");
+        Toast.makeText(context, R.string.second_comment, Toast.LENGTH_SHORT).show();
     }
 
     @Override

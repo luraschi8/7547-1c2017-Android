@@ -35,6 +35,15 @@ public class CityMenuActivity extends AppCompatActivity {
             }
         });
 
+        RelativeLayout favorites = (RelativeLayout) findViewById(R.id.favorite_attraction_card_bg);
+        favorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CityMenuActivity.this, FavoriteAttractionActivity.class);
+                CityMenuActivity.this.startActivity(intent);
+            }
+        });
+
 
         RelativeLayout tours = (RelativeLayout) findViewById(R.id.menu_tours_card_bg);
         tours.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +53,6 @@ public class CityMenuActivity extends AppCompatActivity {
                 CityMenuActivity.this.startActivity(intent);
             }
         });
-        //TODO Agregar aca la activity de favoritas y de recorridos.
 
         CardView cardView = (CardView) findViewById(R.id.favorite_attraction_card);
         if (UserInstance.getInstance(this) == null) cardView.setVisibility(View.GONE);

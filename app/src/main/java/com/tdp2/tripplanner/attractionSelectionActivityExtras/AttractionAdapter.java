@@ -32,7 +32,6 @@ import java.util.List;
 public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.MyViewHolder> {
 
     private Context mContext;
-    private APIDAO dao;
     private List<Attraction> attractionList;
     private AttractionFilter filter;
 
@@ -62,7 +61,6 @@ public class AttractionAdapter extends RecyclerView.Adapter<AttractionAdapter.My
     public AttractionAdapter(Context mContext, List<Attraction> attractionList) {
         this.mContext = mContext;
         this.attractionList = attractionList;
-        this.dao = new APIDAO();
         this.filter = new AttractionFilter(this.attractionList, this);
     }
 

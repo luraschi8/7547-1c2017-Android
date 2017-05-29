@@ -45,4 +45,5 @@
     <string name="logout">Desloguarme</string>
     <string name="interesting_point_in">Puntos de Interes en</string>
     <string name="error_cargar_imagen">Error cargando la imagen</string>
+    <string name="second_comment">You have already commented.</string>
 </resources>

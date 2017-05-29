@@ -45,4 +45,5 @@
     <string name="logout">Logout</string>
     <string name="interesting_point_in">Interesting Points in </string>
     <string name="error_cargar_imagen">Error uploading image</string>
+    <string name="second_comment">You have already commented.</string>
 </resources>

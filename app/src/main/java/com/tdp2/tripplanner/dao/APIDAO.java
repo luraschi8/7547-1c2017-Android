@@ -65,8 +65,9 @@ public class APIDAO {
     public void getAttractionForCity(Context appContext, Response.Listener<JSONObject> responseCallback, Response.ErrorListener errorCallback,
                                       Integer cityId) {
         String url = BASE_URL + ATRACCIONES_CIUDAD + "/" + String.valueOf(cityId) + "/" + LocaleHandler.loadLanguageSelection(appContext);
+        JSONObject object = UserInstance.toJSON(appContext);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url , null, responseCallback, errorCallback);
+                (Request.Method.POST, url , object, responseCallback, errorCallback);
 
         // Access the RequestQueue through your singleton class.
         APIAccessor.getInstance(appContext).addToRequestQueue(jsObjRequest);
@@ -113,6 +114,11 @@ public class APIDAO {
     public void postComment(Context applicationContext, Response.Listener<JSONObject> responseCallback,
                             Response.ErrorListener errorListener, Comment comment) {
         JSONObject toPost = comment.toJSON();
+        try {
+            toPost.put("idRedSocial", UserInstance.getInstance(applicationContext).get_id());
+        } catch (JSONException e){
+            Log.e("ERROR", e.toString());
+        }
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + CREAR_RESENIA, toPost,
                 responseCallback, errorListener);
         APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
@@ -160,8 +166,8 @@ public class APIDAO {
         } catch (JSONException e) {
             Log.e("ERROR", e.toString());
         }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + OBTENER_FAVORITOS, object,
-                callback, errorListener);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + OBTENER_FAVORITOS + "/" + LocaleHandler.loadLanguageSelection(applicationContext),
+                object, callback, errorListener);
         APIAccessor.getInstance(applicationContext).addToRequestQueue(request);
     }
 
