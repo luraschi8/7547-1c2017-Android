@@ -36,11 +36,7 @@ public class APIDAO {
     private static String ATRACCION = "atraccion";
     private static String PUNTO_DE_INTERES = "punto";
     private static String LOGIN = ""; //todo: completar
-<<<<<<< HEAD
     private static String BASE_URL = "http://10.0.2.2:8080/Trips/";
-=======
-    private static String BASE_URL = "http://10.0.2.2:8080/";
->>>>>>> e55270ab354a58fa728f0ed422cf16d0e1a6b6da
     private static String RESENIAS = "reseniasPaginadasAtraccionJson/";
     private static String CREAR_RESENIA = "crearResenia";
     private static String ACCESO_USUARIO = "accesoUsuario";
