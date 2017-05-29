@@ -33,6 +33,8 @@ public class Attraction {
     private String videoLink;
     private Bitmap videoThumb;
     private boolean isFavorite;
+    private String planoURL;
+    public int order;
 
 
     public Attraction(Integer id, String name, String moreInfo, Double latitude, Double longitude, Bitmap image) {
@@ -51,10 +53,18 @@ public class Attraction {
 
     public static Attraction buildFromJson(JSONObject current) {
         try {
-            byte[] img = Base64.decode(current.getString("imagen"), Base64.DEFAULT);
+            Bitmap image;
+            try{
+                byte[] img = Base64.decode(current.getString("imagen"), Base64.DEFAULT);
+                 image = BitmapFactory.decodeByteArray(img, 0, img.length);
+            }catch (Exception e) {
+                image = null;
+            }
+
             Attraction nueva = new Attraction(current.getInt("idAtraccion"), current.getString("nombre"), current.getString("descripcion"),
-                    current.getDouble("latitud"), current.getDouble("longitud"),
-                    BitmapFactory.decodeByteArray(img, 0, img.length));
+                    current.getDouble("latitud"), current.getDouble("longitud"),image
+                    );
+            nueva.setOrder(current.optInt("orden",0));
             return nueva;
         } catch (JSONException e) {
             Log.e("ATTRACTION_JSON", "error building from json " + e.toString());
@@ -78,6 +88,11 @@ public class Attraction {
 
             String audio = data.getString("audioEN");
             if (!audio.equals("null")) this.setAudio(audio);
+
+
+            String plano_URL = "http://www.achus.info/public/fotos/Johannesburg-Zoo-mapa.jpg";
+            if (plano_URL.equals("null")) this.setPlanoURL("");
+            else this.setPlanoURL(plano_URL);
 
             String video = data.getString("video");
             if (!video.equals("null")) {
@@ -177,5 +192,21 @@ public class Attraction {
 
     public void setVideoThumb(Bitmap videoThumb) {
         this.videoThumb = videoThumb;
+    }
+
+    public void setPlanoURL(String planoURL) {
+        this.planoURL = planoURL;
+    }
+
+    public String getPlanoURL() {
+        return planoURL;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

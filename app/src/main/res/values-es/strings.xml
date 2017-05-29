@@ -40,4 +40,9 @@
     <string name="tours_menu">Recorridos</string>
     <string name="have_to_log">You have to be logged in to continue.</string>
     <string name="remove_favorites">Attraction removed from favorites</string>
+    <string name="tours_grid">Recorridos en </string>
+    <string name="attractions_in_tour">Atracciones en </string>
+    <string name="logout">Desloguarme</string>
+    <string name="interesting_point_in">Puntos de Interes en</string>
+    <string name="error_cargar_imagen">Error cargando la imagen</string>
 </resources>

@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.tdp2.tripplanner.AttractionSelectionActivity">
+    tools:context="com.tdp2.tripplanner.ToursSelectionActivity"
+    tools:showIn="@layout/activity_tours_selection">
 
     <ProgressBar
-        android:id="@+id/progressBarAttractions"
+        android:id="@+id/progressBarTours"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +20,7 @@
     </ProgressBar>
 
     <ImageButton
-        android:id="@+id/refreshButtonAttractions"
+        android:id="@+id/refreshButtonTours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -30,8 +31,10 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"/>
 
+
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/attraction_recycler_view"
+        android:id="@+id/tours_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"

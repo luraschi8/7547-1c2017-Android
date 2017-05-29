@@ -157,10 +157,42 @@ public class CitySelectionActivity extends AppCompatActivity
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.e("ERROR RESPONSE", error.toString());
-        Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+        if(!getResources().getBoolean(R.bool.mockUp)) {
+            Log.e("ERROR RESPONSE", error.toString());
+            Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+            progress.setVisibility(View.GONE);
+            refreshButton.setVisibility(View.VISIBLE);
+        }else {
+            this.mockCities();
+        }
+
+    }
+
+    private void mockCities() {
+        ArrayList<City> lista = new ArrayList<>();
+        try {
+            JSONArray data = new JSONArray(getResources().getString(R.string.citiesMock));
+            for (int i = 0; i < data.length(); i++) {
+                JSONObject current = data.getJSONObject(i);
+                if( current.get("image").toString().equals("null") )
+                    lista.add(new City(current.getInt("id"), current.getString("nombre"), current.getString("pais"),
+                            BitmapFactory.decodeResource(this.getResources(), R.drawable.buenos_aires_sample) ,
+                            current.getDouble("latitud"), current.getDouble("longitud")));
+                else {
+                    byte[] img = Base64.decode(current.getString("image"), Base64.DEFAULT);
+                    lista.add(new City(current.getInt("id"), current.getString("nombre"), current.getString("pais"),
+                            BitmapFactory.decodeByteArray(img, 0, img.length),
+                            current.getDouble("latitud"), current.getDouble("longitud")));
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("ERROR JSON", e.getMessage());
+            return;
+        }
         progress.setVisibility(View.GONE);
-        refreshButton.setVisibility(View.VISIBLE);
+        this.adapter = new CityAdapter(lista, this);
+        this.recycler.setAdapter(this.adapter);
+        locationButton.setClickable(true);
     }
 
     @Override
@@ -291,7 +323,7 @@ public class CitySelectionActivity extends AppCompatActivity
                 this.startActivity(intent);
                 return true;
             case R.id.accounts_item:
-                UserInstance.loginRedirect(getApplicationContext());
+                UserInstance.loginRedirect(this);
                 return true;
         }
 

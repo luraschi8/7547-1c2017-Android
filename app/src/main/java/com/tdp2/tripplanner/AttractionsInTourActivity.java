@@ -1,23 +1,20 @@
 package com.tdp2.tripplanner;
 
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -25,9 +22,10 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.android.gms.maps.MapFragment;
-import com.tdp2.tripplanner.attractionSelectionActivityExtras.AttractionAdapter;
+import com.tdp2.tripplanner.ToursExtrasd.AttractionInTourAdapter;
+import com.tdp2.tripplanner.ToursExtrasd.MapTourHandler;
+import com.tdp2.tripplanner.ToursExtrasd.TourDataHolder;
 import com.tdp2.tripplanner.attractionSelectionActivityExtras.MapHandler;
-import com.tdp2.tripplanner.citySelectionActivityExtras.CityDataHolder;
 import com.tdp2.tripplanner.dao.APIDAO;
 import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.modelo.Attraction;
@@ -40,64 +38,64 @@ import java.util.ArrayList;
 
 import static com.tdp2.tripplanner.helpers.LocationService.MY_PERMISSIONS_REQUEST_FINE_LOCATION;
 
-
-public class AttractionSelectionActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
+public class AttractionsInTourActivity extends AppCompatActivity implements Response.Listener<JSONObject>,
         Response.ErrorListener {
 
-    private MapHandler mMapHandler;
-    private AttractionAdapter adapter;
-    private ArrayList<Attraction> attractionList;
+    private boolean viewingMap, lazyMap;
     private View gridView, mapView;
-    private Boolean viewingMap;
-    private Boolean lazyMap;
-    private APIDAO dao;
+    private int tourId;
+    private String tourName;
+    Toolbar toolbar;
+    private RecyclerView recyclerView;
+    private ArrayList attractionList;
+    private AttractionInTourAdapter adapter;
     private ProgressBar progress;
     private ImageButton refreshButton;
-    private Integer cityId;
-    private RecyclerView recyclerView;
+    private MapTourHandler mMapHandler;
+    private APIDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewingMap = false;
         lazyMap = false;
-        gridView = getLayoutInflater().inflate(R.layout.activity_atraction_grid_view, null);
+        gridView = getLayoutInflater().inflate(R.layout.activity_attractions_in_tour, null);
         mapView = getLayoutInflater().inflate(R.layout.attractions_map_view, null);
         setContentView(gridView);
 
 
         LocaleHandler.updateLocaleSettings(this.getBaseContext());
 
-        cityId = CityDataHolder.getData().getId();
-        String cityName = CityDataHolder.getData().getName();
+        tourId = TourDataHolder.getData().id;
+        tourName = TourDataHolder.getData().name;
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_attractions_in_tour);
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle(this.getString(R.string.atraction_grid) + " " + cityName);
+        toolbar.setTitle(this.getString(R.string.attractions_in_tour) + " " + tourName);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        recyclerView = (RecyclerView) findViewById(R.id.attraction_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerAttractionsInTour);
 
 
         attractionList = new ArrayList<>();
-        adapter = new AttractionAdapter(this, attractionList);
+        adapter = new AttractionInTourAdapter(this, attractionList);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager =  new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
         //Obtener el progress bar
-        progress = (ProgressBar) findViewById(R.id.progressBarAttractions);
+        progress = (ProgressBar) findViewById(R.id.progressBarAttractionsInTour);
         progress.setVisibility(View.VISIBLE);
 
         //Obtengo el refreshButton
-        refreshButton = (ImageButton) findViewById(R.id.refreshButtonAttractions);
+        refreshButton = (ImageButton) findViewById(R.id.refreshAttractionsInTour);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                refreshAttractions(cityId);
+                refreshAttractions(tourId);
                 refreshButton.setVisibility(View.GONE);
                 progress.setVisibility(View.VISIBLE);
             }
@@ -105,10 +103,16 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
         refreshButton.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
 
-        this.mMapHandler = new MapHandler(this);
+        mMapHandler = new MapTourHandler(this);
         dao = new APIDAO();
-        this.refreshAttractions(cityId);
+        this.refreshAttractions(tourId);
+
     }
+
+    private void refreshAttractions(int tourId) {
+        this.dao.getAttractionsForTour(this.getApplicationContext(), this, this, tourId);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,32 +126,13 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
 
     public void inflateMapToolBar(Menu menu){
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.attraction_map_menu, menu);
+        inflater.inflate(R.menu.attraction_in_tour_map_menu, menu);
     }
 
     public void inflateGridToolBar(Menu menu){
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.attraction_activity_menu, menu);
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        inflater.inflate(R.menu.attraction_in_tour_activity_menu, menu);
 
-        if (searchItem != null) {
-            SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-            EditText searchPlate = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-            searchPlate.setHint("Search");
-            searchPlate.setTextColor(Color.WHITE);
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    adapter.filterList(newText);
-                    return true;
-                }
-            });
-        }
     }
 
 
@@ -181,7 +166,7 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
     private void initMapView(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.map_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle(R.string.atraction_grid);
+        toolbar.setTitle(tourName);
         setSupportActionBar(toolbar);
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.attraction_map);
@@ -189,28 +174,24 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
     }
 
 
-    public void refreshAttractions(Integer cityId){
-        this.dao.getAttractionForCity(this.getApplicationContext(), this, this, cityId);
-    }
-
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        if(getResources().getBoolean(R.bool.mockUp)) {
-            this.mockAttractions();
-        }else {
+        if (!getResources().getBoolean(R.bool.mockUp)) {
             Log.e("ERROR RESPONSE", error.toString());
             Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
             progress.setVisibility(View.GONE);
             refreshButton.setVisibility(View.VISIBLE);
-
+        }else {
+            this.mockAttractions();
         }
+
     }
 
     private void mockAttractions() {
         ArrayList<Attraction> lista = new ArrayList<>();
         try {
-            JSONArray data = new JSONArray(getResources().getString(R.string.attractionsInCityMock));
+            JSONArray data = new JSONArray(getResources().getString(R.string.attractionsInTourMock));
             for (int i = 0; i < data.length(); i++) {
                 JSONObject current = data.getJSONObject(i);
                 lista.add(Attraction.buildFromJson(current));
@@ -219,7 +200,7 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
             Log.e("ERROR JSON", e.getMessage());
             return;
         }
-        this.adapter = new AttractionAdapter(this, lista);
+        this.adapter = new AttractionInTourAdapter(this, lista);
         this.recyclerView.setAdapter(this.adapter);
         this.attractionList = lista;
         this.mMapHandler.setList(lista);
@@ -240,7 +221,7 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
             Log.e("ERROR JSON", e.getMessage());
             return;
         }
-        this.adapter = new AttractionAdapter(this, lista);
+        this.adapter = new AttractionInTourAdapter(this, lista);
         this.recyclerView.setAdapter(this.adapter);
         this.attractionList = lista;
         this.mMapHandler.setList(lista);
@@ -267,6 +248,4 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
             // permissions this app might request
         }
     }
-
 }
-

@@ -232,10 +232,16 @@ public class AttractionDetailActivity extends AppCompatActivity
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Log.e("ERROR RESPONSE", error.toString());
-        Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
-        progress.setVisibility(GONE);
-        refreshButton.setVisibility(View.VISIBLE);
+       if (!getResources().getBoolean(R.bool.mockUp)){
+           Log.e("ERROR RESPONSE", error.toString());
+           Toast.makeText(this, R.string.no_internet_error, Toast.LENGTH_SHORT).show();
+           progress.setVisibility(GONE);
+           refreshButton.setVisibility(View.VISIBLE);
+       }else {
+           this.getMockAttraction();
+       }
+
+
     }
 
     @Override
@@ -257,6 +263,22 @@ public class AttractionDetailActivity extends AppCompatActivity
 
     private void getAttraction(Integer attractionID) {
         this.dao.getAttractionInfo(this.getApplicationContext(), this, this, attractionID);
+
+    }
+
+    private void getMockAttraction() {
+        try {
+            JSONObject data = new JSONObject(getResources().getString(R.string.attractionMock));
+            this.attraction.addDetailsFromJson(data);
+            if(this.attraction.hasVideo())
+                this.attraction.setVideoThumb(retriveVideoFrameFromVideo(this.attraction.getVideoLink()));
+        } catch (JSONException e) {
+            Log.e("ERROR JSON", e.getMessage());
+            return;
+        }
+        progress.setVisibility(GONE);
+        loadingView.setVisibility(GONE);
+        this.notifyDataChanged();
     }
 
     private void notifyDataChanged() {
