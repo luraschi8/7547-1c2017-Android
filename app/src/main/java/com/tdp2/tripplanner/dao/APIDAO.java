@@ -28,7 +28,7 @@ import org.json.JSONObject;
  */
 
 public class APIDAO {
-    private static String ATRACCIONES_TOUR = "atraccionesTourJson";
+    private static String ATRACCIONES_TOUR = "atraccionesRecorridoJson";
     private static String CIUDADES = "ciudadesJson";
     private static String ATRACCIONES_CIUDAD = "atraccionesCiudadJson/";
     private static String PUNTOS_DE_INTERES_ATRACCION = "puntoAtraccionJson";
@@ -36,7 +36,7 @@ public class APIDAO {
     private static String ATRACCION = "atraccion";
     private static String PUNTO_DE_INTERES = "punto";
     private static String LOGIN = ""; //todo: completar
-    private static String BASE_URL = "http://secure-dawn-22758.herokuapp.com/";
+    private static String BASE_URL = "http://10.0.2.2:8080/Trips/";
     private static String RESENIAS = "reseniasPaginadasAtraccionJson/";
     private static String CREAR_RESENIA = "crearResenia";
     private static String ACCESO_USUARIO = "accesoUsuario";
