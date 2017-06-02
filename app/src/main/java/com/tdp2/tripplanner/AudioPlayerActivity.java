@@ -1,5 +1,6 @@
 package com.tdp2.tripplanner;
 
+
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,11 +23,8 @@ import android.widget.Toast;
 import com.tdp2.tripplanner.AudioActivityExtras.InterestingPointAdapter;
 import com.tdp2.tripplanner.helpers.LocaleHandler;
 import com.tdp2.tripplanner.modelo.Attraction;
-import com.tdp2.tripplanner.modelo.InterestingPoint;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class AudioPlayerActivity extends AppCompatActivity {
@@ -54,6 +53,7 @@ public class AudioPlayerActivity extends AppCompatActivity {
         super.onRestart();
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +68,9 @@ public class AudioPlayerActivity extends AppCompatActivity {
         toolbar.setSubtitle(R.string.select_city);
         toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         //Controladores del audio
         forwardButton = (Button) findViewById(R.id.forward_button);
@@ -130,6 +133,11 @@ public class AudioPlayerActivity extends AppCompatActivity {
         pauseButton.setEnabled(false);
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return false;
     }
 
     private Runnable UpdateSongTime = new Runnable() {

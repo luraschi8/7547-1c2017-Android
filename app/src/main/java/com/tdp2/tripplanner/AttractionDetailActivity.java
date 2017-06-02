@@ -129,7 +129,7 @@ public class AttractionDetailActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + String.valueOf(attraction.getLatitude()) + "," +
-                        String.valueOf(attraction.getLongitude()));
+                        String.valueOf(attraction.getLongitude()) + "&mode=w");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);

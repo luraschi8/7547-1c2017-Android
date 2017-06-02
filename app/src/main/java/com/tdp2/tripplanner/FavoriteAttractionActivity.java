@@ -182,7 +182,7 @@ public class FavoriteAttractionActivity extends AppCompatActivity implements Res
     private void initMapView(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.map_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle(R.string.atraction_grid);
+        toolbar.setTitle(getString(R.string.atraction_grid) + " " + CityDataHolder.getData().getName());
         setSupportActionBar(toolbar);
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.attraction_map);

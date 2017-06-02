@@ -79,7 +79,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnInfoWindowCli
                 public boolean onMyLocationButtonClick() {
                     if (mLastLocation != null) {
                         LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
                     }
                     return false;
                 }
@@ -134,13 +134,13 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnInfoWindowCli
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         this.checkForLocationPermission();
         if (this.locationPermission) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-            this.onLocationChanged(LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient));
         }
 
+        this.onLocationChanged(LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient));
     }
 
     @Override
@@ -181,7 +181,7 @@ public class MapHandler implements OnMapReadyCallback, GoogleMap.OnInfoWindowCli
 
             //Get view title
             TextView title = (TextView) view.findViewById(R.id.map_title);
-            title.setText(String.format("%s >", markedAttraction.getName()));
+            title.setText(String.format("%s", markedAttraction.getName()));
 
             return view;
         }

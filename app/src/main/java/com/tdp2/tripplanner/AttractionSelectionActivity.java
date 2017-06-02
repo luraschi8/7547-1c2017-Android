@@ -183,8 +183,9 @@ public class AttractionSelectionActivity extends AppCompatActivity implements Re
     private void initMapView(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.map_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setTitle(R.string.atraction_grid);
+        toolbar.setTitle( getString(R.string.atraction_grid) + " " + CityDataHolder.getData().getName());
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.attraction_map);
         mapFragment.getMapAsync(this.mMapHandler);
